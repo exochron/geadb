@@ -1,3 +1,3 @@
-# Gemerate Enhanced Addon Database
+# Generate Enhanced Addon Database
 
 This toolkit generates some database files for my WoW Addon projects.
