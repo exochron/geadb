@@ -1,0 +1,8 @@
+921760, DBFilesClient\Mount.db2
+969941, DBFilesClient\ItemEffect.db2
+1003144, DBFilesClient\SpellMisc.db2
+1045411, DBFilesClient\PlayerCondition.db2
+1108759, DBFilesClient\CreatureDisplayInfo.db2
+1572924, DBFilesClient\ItemSparse.db2
+1576117, DBFilesClient\MountXDisplay.db2
+3177687, DBFilesClient\ItemXItemEffect.db2

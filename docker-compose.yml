@@ -1,0 +1,18 @@
+services:
+  extract_mount_db:
+    build:
+      context: docker
+      dockerfile: simc_casc_extract.Dockerfile
+    volumes:
+      - ./extract:/out
+      - ./cache:/cache
+    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
+
+  convert_dbs:
+    build:
+      context: docker
+      dockerfile: dbc2csv.Dockerfile
+    volumes:
+      - ./extract:/out
+      - D:\Games\World of Warcraft\_retail_\Cache\ADB\deDE\DBCache.bin:/game/DBCache.bin:ro
+    command: ["/game/DBCache.bin", "/out/10.0.5.48069/DBFilesClient"]
