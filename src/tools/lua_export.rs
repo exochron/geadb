@@ -22,6 +22,14 @@ impl LuaFile {
     pub(crate) fn add_line_with_value(&mut self, id: &i64, name: &String, value: String) {
         writeln!(self.file, "[{}] = {}, -- {}", id, value, name).expect("couldn't write to file")
     }
+
+    pub(crate) fn start_category(&mut self, name: &String) {
+        writeln!(self.file, "[\"{}\"] = {{", name).expect("couldn't write to file")
+    }
+    pub(crate) fn close_category(&mut self) {
+        writeln!(self.file, "}},").expect("couldn't write to file")
+    }
+
     pub(crate) fn close(&mut self) {
         write!(self.file, "}}").expect("couldn't write to file")
     }

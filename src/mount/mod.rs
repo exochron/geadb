@@ -4,6 +4,7 @@ use regex::Regex;
 
 use crate::mount::condition::{parse_conditions, Condition};
 use crate::mount::export::Exporter;
+use crate::mount::family::group_by_families;
 use crate::mount::rarity::load_rarities;
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
@@ -11,6 +12,7 @@ use crate::tools::{load_config, load_listfile};
 
 mod condition;
 mod export;
+mod family;
 mod rarity;
 
 pub struct Mount {
@@ -72,6 +74,10 @@ pub fn handle_mounts() {
     exporter.export_tradable(&mounts);
     exporter.export_conditions(&mounts);
     exporter.export_rarities(&mounts);
+    exporter.export_families(
+        &mounts,
+        group_by_families(&mounts, config.get("familymap").unwrap()),
+    );
 }
 
 fn collect_mounts(build_version: &String, list_file: HashMap<i64, String>) -> BTreeMap<i64, Mount> {

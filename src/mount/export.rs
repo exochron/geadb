@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::mount::condition::ConditionGroup;
+use crate::mount::family::FamilyNode;
 use crate::mount::Mount;
 use crate::tools::lua_export::LuaFile;
 
@@ -68,6 +69,39 @@ impl Exporter {
                     lua.add_line_with_value(mount_id, &mount.name, format!("{:?}", rarity));
                 }
             };
+        }
+
+        lua.close();
+    }
+
+    pub fn export_families(
+        &self,
+        mounts: &BTreeMap<i64, Mount>,
+        family_map: BTreeMap<String, FamilyNode>,
+    ) {
+        let mut lua = self.open_file("families.db.lua", "Family");
+
+        for (name, node) in family_map.iter() {
+            lua.start_category(name);
+            let mut mount_ids = node.mount_ids.clone();
+            mount_ids.sort();
+            for mount_id in mount_ids.iter() {
+                lua.add_line(mount_id, &mounts.get(mount_id).unwrap().name);
+            }
+
+            for (name, sub_node) in node.sub_nodes.iter() {
+                lua.start_category(name);
+
+                let mut mount_ids = sub_node.mount_ids.clone();
+                mount_ids.sort();
+                for mount_id in mount_ids.iter() {
+                    lua.add_line(mount_id, &mounts.get(mount_id).unwrap().name);
+                }
+
+                lua.close_category();
+            }
+
+            lua.close_category();
         }
 
         lua.close();
