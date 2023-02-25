@@ -25,4 +25,14 @@ impl LuaFile {
     pub(crate) fn close(&mut self) {
         write!(self.file, "}}").expect("couldn't write to file")
     }
+
+    pub(crate) fn format_sublist(&self, key: &str, items: Vec<&str>) -> String {
+        let mut row = String::from(" [\"");
+        row.push_str(key);
+        row.push_str("\"]={");
+        row.push_str(items.join(",").as_str());
+        row.push_str(",},");
+
+        row
+    }
 }

@@ -4,13 +4,14 @@ use regex::Regex;
 
 use crate::mount::condition::{parse_conditions, Condition};
 use crate::mount::export::Exporter;
+use crate::mount::rarity::load_rarities;
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
-use crate::tools::lua_export::LuaFile;
 use crate::tools::{load_config, load_listfile};
 
 mod condition;
 mod export;
+mod rarity;
 
 pub struct Mount {
     id: i64,
@@ -48,13 +49,13 @@ fn to_int(field: Option<&str>) -> i64 {
 pub fn handle_mounts() {
     let config = load_config("mount.yml");
 
-    // let build_version = String::from("10.0.5.48069");
     let build_version = {
         let mut docker = DockerRunner::new();
 
-        docker.fetch_mount_dbfiles();
-        docker.convert_dbfiles_into_csv();
-        docker.build_version
+        // docker.fetch_mount_dbfiles();
+        // docker.convert_dbfiles_into_csv();
+        // docker.build_version
+        String::from("10.0.5.48069")
     };
 
     let mut mounts = collect_mounts(&build_version, load_listfile());
@@ -63,9 +64,14 @@ pub fn handle_mounts() {
         mounts.remove(&value.as_i64().unwrap());
     }
 
+    for (mount_id, rarity) in load_rarities() {
+        mounts.get_mut(&mount_id).unwrap().rarity = Some(rarity);
+    }
+
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
     exporter.export_tradable(&mounts);
     exporter.export_conditions(&mounts);
+    exporter.export_rarities(&mounts);
 }
 
 fn collect_mounts(build_version: &String, list_file: HashMap<i64, String>) -> BTreeMap<i64, Mount> {
