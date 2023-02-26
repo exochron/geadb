@@ -63,7 +63,9 @@ pub fn handle_mounts() {
     let mut mounts = collect_mounts(&build_version, &list_file);
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
-        mounts.remove(&value.as_i64().unwrap());
+        mounts.remove(&value.as_i64().expect(
+            &("ignored id doesn't exist anymore in game: ".to_string() + value.as_str().unwrap()),
+        ));
     }
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());

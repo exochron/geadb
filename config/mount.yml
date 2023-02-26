@@ -29,6 +29,7 @@ ignored: [
   1605, # Dragon Isles Drake Model Test
   1607, # Swift Spectral Drake
   1608, # Soar, Dracthyr racial
+  1690, # Whelp (dragonflying guest seat)
 ]
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://wow.gamepedia.com/Beast
@@ -37,7 +38,7 @@ familymap: [
   { name: Amphibian,
     subfamily: [
       { name: Crawgs, wcm: [ Crawgs ] },
-      { name: Toads, wcm: [ Toads ] },
+      { name: Toads, wcm: [ Toads ], ids: [ 1595 ] }, # Cerulean Marsh Hopper
     ]
   },
   { name: Arachnids,
@@ -96,7 +97,7 @@ familymap: [
       { name: Lions, wcm: [ Cats ], icons: [ lion, goldenking ], ids: [ 421 ] },                     # Winged Guardian
       { name: Manasabers, wcm: [ Cats ], icons: [ suramarmount, nightborneracial ], ids: [ 741 ] }, # Mystic Runesaber
       { name: Mechanical Cats, wcm: [ Mechanical Cats ] },
-      { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr.
+      { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar
       { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth ] },
       { name: Stone Cats, wcm: [ Flying Stone Cats ], ids: [ 421 ] }, # Winged Guardian
       { name: Tigers, wcm: [ Cats, Undead Cats ], icons: [ monkmount, spectraltiger, siberiantiger, warnightsaber, jungletiger ] },
@@ -124,7 +125,7 @@ familymap: [
       { name: Brutosaurs, wcm: [ Brutosaurs ] },
       { name: Direhorns, wcm: [ Direhorns ] },
       { name: Falcosaurs, wcm: [ Raptors ], icons: [ falcosauro ] },
-      { name: Pterrordaxes, wcm: [ Pterrordaxes ] },
+      { name: Pterrordaxes, wcm: [ Pterrordaxes ], ids: [ 1586 ] }, #Armored Golden Pterrordax
       { name: Raptors, wcm: [ Raptors, Undead Raptors ], icons: [ raptor ] },
     ]
   },
@@ -188,7 +189,7 @@ familymap: [
           931, # Netherlord's Accursed Wrathsteed
         ]
       },
-      { name: Flying Steeds, wcm: [ Flying Steeds ] },
+      { name: Flying Steeds, wcm: [ Flying Steeds ], ids: [ 376 ] }, # Celestial Steed
       { name: Horned Steeds, wcm: [ Horned Steeds, Windsteeds ] },
       { name: Mechanical Steeds, wcm: [ Mechanical Steeds ] },
       { name: Mountain Horses,
@@ -243,7 +244,6 @@ familymap: [
       { name: Snail, wcm: [ Snails ] },
       { name: Slug, wcm: [ Slugs ] },
     ] },
-  { name: Rats, wcm: [ Rats, Mawrats ] },
   { name: Rays,
     subfamily: [
       { name: Fathom Rays, wcm: [ Fathom Rays ] },
@@ -268,6 +268,11 @@ familymap: [
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
+  { name: Rodent,
+    subfamily: [
+      { name: Rats, wcm: [ Rats, Mawrats ] },
+      { name: Rabbit, wcm: [ Rabbits ] },
+    ] },
   { name: Ungulates,
     subfamily: [
       { name: Alpacas, wcm: [ Alpacas ] },

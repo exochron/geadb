@@ -45,7 +45,7 @@ impl DockerRunner {
         let matched = Regex::new("(?i)build version: (\\d+\\.\\d+\\.\\d+\\.\\d+)")
             .expect("invalid regexp")
             .captures(stdout.as_str())
-            .expect("didn't found build version in output");
+            .expect("didn't found build version in output! is docker running?");
         self.build_version = String::from(
             matched
                 .get(1)
