@@ -1,12 +1,12 @@
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 use regex::Regex;
 use serde_json::Value;
 
 use crate::tools::http_get;
 
-pub fn load_rarities() -> BTreeMap<i64, f64> {
-    let mut result = BTreeMap::new();
+pub fn load_rarities() -> HashMap<i64, f64> {
+    let mut result = HashMap::new();
 
     let html = http_get("https://rarityraider.com/en/mounts");
 

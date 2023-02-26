@@ -5,6 +5,7 @@ use regex::Regex;
 use crate::mount::condition::{parse_conditions, Condition};
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
+use crate::mount::image::collect_dominant_colors;
 use crate::mount::rarity::load_rarities;
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
@@ -13,6 +14,7 @@ use crate::tools::{load_config, load_listfile};
 mod condition;
 mod export;
 mod family;
+mod image;
 mod rarity;
 
 pub struct Mount {
@@ -22,8 +24,6 @@ pub struct Mount {
     icon: String,
     item_is_tradeable: bool,
     player_conditions: Vec<Vec<Condition>>,
-    colors: Vec<Vec<u8>>,
-    rarity: Option<f64>,
 }
 
 impl Mount {
@@ -35,8 +35,6 @@ impl Mount {
             icon: String::new(),
             item_is_tradeable: false,
             player_conditions,
-            colors: Vec::new(),
-            rarity: None,
         }
     }
 }
@@ -54,33 +52,38 @@ pub fn handle_mounts() {
     let build_version = {
         let mut docker = DockerRunner::new();
 
-        // docker.fetch_mount_dbfiles();
-        // docker.convert_dbfiles_into_csv();
-        // docker.build_version
-        String::from("10.0.5.48069")
+        docker.fetch_mount_dbfiles();
+        docker.convert_dbfiles_into_csv();
+        docker.build_version
+        // String::from("10.0.5.48069")
     };
 
-    let mut mounts = collect_mounts(&build_version, load_listfile());
+    let list_file = load_listfile();
+
+    let mut mounts = collect_mounts(&build_version, &list_file);
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
         mounts.remove(&value.as_i64().unwrap());
     }
 
-    for (mount_id, rarity) in load_rarities() {
-        mounts.get_mut(&mount_id).unwrap().rarity = Some(rarity);
-    }
-
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
     exporter.export_tradable(&mounts);
     exporter.export_conditions(&mounts);
-    exporter.export_rarities(&mounts);
+    exporter.export_rarities(&mounts, load_rarities());
     exporter.export_families(
         &mounts,
         group_by_families(&mounts, config.get("familymap").unwrap()),
     );
+    exporter.export_colors(
+        &mounts,
+        collect_dominant_colors(&build_version, &mounts, &list_file),
+    );
 }
 
-fn collect_mounts(build_version: &String, list_file: HashMap<i64, String>) -> BTreeMap<i64, Mount> {
+fn collect_mounts(
+    build_version: &String,
+    list_file: &HashMap<i64, String>,
+) -> BTreeMap<i64, Mount> {
     let mut collection: BTreeMap<i64, Mount> = BTreeMap::new();
     let mut spell_to_mount: HashMap<i64, i64> = HashMap::new();
 

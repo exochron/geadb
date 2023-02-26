@@ -1,4 +1,6 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
+
+use palette::Srgb;
 
 use crate::mount::condition::ConditionGroup;
 use crate::mount::family::FamilyNode;
@@ -59,11 +61,11 @@ impl Exporter {
         lua.close();
     }
 
-    pub fn export_rarities(&self, mounts: &BTreeMap<i64, Mount>) {
+    pub fn export_rarities(&self, mounts: &BTreeMap<i64, Mount>, rarities: HashMap<i64, f64>) {
         let mut lua = self.open_file("rarities.db.lua", "Rarities");
 
         for (mount_id, mount) in mounts.iter() {
-            match mount.rarity {
+            match rarities.get(&mount.id) {
                 None => (),
                 Some(rarity) => {
                     lua.add_line_with_value(mount_id, &mount.name, format!("{:?}", rarity));
@@ -102,6 +104,33 @@ impl Exporter {
             }
 
             lua.close_category();
+        }
+
+        lua.close();
+    }
+
+    pub fn export_colors(
+        &self,
+        mounts: &BTreeMap<i64, Mount>,
+        dominant_colors: HashMap<i64, Vec<Srgb<u8>>>,
+    ) {
+        let mut lua = self.open_file("colors.db.lua", "Colors");
+
+        for mount in mounts.values() {
+            match dominant_colors.get(&mount.id) {
+                None => {}
+                Some(colors) => {
+                    let colors = colors
+                        .iter()
+                        .map(|pxl| format!("{{{},{},{}}}", pxl.red, pxl.green, pxl.blue))
+                        .collect::<Vec<String>>();
+                    lua.add_line_with_value(
+                        &mount.id,
+                        &mount.name,
+                        "{ ".to_string() + colors.join(", ").as_str() + ", }",
+                    );
+                }
+            }
         }
 
         lua.close();
