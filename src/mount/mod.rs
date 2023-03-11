@@ -143,11 +143,7 @@ fn collect_mounts(
             let effect_id = to_int(record.get(1));
             let item_id = to_int(record.get(2));
 
-            let spell_id = itemeffect_csv
-                .fetch_field(&effect_id, 7)
-                .unwrap()
-                .parse()
-                .unwrap();
+            let spell_id = itemeffect_csv.fetch_int_field(&effect_id, 7);
 
             // is mount spell && is TriggerType = OnUse(6) && is Bonding = 0
             if item_id > 0

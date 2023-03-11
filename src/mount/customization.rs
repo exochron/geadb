@@ -57,16 +57,10 @@ pub fn collect_customization(
                 .get(ITEMSPARSE_ITEM_NAME_DESCRIPTION_ID)
                 .unwrap_or_default();
             if item_name_description_id == "13926" {
-                let item_effect_id: i64 = itemxeffect_csv
-                    .fetch_field(&item_id, ITEMXITEMEFFECT_ITEM_EFFECT_ID)
-                    .unwrap_or(String::from("0"))
-                    .parse()
-                    .unwrap();
-                let spell_id: i64 = itemeffect_csv
-                    .fetch_field(&item_effect_id, ITEMEFFECT_ITEM_ID)
-                    .unwrap_or(String::from("0"))
-                    .parse()
-                    .unwrap();
+                let item_effect_id =
+                    itemxeffect_csv.fetch_int_field(&item_id, ITEMXITEMEFFECT_ITEM_EFFECT_ID);
+                let spell_id: i64 =
+                    itemeffect_csv.fetch_int_field(&item_effect_id, ITEMEFFECT_ITEM_ID);
                 match spelleffect_csv.fetch_record(&spell_id) {
                     None => {}
                     Some(spell_effect) => {

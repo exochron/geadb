@@ -63,4 +63,10 @@ impl DBReader {
         self.fetch_record(id)
             .map(|record| record.get(field).unwrap().to_string())
     }
+    pub fn fetch_int_field(&mut self, id: &i64, field: usize) -> i64 {
+        self.fetch_field(id, field)
+            .unwrap_or("0".to_string())
+            .parse()
+            .unwrap()
+    }
 }

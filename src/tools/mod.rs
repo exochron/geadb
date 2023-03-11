@@ -7,6 +7,7 @@ pub(crate) mod blp_reader;
 pub(crate) mod db_reader;
 pub(crate) mod docker_runner;
 pub(crate) mod lua_export;
+pub(crate) mod m2_reader;
 
 pub(crate) fn load_config(file_name: &str) -> Value {
     let f = std::fs::File::open("config/".to_owned() + file_name).unwrap();
