@@ -6,6 +6,7 @@ use csv::{Position, Reader, ReaderBuilder, StringRecord};
 pub struct DBReader {
     pub reader: Reader<File>,
     id_map: HashMap<i64, Position>,
+    id_column: usize,
 }
 
 impl DBReader {
@@ -20,16 +21,21 @@ impl DBReader {
         Self {
             reader,
             id_map: HashMap::new(),
+            id_column: 0,
         }
+    }
+
+    pub(crate) fn id_column(mut self, id_column: usize) -> DBReader {
+        self.id_column = id_column;
+        self
     }
 
     pub fn fetch_record(&mut self, id: &i64) -> Option<StringRecord> {
         if self.id_map.is_empty() {
-            let id_column = 0;
             for result in self.reader.records() {
                 let record = result.unwrap();
                 let id = record
-                    .get(id_column)
+                    .get(self.id_column)
                     .unwrap()
                     .parse()
                     .expect("couldn't convert id into int");

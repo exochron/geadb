@@ -6,4 +6,4 @@ RUN git submodule update --init --recursive --depth 1
 RUN dotnet publish -c Release -o docker --framework net7.0
 RUN ln -s /app/WoWDBDefs/definitions /app/docker/definitions
 
-ENTRYPOINT ["/app/build/DBC2CSV"]
+ENTRYPOINT ["/app/docker/DBC2CSV"]

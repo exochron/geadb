@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
 
+#[derive(Debug, Copy, Clone)]
 pub enum ConditionGroup {
     Class,
     Skill,
@@ -7,14 +8,38 @@ pub enum ConditionGroup {
     Covenant,
 }
 
+impl ConditionGroup {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            ConditionGroup::Class => "class",
+            ConditionGroup::Skill => "skill",
+            ConditionGroup::Race => "race",
+            ConditionGroup::Covenant => "covenant",
+        }
+    }
+}
+
 pub struct Condition {
     pub group: ConditionGroup,
     pub value: String,
 }
 
-fn check_class(mask: i64) -> Vec<Condition> {
+fn check_bitmask(group: ConditionGroup, bitmap: BTreeMap<i64, &str>, mask: i64) -> Vec<Condition> {
     let mut result = Vec::new();
 
+    for (bitmask, class) in bitmap.iter() {
+        if mask & bitmask > 0 {
+            result.push(Condition {
+                group,
+                value: ("\"".to_owned() + class + "\""),
+            })
+        }
+    }
+
+    result
+}
+
+fn check_class(mask: i64) -> Vec<Condition> {
     let map = BTreeMap::from([
         (0x1, "WARRIOR"),
         (0x2, "PALADIN"),
@@ -30,25 +55,13 @@ fn check_class(mask: i64) -> Vec<Condition> {
         (0x800, "DEMONHUNTER"),
         (0x1000, "EVOKER"),
     ]);
-
-    for (bitmask, class) in map.iter() {
-        if mask & bitmask > 0 {
-            result.push(Condition {
-                group: ConditionGroup::Class,
-                value: ("\"".to_owned() + class + "\""),
-            })
-        }
-    }
-
-    result
+    check_bitmask(ConditionGroup::Class, map, mask)
 }
 
 fn check_race(mask: i64) -> Vec<Condition> {
-    let mut result = Vec::new();
-
     if mask == 6130900294268439629 || mask == -6184943489809468494 {
         // skip full faction masks
-        return result;
+        return Vec::new();
     }
 
     let map = BTreeMap::from([
@@ -60,17 +73,7 @@ fn check_race(mask: i64) -> Vec<Condition> {
         (0x20000000, "LightforgedDraenei"),
         (0x40000000, "ZandalariTroll"),
     ]);
-
-    for (bitmask, race) in map.iter() {
-        if mask & bitmask > 0 {
-            result.push(Condition {
-                group: ConditionGroup::Race,
-                value: ("\"".to_owned() + race + "\""),
-            })
-        }
-    }
-
-    result
+    check_bitmask(ConditionGroup::Race, map, mask)
 }
 
 pub fn parse_conditions(

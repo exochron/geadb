@@ -3,6 +3,7 @@ use std::collections::{BTreeMap, HashMap};
 use regex::Regex;
 
 use crate::mount::condition::{parse_conditions, Condition};
+use crate::mount::customization::collect_customization;
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
 use crate::mount::image::collect_dominant_colors;
@@ -12,6 +13,7 @@ use crate::tools::docker_runner::DockerRunner;
 use crate::tools::{load_config, load_listfile};
 
 mod condition;
+mod customization;
 mod export;
 mod family;
 mod image;
@@ -20,6 +22,7 @@ mod rarity;
 pub struct Mount {
     id: i64,
     spell_id: i64,
+    type_id: i64,
     name: String,
     icon: String,
     item_is_tradeable: bool,
@@ -27,10 +30,17 @@ pub struct Mount {
 }
 
 impl Mount {
-    fn new(id: i64, spell_id: i64, name: String, player_conditions: Vec<Vec<Condition>>) -> Self {
+    fn new(
+        id: i64,
+        spell_id: i64,
+        type_id: i64,
+        name: String,
+        player_conditions: Vec<Vec<Condition>>,
+    ) -> Self {
         Self {
             id,
             spell_id,
+            type_id,
             name,
             icon: String::new(),
             item_is_tradeable: false,
@@ -55,7 +65,7 @@ pub fn handle_mounts() {
         docker.fetch_mount_dbfiles();
         docker.convert_dbfiles_into_csv();
         docker.build_version
-        // String::from("10.0.5.48069")
+        // String::from("10.0.5.48526")
     };
 
     let list_file = load_listfile();
@@ -63,9 +73,9 @@ pub fn handle_mounts() {
     let mut mounts = collect_mounts(&build_version, &list_file);
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
-        mounts.remove(&value.as_i64().expect(
-            &("ignored id doesn't exist anymore in game: ".to_string() + value.as_str().unwrap()),
-        ));
+        mounts
+            .remove(&value.as_i64().unwrap())
+            .expect("ignored id doesn't exist anymore in game");
     }
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
@@ -76,6 +86,7 @@ pub fn handle_mounts() {
         &mounts,
         group_by_families(&mounts, config.get("familymap").unwrap()),
     );
+    exporter.export_customization(&mounts, collect_customization(&mounts, &build_version));
     exporter.export_colors(
         &mounts,
         collect_dominant_colors(&build_version, &mounts, &list_file),
@@ -95,6 +106,7 @@ fn collect_mounts(
         for row in mount_csv.reader.records() {
             let record = row.unwrap();
             let id = to_int(record.get(3));
+            let type_id = to_int(record.get(4));
             let spell_id = to_int(record.get(7));
 
             let playercondition_id = to_int(record.get(8));
@@ -113,6 +125,7 @@ fn collect_mounts(
                 Mount::new(
                     id,
                     spell_id,
+                    type_id,
                     record.get(0).unwrap().to_string(),
                     player_conditions,
                 ),

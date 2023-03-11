@@ -2,7 +2,7 @@ use std::collections::{BTreeMap, HashMap};
 
 use palette::Srgb;
 
-use crate::mount::condition::ConditionGroup;
+use crate::mount::customization::CustomizationSource;
 use crate::mount::family::FamilyNode;
 use crate::mount::Mount;
 use crate::tools::lua_export::LuaFile;
@@ -43,12 +43,7 @@ impl Exporter {
                 let mut values = String::from("{");
 
                 for condition_group in mount.player_conditions.iter() {
-                    let group = match condition_group.first().unwrap().group {
-                        ConditionGroup::Class => "class",
-                        ConditionGroup::Skill => "skill",
-                        ConditionGroup::Race => "race",
-                        ConditionGroup::Covenant => "covenant",
-                    };
+                    let group = condition_group.first().unwrap().group.as_str();
                     let vals: Vec<&str> =
                         condition_group.iter().map(|c| c.value.as_str()).collect();
                     values.push_str(lua.format_sublist(group, vals).as_str());
@@ -129,6 +124,40 @@ impl Exporter {
                         &mount.name,
                         "{ ".to_string() + colors.join(", ").as_str() + ", }",
                     );
+                }
+            }
+        }
+
+        lua.close();
+    }
+
+    pub(crate) fn export_customization(
+        &self,
+        mounts: &BTreeMap<i64, Mount>,
+        collected_customization: HashMap<i64, HashMap<CustomizationSource, Vec<i64>>>,
+    ) {
+        let mut lua = self.open_file("customization.db.lua", "Customization");
+
+        for mount in mounts.values() {
+            match collected_customization.get(&mount.id) {
+                None => {}
+                Some(customs) => {
+                    let mut values = String::from("{\n");
+
+                    for (custom_group, ids) in customs.iter() {
+                        let vals: Vec<String> = ids.iter().map(|c| c.to_string()).collect();
+                        values.push_str(
+                            lua.format_sublist(
+                                custom_group.to_str(),
+                                vals.iter().map(|s| s.as_str()).collect(),
+                            )
+                            .as_str(),
+                        );
+                        values.push('\n');
+                    }
+                    values.push_str(" }");
+
+                    lua.add_line_with_value(&mount.id, &mount.name, values);
                 }
             }
         }
