@@ -241,7 +241,7 @@ familymap: [
   { name: Jellyfish, wcm: [ Fathom Dwellers, Hiveminds, Aurelids ] },
   { name: Mollusc,
     subfamily: [
-      { name: Snail, wcm: [ Snails ] },
+      { name: Snail, wcm: [ Snails ], ids: [ 1627 ] }, # Gooey Snailemental
       { name: Slug, wcm: [ Slugs ] },
     ] },
   { name: Rays,
@@ -264,7 +264,7 @@ familymap: [
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ] },
-      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639 ] }, # Lizi
+      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1619, 1639 ] }, # Ancient Salamamanther, Lizi
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
@@ -280,7 +280,7 @@ familymap: [
       { name: Camels, wcm: [ Camels ] },
       { name: Cervid, wcm: [ Cervids ] },
       { name: Elekks, wcm: [ Elekks ] },
-      { name: Mammoths, wcm: [ Mammoths ] },
+      { name: Mammoths, wcm: [ Mammoths ], ids: [ 1634 ] }, # Mossy Mammoth
       { name: Moose, wcm: [ Elderhorns, Bruffalons ] },
       { name: Ox, wcm: [ Oxen ] },
       { name: Rhinos, wcm: [ Rhinos ] },
