@@ -34,24 +34,39 @@ impl DockerRunner {
             .expect("could not start converting db files");
     }
 
-    pub(crate) fn fetch_mount_dbfiles(&mut self) {
-        let output = Command::new("docker")
-            .args(["compose", "run", "--rm", "extract_mount_db"])
-            .output()
-            .expect("could not start loading mount db files");
-
-        let stdout = String::from_utf8(output.stdout).expect("couldn't convert output into string");
-
+    fn parse_build_version(&mut self, output: String) {
         let matched = Regex::new("(?i)build version: (\\d+\\.\\d+\\.\\d+\\.\\d+)")
             .expect("invalid regexp")
-            .captures(stdout.as_str())
+            .captures(output.as_str())
             .expect("didn't found build version in output! is docker running?");
         self.build_version = String::from(
             matched
                 .get(1)
                 .expect("didn't found build version in output")
                 .as_str(),
-        )
+        );
+    }
+
+    pub(crate) fn fetch_mount_dbfiles(&mut self) {
+        let output = Command::new("docker")
+            .args(["compose", "run", "--rm", "extract_mount_db"])
+            .output()
+            .expect("could not start loading mount db files");
+
+        self.parse_build_version(
+            String::from_utf8(output.stdout).expect("couldn't convert output into string"),
+        );
+    }
+
+    pub(crate) fn fetch_toy_dbfiles(&mut self) {
+        let output = Command::new("docker")
+            .args(["compose", "run", "--rm", "extract_toy_db"])
+            .output()
+            .expect("could not start loading toy db files");
+
+        self.parse_build_version(
+            String::from_utf8(output.stdout).expect("couldn't convert output into string"),
+        );
     }
 
     pub(crate) fn convert_dbfiles_into_csv(&self) {

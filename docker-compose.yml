@@ -7,6 +7,14 @@ services:
       - ./extract:/out
       - ./cache:/cache
     command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
+  extract_toy_db:
+    build:
+      context: docker
+      dockerfile: simc_casc_extract.Dockerfile
+    volumes:
+      - ./extract:/out
+      - ./cache:/cache
+    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt
   extract_files:
     build:
       context: docker
