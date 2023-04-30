@@ -44,7 +44,7 @@ familymap: [
   { name: Arachnids,
     subfamily: [
       { name: Blood Ticks, wcm: [ Bloodswarmers ] },
-      { name: Scorpions, wcm: [ Scorpions, Mechanical Scorpions ] },
+      { name: Scorpions, wcm: [ Scorpions, Mechanical Scorpions ], ids: [ 1742 ] }, # Felcrystal Scorpion
       { name: Spiders, wcm: [ Spiders ] },
     ]
   },
@@ -136,7 +136,7 @@ familymap: [
       { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ] },
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ] },
-      { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ] },
+      { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ], ids: [ 1739 ] }, # Obsidian Gladiator's Slitherdrake
       { name: Proto-Drakes, wcm: [ Proto-Drakes ], },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ] },
@@ -150,6 +150,14 @@ familymap: [
       { name: Sabers, wcm: [ Flamesabers ] },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
+      { name: Sporebat, ids: [
+        1730, # Igneous Shalewing
+        1732, # Cobalt Shalewing
+        1734, # Shadowflame Shalewing
+        1735, # Cataloged Shalewing
+        1736, # Boulder Hauler
+        1738, # Morsel Sniffer
+      ] },
       { name: Others, wcm: [ Elementals, Ancients ] },
     ]
   },
@@ -241,8 +249,8 @@ familymap: [
   { name: Jellyfish, wcm: [ Fathom Dwellers, Hiveminds, Aurelids ] },
   { name: Mollusc,
     subfamily: [
-      { name: Snail, wcm: [ Snails ], ids: [ 1627 ] }, # Gooey Snailemental
-      { name: Slug, wcm: [ Slugs ] },
+      { name: Snail, wcm: [ Snails ], ids: [ 1627, 1729, 1740, 1741 ] }, # Gooey Snailemental, Big Slick in the Ciity, Vicious War Snail(2x)
+      { name: Slug, wcm: [ Slugs ], ids: [ 1623 ] }, # Seething Slug
     ] },
   { name: Rays,
     subfamily: [
@@ -264,7 +272,7 @@ familymap: [
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ] },
-      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1619, 1639 ] }, # Ancient Salamamanther, Lizi
+      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1619, 1639, 1725 ] }, # Ancient Salamamanther, Lizi, Inferno Armoredon
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
@@ -280,7 +288,7 @@ familymap: [
       { name: Camels, wcm: [ Camels ] },
       { name: Cervid, wcm: [ Cervids ] },
       { name: Elekks, wcm: [ Elekks ] },
-      { name: Mammoths, wcm: [ Mammoths ], ids: [ 1634 ] }, # Mossy Mammoth
+      { name: Mammoths, wcm: [ Mammoths ], ids: [ 1603 ] }, # Subterranean Mammoth
       { name: Moose, wcm: [ Elderhorns, Bruffalons ] },
       { name: Ox, wcm: [ Oxen ] },
       { name: Rhinos, wcm: [ Rhinos ] },
