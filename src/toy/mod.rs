@@ -9,6 +9,7 @@ mod export;
 
 pub struct Toy {
     item_id: i64,
+    flags: i64,
     name: String,
     item_is_tradable: bool,
 }
@@ -35,6 +36,16 @@ pub fn handle_toys() {
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
     exporter.export_tradable(&toys);
     exporter.export_toys(&toys);
+
+    let mut hidden_count = 0;
+    for toy in toys.values() {
+        if (toy.flags & 2) == 2 {
+            // is hidden toy
+            hidden_count += 1;
+        }
+    }
+
+    println!("New DELAY_CHECK: {}", toys.len() - hidden_count);
 }
 
 fn to_int(field: Option<&str>) -> i64 {
@@ -59,6 +70,7 @@ fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
                 item_id,
                 Toy {
                     item_id,
+                    flags: to_int(record.get(3)),
                     name: name.unwrap(),
                     item_is_tradable: item_csv.fetch_int_field(&item_id, 80) == 3,
                 },
