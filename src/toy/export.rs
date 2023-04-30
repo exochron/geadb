@@ -22,7 +22,7 @@ impl Exporter {
     }
 
     pub fn export_tradable(&self, mounts: &BTreeMap<i64, Toy>) {
-        let mut lua = self.open_file("tradable.db.lua", "Tradable");
+        let mut lua = self.open_file("tradable.db.lua", "db.Tradable");
 
         for toy in mounts.values() {
             if toy.item_is_tradable {
@@ -33,7 +33,7 @@ impl Exporter {
     }
 
     pub fn export_toys(&self, toys: &BTreeMap<i64, Toy>) {
-        let mut lua = self.open_file("toys.db.lua", "ingameList");
+        let mut lua = self.open_file("toys.db.lua", "db.ingameList");
 
         for toy in toys.values() {
             lua.add_line_with_value(&toy.item_id, &toy.name, "false".to_string())

@@ -11,7 +11,7 @@ impl LuaFile {
 
         writeln!(file, "local _, ADDON = ...").expect("couldn't write to file");
         writeln!(file).expect("couldn't write to file");
-        writeln!(file, "ADDON.DB.{} = {{", variable).expect("couldn't write to file");
+        writeln!(file, "ADDON.{} = {{", variable).expect("couldn't write to file");
 
         Self { file }
     }

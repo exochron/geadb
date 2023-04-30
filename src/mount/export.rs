@@ -26,7 +26,7 @@ impl Exporter {
     }
 
     pub fn export_tradable(&self, mounts: &BTreeMap<i64, Mount>) {
-        let mut lua = self.open_file("tradable.db.lua", "Tradable");
+        let mut lua = self.open_file("tradable.db.lua", "DB.Tradable");
 
         for (mount_id, mount) in mounts.iter() {
             if mount.item_is_tradeable {
@@ -36,7 +36,7 @@ impl Exporter {
         lua.close();
     }
     pub fn export_conditions(&self, mounts: &BTreeMap<i64, Mount>) {
-        let mut lua = self.open_file("restrictions.db.lua", "Restrictions");
+        let mut lua = self.open_file("restrictions.db.lua", "DB.Restrictions");
 
         for (mount_id, mount) in mounts.iter() {
             if !mount.player_conditions.is_empty() {
@@ -57,7 +57,7 @@ impl Exporter {
     }
 
     pub fn export_rarities(&self, mounts: &BTreeMap<i64, Mount>, rarities: HashMap<i64, f64>) {
-        let mut lua = self.open_file("rarities.db.lua", "Rarities");
+        let mut lua = self.open_file("rarities.db.lua", "DB.Rarities");
 
         for (mount_id, mount) in mounts.iter() {
             match rarities.get(&mount.id) {
@@ -76,7 +76,7 @@ impl Exporter {
         mounts: &BTreeMap<i64, Mount>,
         family_map: BTreeMap<String, FamilyNode>,
     ) {
-        let mut lua = self.open_file("families.db.lua", "Family");
+        let mut lua = self.open_file("families.db.lua", "DB.Family");
 
         for (name, node) in family_map.iter() {
             lua.start_category(name);
@@ -109,7 +109,7 @@ impl Exporter {
         mounts: &BTreeMap<i64, Mount>,
         dominant_colors: HashMap<i64, Vec<Srgb<u8>>>,
     ) {
-        let mut lua = self.open_file("colors.db.lua", "Colors");
+        let mut lua = self.open_file("colors.db.lua", "DB.Colors");
 
         for mount in mounts.values() {
             match dominant_colors.get(&mount.id) {
@@ -136,7 +136,7 @@ impl Exporter {
         mounts: &BTreeMap<i64, Mount>,
         collected_customization: HashMap<i64, HashMap<CustomizationSource, Vec<i64>>>,
     ) {
-        let mut lua = self.open_file("customization.db.lua", "Customization");
+        let mut lua = self.open_file("customization.db.lua", "DB.Customization");
 
         for mount in mounts.values() {
             match collected_customization.get(&mount.id) {
