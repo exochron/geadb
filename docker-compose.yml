@@ -6,8 +6,8 @@ services:
     volumes:
       - ./extract:/out
       - ./cache:/cache
-    #    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
-    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt --ptr
+    entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
+  #    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt --ptr
   extract_toy_db:
     build:
       context: docker
@@ -15,8 +15,8 @@ services:
     volumes:
       - ./extract:/out
       - ./cache:/cache
-    #    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt
-    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt --ptr
+    entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt
+  #    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt --ptr
   extract_files:
     build:
       context: docker
@@ -24,8 +24,8 @@ services:
     volumes:
       - ./extract:/out
       - ./cache:/cache
-    #    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt
-    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt --ptr
+    entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt
+  #    command: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt --ptr
 
   convert_dbs:
     build:
@@ -33,6 +33,6 @@ services:
       dockerfile: dbc2csv.Dockerfile
     volumes:
       - ./extract:/out
-      #      - D:\Games\World of Warcraft\_retail_\Cache\ADB\deDE\DBCache.bin:/game/DBCache.bin:ro
-      - D:\Games\World of Warcraft\_ptr_\Cache\ADB\enUS\DBCache.bin:/game/DBCache.bin:ro
+      - D:\Games\World of Warcraft\_retail_\Cache\ADB\deDE\DBCache.bin:/game/DBCache.bin:ro
+      - D:\Games\World of Warcraft\_ptr_\Cache\ADB\enUS\DBCache.bin:/game/ptr.bin:ro
     command: [ "/game/DBCache.bin", "/out/10.1.0.49318/DBFilesClient" ]
