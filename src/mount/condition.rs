@@ -6,6 +6,7 @@ pub enum ConditionGroup {
     Skill,
     Race,
     Covenant,
+    Quest,
 }
 
 impl ConditionGroup {
@@ -15,6 +16,7 @@ impl ConditionGroup {
             ConditionGroup::Skill => "skill",
             ConditionGroup::Race => "race",
             ConditionGroup::Covenant => "covenant",
+            ConditionGroup::Quest => "quest",
         }
     }
 }
@@ -81,6 +83,7 @@ pub fn parse_conditions(
     failure_description: &str,
     class_mask: i64,
     skill_id: i64,
+    quest_id: i64,
 ) -> Vec<Vec<Condition>> {
     let mut result = Vec::new();
 
@@ -98,6 +101,12 @@ pub fn parse_conditions(
         result.push(Vec::from([Condition {
             group: ConditionGroup::Skill,
             value: skill_id.to_string(),
+        }]))
+    }
+    if quest_id != 0 {
+        result.push(Vec::from([Condition {
+            group: ConditionGroup::Quest,
+            value: quest_id.to_string(),
         }]))
     }
 

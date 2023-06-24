@@ -115,6 +115,7 @@ fn collect_mounts(
                     record.get(2).unwrap(),
                     to_int(record.get(3)),
                     to_int(record.get(58)),
+                    to_int(record.get(76)),
                 ),
             };
 
