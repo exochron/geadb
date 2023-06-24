@@ -35,3 +35,19 @@ pub(crate) fn load_listfile() -> HashMap<i64, String> {
 
     result
 }
+
+#[derive(PartialEq, Eq)]
+pub enum GameVersion {
+    Retail,
+    Ptr,
+}
+
+pub(crate) fn determine_game_version_from_cli() -> GameVersion {
+    match std::env::args().nth(1) {
+        None => GameVersion::Retail,
+        Some(value) => match value.as_str() {
+            "--ptr" => GameVersion::Ptr,
+            _ => GameVersion::Retail,
+        },
+    }
+}

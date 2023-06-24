@@ -19,7 +19,7 @@ html-escape = "0.2.13"
 image = "0.24.5"
 image-blp = "1.0.1"
 kmeans_colors = { version = "0.5.0", features = ["palette_color", "image"] }
-palette = "0.7.1"
+palette = "0.6.1"
 regex = "1.7.1"
 reqwest = { version = "0.11.14", features = ["blocking"] }
 serde_json = "1.0.93"

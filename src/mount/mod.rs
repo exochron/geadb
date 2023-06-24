@@ -10,7 +10,7 @@ use crate::mount::image::collect_dominant_colors;
 use crate::mount::rarity::load_rarities;
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
-use crate::tools::{load_config, load_listfile};
+use crate::tools::{load_config, load_listfile, GameVersion};
 
 mod condition;
 mod customization;
@@ -56,16 +56,14 @@ fn to_int(field: Option<&str>) -> i64 {
         .expect("couldn't convert field into int.")
 }
 
-pub fn handle_mounts() {
+pub fn handle_mounts(game_version: GameVersion) {
     let config = load_config("mount.yml");
 
+    let mut docker = DockerRunner::new(game_version);
     let build_version = {
-        let mut docker = DockerRunner::new();
-
         docker.fetch_mount_dbfiles();
         docker.convert_dbfiles_into_csv();
-        docker.build_version
-        // String::from("10.0.5.48526")
+        docker.build_version.clone()
     };
 
     let list_file = load_listfile();
@@ -89,7 +87,7 @@ pub fn handle_mounts() {
     exporter.export_customization(&mounts, collect_customization(&mounts, &build_version));
     exporter.export_colors(
         &mounts,
-        collect_dominant_colors(&build_version, &mounts, &list_file),
+        collect_dominant_colors(&build_version, docker, &mounts, &list_file),
     );
 }
 

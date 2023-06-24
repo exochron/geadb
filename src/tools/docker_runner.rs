@@ -5,13 +5,17 @@ use std::process::Command;
 
 use regex::Regex;
 
+use crate::tools::GameVersion;
+
 pub struct DockerRunner {
+    is_ptr: bool,
     pub build_version: String,
 }
 
 impl DockerRunner {
-    pub(crate) fn new() -> Self {
+    pub(crate) fn new(game_version: GameVersion) -> Self {
         Self {
+            is_ptr: game_version == GameVersion::Ptr,
             build_version: String::new(),
         }
     }
@@ -26,8 +30,13 @@ impl DockerRunner {
             writeln!(txt_file, "{}, {}", file_id, file_path).expect("couldn't write to file");
         }
 
+        let mut args = vec!["compose", "run", "--rm", "extract_files"];
+        if self.is_ptr {
+            args.push("--product=wowxptr"); // usually ptr=wowt
+        }
+
         Command::new("docker")
-            .args(["compose", "run", "--rm", "extract_files"])
+            .args(args)
             .spawn()
             .expect("could not start converting db files")
             .wait_with_output()
@@ -48,8 +57,13 @@ impl DockerRunner {
     }
 
     pub(crate) fn fetch_mount_dbfiles(&mut self) {
+        let mut args = vec!["compose", "run", "--rm", "extract_mount_db"];
+        if self.is_ptr {
+            args.push("--product=wowxptr");
+        }
+
         let output = Command::new("docker")
-            .args(["compose", "run", "--rm", "extract_mount_db"])
+            .args(args)
             .output()
             .expect("could not start loading mount db files");
 
@@ -59,8 +73,13 @@ impl DockerRunner {
     }
 
     pub(crate) fn fetch_toy_dbfiles(&mut self) {
+        let mut args = vec!["compose", "run", "--rm", "extract_toy_db"];
+        if self.is_ptr {
+            args.push("--product=wowxptr");
+        }
+
         let output = Command::new("docker")
-            .args(["compose", "run", "--rm", "extract_toy_db"])
+            .args(args)
             .output()
             .expect("could not start loading toy db files");
 
@@ -70,15 +89,19 @@ impl DockerRunner {
     }
 
     pub(crate) fn convert_dbfiles_into_csv(&self) {
+        let mut args = vec!["compose", "run", "--rm", "convert_dbs"];
+        if self.is_ptr {
+            args.push("/game/ptr.bin");
+        } else {
+            args.push("/game/DBCache.bin");
+        }
+        let extracted_path = "/out/".to_string()
+            + self.build_version.as_str()
+            + "/DBFilesClient".to_string().as_str();
+        args.push(&*extracted_path);
+
         Command::new("docker")
-            .args([
-                "compose",
-                "run",
-                "--rm",
-                "convert_dbs",
-                "/game/DBCache.bin",
-                &("/out/".to_owned() + self.build_version.as_str() + "/DBFilesClient"),
-            ])
+            .args(args)
             .spawn()
             .expect("could not start converting db files")
             .wait_with_output()

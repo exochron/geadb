@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
-use crate::tools::load_config;
+use crate::tools::{load_config, GameVersion};
 use crate::toy::export::Exporter;
 
 mod export;
@@ -13,11 +13,11 @@ pub struct Toy {
     item_is_tradable: bool,
 }
 
-pub fn handle_toys() {
+pub fn handle_toys(game_version: GameVersion) {
     let config = load_config("toy.yml");
 
     let build_version = {
-        let mut docker = DockerRunner::new();
+        let mut docker = DockerRunner::new(game_version);
 
         docker.fetch_toy_dbfiles();
         docker.convert_dbfiles_into_csv();

@@ -12,6 +12,7 @@ use crate::tools::m2_reader::M2Reader;
 
 fn collect_files(
     build_version: &String,
+    docker: DockerRunner,
     list_file: &HashMap<i64, String>,
 ) -> HashMap<i64, Vec<String>> {
     let mut display_csv = DBReader::new(build_version, "MountXDisplay.csv");
@@ -56,7 +57,6 @@ fn collect_files(
         }
     }
 
-    let docker = DockerRunner::new();
     docker.fetch_files(files_to_load);
 
     let mut files_to_load: HashMap<i64, String> = HashMap::new();
@@ -105,10 +105,11 @@ fn determine_dominant_colors(pixels: Vec<Lab>, seed: &i64) -> Vec<Srgb<u8>> {
 
 pub fn collect_dominant_colors(
     build_version: &String,
+    docker: DockerRunner,
     mounts: &BTreeMap<i64, Mount>,
     list_file: &HashMap<i64, String>,
 ) -> HashMap<i64, Vec<Srgb<u8>>> {
-    let mount_files = collect_files(build_version, list_file);
+    let mount_files = collect_files(build_version, docker, list_file);
 
     let mut result = HashMap::new();
 
