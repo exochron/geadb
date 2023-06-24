@@ -11,6 +11,9 @@ ignored: [
   273,  # Grand Caravan Mammoth
   274,  # Grand Caravan Mammoth
   308,  # Blue Skeletal Warhorse
+  333,  # Magic Rooster
+  334,  # Magic Rooster
+  335,  # Magic Rooster
   462,  # White Riding Yak
   484,  # Black Riding Yak
   485,  # Brown Riding Yak
@@ -223,16 +226,8 @@ familymap: [
   { name: Insects,
     subfamily: [
       { name: Animite, wcm: [ Animites ] },
-      { name: Aqir Flyers, wcm: [ Aqir Flyers ] },
+      { name: Aqir Flyers, wcm: [ Aqir Flyers ], ids: [ 1784 ] }, # royal swarmer
       { name: Gorm, wcm: [ Gorms ] },
-      #   ids: [# somehow WCM has currently wrong mount ids for gorm
-      #       334364, # Spinemaw Gladechewer
-      #       312763, # Darkwarren Hardshell
-      #       334365, # Pale Acidmaw
-      #       340503, # Umbral Scythehorn
-      #       348769, # Vicious War
-      #       348770, # Vicious War Gorm
-      #       352441, # Wild Hunt Legsplitter
       { name: Flies, wcm: [ Flies, Skitterflies ] },
       { name: Krolusks, wcm: [ Krolusks ] },
       { name: Moth, wcm: [ Moths ] },
@@ -271,8 +266,8 @@ familymap: [
       { name: Sea Serpents, wcm: [ Sea Serpents ] },
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
-      { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ] },
-      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1619, 1639, 1725 ] }, # Ancient Salamamanther, Lizi, Inferno Armoredon
+      { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ], ids: [ 1582 ] }, # Savage Green Battle Turtle
+      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639 ] }, # Lizi
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
