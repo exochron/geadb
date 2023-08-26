@@ -153,14 +153,7 @@ familymap: [
       { name: Sabers, wcm: [ Flamesabers ] },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
-      { name: Sporebat, ids: [
-        1730, # Igneous Shalewing
-        1732, # Cobalt Shalewing
-        1734, # Shadowflame Shalewing
-        1735, # Cataloged Shalewing
-        1736, # Boulder Hauler
-        1738, # Morsel Sniffer
-      ] },
+      { name: Sporebat, wcm: [ Shalewings ] },
       { name: Others, wcm: [ Elementals, Ancients ] },
     ]
   },
@@ -219,6 +212,7 @@ familymap: [
     subfamily: [
       { name: Gronnlings, wcm: [ Gronnlings ] },
       { name: Gorger, wcm: [ Anima Gorgers ] },
+      { name: Murloc, wcm: [ Murlocs ] },
       { name: Yetis, wcm: [ Yeti ] },
       { name: Others, ids: [ 1312 ] },
     ]
@@ -297,6 +291,7 @@ familymap: [
       { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ] },
       { name: Assault Wagons, wcm: [ Assault Wagons ] },
       { name: Book, wcm: [ Books ] },
+      { name: Broom, wcm: [ Magical Broomsticks ] },
       { name: Carpets, wcm: [ Flying Carpets ] },
       { name: Discs, wcm: [ Discs ] },
       { name: Gyrocopters, wcm: [ Gyrocopters ] },

@@ -31,5 +31,5 @@ services:
     volumes:
       - ./extract:/out
       - D:\Games\World of Warcraft\_retail_\Cache\ADB\deDE\DBCache.bin:/game/DBCache.bin:ro
-      - D:\Games\World of Warcraft\_xptr_\Cache\ADB\enUS\DBCache.bin:/game/ptr.bin:ro
+      - D:\Games\World of Warcraft\_ptr_\Cache\ADB\enUS\DBCache.bin:/game/ptr.bin:ro
     command: [ "/game/DBCache.bin", "/out/10.1.0.49318/DBFilesClient" ]

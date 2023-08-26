@@ -32,7 +32,8 @@ impl DockerRunner {
 
         let mut args = vec!["compose", "run", "--rm", "extract_files"];
         if self.is_ptr {
-            args.push("--product=wowxptr"); // usually ptr=wowt
+            args.push("--product=wowt");
+            // args.push("--product=wowxptr"); // usually ptr=wowt
         }
 
         Command::new("docker")
@@ -59,7 +60,8 @@ impl DockerRunner {
     pub(crate) fn fetch_mount_dbfiles(&mut self) {
         let mut args = vec!["compose", "run", "--rm", "extract_mount_db"];
         if self.is_ptr {
-            args.push("--product=wowxptr");
+            args.push("--product=wowt");
+            // args.push("--product=wowxptr");
         }
 
         let output = Command::new("docker")
@@ -75,7 +77,8 @@ impl DockerRunner {
     pub(crate) fn fetch_toy_dbfiles(&mut self) {
         let mut args = vec!["compose", "run", "--rm", "extract_toy_db"];
         if self.is_ptr {
-            args.push("--product=wowxptr");
+            args.push("--product=wowt");
+            //args.push("--product=wowxptr");
         }
 
         let output = Command::new("docker")

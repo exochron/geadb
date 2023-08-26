@@ -8,3 +8,4 @@
 1572924, DBFilesClient\ItemSparse.db2
 1576117, DBFilesClient\MountXDisplay.db2
 3177687, DBFilesClient\ItemXItemEffect.db2
+1260179, DBFilesClient\Achievement.db2
