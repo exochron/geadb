@@ -40,6 +40,7 @@ pub(crate) fn load_listfile() -> HashMap<i64, String> {
 pub enum GameVersion {
     Retail,
     Ptr,
+    XPtr,
 }
 
 pub(crate) fn determine_game_version_from_cli() -> GameVersion {
@@ -47,6 +48,7 @@ pub(crate) fn determine_game_version_from_cli() -> GameVersion {
         None => GameVersion::Retail,
         Some(value) => match value.as_str() {
             "--ptr" => GameVersion::Ptr,
+            "--xptr" => GameVersion::XPtr,
             _ => GameVersion::Retail,
         },
     }

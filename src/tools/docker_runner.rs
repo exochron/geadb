@@ -9,6 +9,7 @@ use crate::tools::GameVersion;
 
 pub struct DockerRunner {
     is_ptr: bool,
+    is_xptr: bool,
     pub build_version: String,
 }
 
@@ -16,6 +17,7 @@ impl DockerRunner {
     pub(crate) fn new(game_version: GameVersion) -> Self {
         Self {
             is_ptr: game_version == GameVersion::Ptr,
+            is_xptr: game_version == GameVersion::XPtr,
             build_version: String::new(),
         }
     }
@@ -33,7 +35,8 @@ impl DockerRunner {
         let mut args = vec!["compose", "run", "--rm", "extract_files"];
         if self.is_ptr {
             args.push("--product=wowt");
-            // args.push("--product=wowxptr"); // usually ptr=wowt
+        } else if self.is_xptr {
+            args.push("--product=wowxptr");
         }
 
         Command::new("docker")
@@ -61,7 +64,8 @@ impl DockerRunner {
         let mut args = vec!["compose", "run", "--rm", "extract_mount_db"];
         if self.is_ptr {
             args.push("--product=wowt");
-            // args.push("--product=wowxptr");
+        } else if self.is_xptr {
+            args.push("--product=wowxptr");
         }
 
         let output = Command::new("docker")
@@ -78,7 +82,8 @@ impl DockerRunner {
         let mut args = vec!["compose", "run", "--rm", "extract_toy_db"];
         if self.is_ptr {
             args.push("--product=wowt");
-            //args.push("--product=wowxptr");
+        } else if self.is_xptr {
+            args.push("--product=wowxptr");
         }
 
         let output = Command::new("docker")
@@ -95,6 +100,8 @@ impl DockerRunner {
         let mut args = vec!["compose", "run", "--rm", "convert_dbs"];
         if self.is_ptr {
             args.push("/game/ptr.bin");
+        } else if self.is_xptr {
+            args.push("/game/xptr.bin");
         } else {
             args.push("/game/DBCache.bin");
         }
