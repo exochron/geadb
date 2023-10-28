@@ -35,7 +35,7 @@ ignored: [
   1690, # Whelp (dragonflying guest seat)
 ]
 
-# family based on http://www.warcraftmounts.com/gallery.php + https://wow.gamepedia.com/Beast
+# family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
 # try to keep naming in singular
 familymap: [
   { name: Amphibian,
@@ -62,6 +62,8 @@ familymap: [
       { name: Eagle, wcm: [ Birds ], icons: [ eagle ] },
       { name: Hawkstriders, wcm: [ Hawkstriders ] },
       { name: Mechanical Birds, wcm: [ Mechanical Birds ] },
+      { name: Owl, wcm: [ Birds ], icons: [ dreamowl ] },
+      { name: Owlbear, wcm: [ Owlbears ] },
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ] },
       { name: Phoenixes, wcm: [ Phoenixes ] },
@@ -97,8 +99,10 @@ familymap: [
   },
   { name: Cats,
     subfamily: [
+      { name: Bipedal Cat, wcm: [ Bipedal Cats ] },
       { name: Lions, wcm: [ Cats ], icons: [ lion, goldenking ], ids: [ 421 ] },                     # Winged Guardian
       { name: Manasabers, wcm: [ Cats ], icons: [ suramarmount, nightborneracial ], ids: [ 741 ] }, # Mystic Runesaber
+      { name: Dreamsaber, wcm: [ Cats ], icons: [ dreamsaber ] },
       { name: Mechanical Cats, wcm: [ Mechanical Cats ] },
       { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar
       { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth ] },
@@ -221,6 +225,7 @@ familymap: [
     subfamily: [
       { name: Animite, wcm: [ Animites ] },
       { name: Aqir Flyers, wcm: [ Aqir Flyers ], ids: [ 1784 ] }, # royal swarmer
+      { name: Beetle, wcm: [ Beetles ] },
       { name: Gorm, wcm: [ Gorms ] },
       { name: Flies, wcm: [ Flies, Skitterflies ] },
       { name: Krolusks, wcm: [ Krolusks ] },
@@ -282,7 +287,7 @@ familymap: [
       { name: Ox, wcm: [ Oxen ] },
       { name: Rhinos, wcm: [ Rhinos ] },
       { name: Riverbeasts, wcm: [ Riverbeasts ] },
-      { name: Runestag, wcm: [ Runestags ] },
+      { name: Stag, wcm: [ Runestags, Dreamstags ] },
     ]
   },
   { name: Vehicles,
