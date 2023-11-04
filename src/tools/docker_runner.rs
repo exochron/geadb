@@ -8,20 +8,33 @@ use regex::Regex;
 use crate::tools::GameVersion;
 
 pub struct DockerRunner {
-    is_ptr: bool,
-    is_xptr: bool,
-    is_classic: bool,
+    game_version: GameVersion,
     pub build_version: String,
 }
 
 impl DockerRunner {
-    pub(crate) fn new(game_version: GameVersion) -> Self {
+    pub fn new(game_version: GameVersion) -> Self {
         Self {
-            is_ptr: game_version == GameVersion::Ptr,
-            is_xptr: game_version == GameVersion::XPtr,
-            is_classic: game_version == GameVersion::Classic,
+            game_version,
             build_version: String::new(),
         }
+    }
+
+    fn add_extract_product<'a>(&'a self, mut args: Vec<&'a str>) -> Vec<&str> {
+        match self.game_version {
+            GameVersion::Retail => {}
+            GameVersion::Ptr => {
+                args.push("--product=wowt");
+            }
+            GameVersion::XPtr => {
+                args.push("--product=wowxptr");
+            }
+            GameVersion::Classic => {
+                args.push("--product=wow_classic");
+            }
+        }
+
+        args
     }
 
     pub(crate) fn fetch_files(&self, file_list: HashMap<i64, String>) {
@@ -35,11 +48,7 @@ impl DockerRunner {
         }
 
         let mut args = vec!["compose", "run", "--rm", "extract_files"];
-        if self.is_ptr {
-            args.push("--product=wowt");
-        } else if self.is_xptr {
-            args.push("--product=wowxptr");
-        }
+        args = self.add_extract_product(args);
 
         Command::new("docker")
             .args(args)
@@ -64,11 +73,7 @@ impl DockerRunner {
 
     pub(crate) fn fetch_mount_dbfiles(&mut self) {
         let mut args = vec!["compose", "run", "--rm", "extract_mount_db"];
-        if self.is_ptr {
-            args.push("--product=wowt");
-        } else if self.is_xptr {
-            args.push("--product=wowxptr");
-        }
+        args = self.add_extract_product(args);
 
         let output = Command::new("docker")
             .args(args)
@@ -80,15 +85,9 @@ impl DockerRunner {
         );
     }
 
-    pub(crate) fn fetch_toy_dbfiles(&mut self) {
+    pub fn fetch_toy_dbfiles(&mut self) {
         let mut args = vec!["compose", "run", "--rm", "extract_toy_db"];
-        if self.is_ptr {
-            args.push("--product=wowt");
-        } else if self.is_xptr {
-            args.push("--product=wowxptr");
-        } else if self.is_classic {
-            args.push("--product=wow_classic");
-        }
+        args = self.add_extract_product(args);
 
         let output = Command::new("docker")
             .args(args)
@@ -100,17 +99,14 @@ impl DockerRunner {
         );
     }
 
-    pub(crate) fn convert_dbfiles_into_csv(&self) {
+    pub fn convert_dbfiles_into_csv(&self) {
         let mut args = vec!["compose", "run", "--rm", "convert_dbs"];
-        if self.is_ptr {
-            args.push("/game/ptr.bin");
-        } else if self.is_xptr {
-            args.push("/game/xptr.bin");
-        } else if self.is_classic {
-            args.push("/game/classic.bin");
-        } else {
-            args.push("/game/DBCache.bin");
-        }
+        args.push(match self.game_version {
+            GameVersion::Retail => "/game/DBCache.bin",
+            GameVersion::Ptr => "/game/ptr.bin",
+            GameVersion::XPtr => "/game/xptr.bin",
+            GameVersion::Classic => "/game/classic.bin",
+        });
         let extracted_path = "/out/".to_string()
             + self.build_version.as_str()
             + "/DBFilesClient".to_string().as_str();

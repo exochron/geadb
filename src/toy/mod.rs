@@ -16,6 +16,7 @@ pub struct Toy {
 pub fn handle_toys(game_version: GameVersion) {
     let config = load_config("toy.yml");
 
+    // todo: multi thread
     let build_version = {
         let mut docker = DockerRunner::new(game_version);
 
@@ -62,15 +63,23 @@ fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
         let item_id = to_int(record.get(2));
 
         let name = item_csv.fetch_field(&item_id, 6);
-        if let Some(..) = name {
-            collection.insert(
-                item_id,
-                Toy {
+        match name {
+            Some(_) => {
+                collection.insert(
                     item_id,
-                    name: name.unwrap(),
-                    item_is_tradable: item_csv.fetch_int_field(&item_id, 80) == 3,
-                },
-            );
+                    Toy {
+                        item_id,
+                        name: name.unwrap(),
+                        item_is_tradable: item_csv.fetch_int_field(&item_id, 80) == 3,
+                    },
+                );
+            }
+            None => {
+                println!(
+                    "item not found in {}/ItemSparse: {}",
+                    &build_version, item_id
+                )
+            }
         }
     }
 

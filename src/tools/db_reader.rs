@@ -10,7 +10,7 @@ pub struct DBReader {
 }
 
 impl DBReader {
-    pub(crate) fn new(build_version: &String, file_name: &str) -> Self {
+    pub fn new(build_version: &String, file_name: &str) -> Self {
         let file_path = r"extract/".to_owned() + build_version + r"/DBFilesClient/" + file_name;
         let reader = ReaderBuilder::new()
             .delimiter(b',')
@@ -59,6 +59,7 @@ impl DBReader {
         }
     }
 
+    // TODO: use string index for field
     pub fn fetch_field(&mut self, id: &i64, field: usize) -> Option<String> {
         self.fetch_record(id)
             .map(|record| record.get(field).unwrap().to_string())
