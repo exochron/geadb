@@ -230,7 +230,7 @@ familymap: [
       { name: Flies, wcm: [ Flies, Skitterflies ] },
       { name: Krolusks, wcm: [ Krolusks ] },
       { name: Moth, wcm: [ Moths ] },
-      { name: Others, wcm: [ Bees, Ravagers ], ids: [ 1662 ] }, # Telix
+      { name: Others, wcm: [ Bees, Ravagers ] },
       { name: Silithids, wcm: [ Silithids ],
         ids: [
           936, # Red Qiraji War Tank

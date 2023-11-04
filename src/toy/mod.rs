@@ -22,10 +22,18 @@ pub fn handle_toys(game_version: GameVersion) {
         docker.fetch_toy_dbfiles();
         docker.convert_dbfiles_into_csv();
         docker.build_version
-        // String::from("10.0.5.48526")
+    };
+    let classic_build_version = {
+        let mut docker = DockerRunner::new(GameVersion::Classic);
+
+        docker.fetch_toy_dbfiles();
+        docker.convert_dbfiles_into_csv();
+        docker.build_version
     };
 
-    let mut toys = collect_toys(&build_version);
+    let mut toys = collect_toys(&classic_build_version);
+    let mut retail_toys = collect_toys(&build_version);
+    toys.append(&mut retail_toys);
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
         toys.remove(&value.as_i64().unwrap())

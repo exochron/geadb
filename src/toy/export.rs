@@ -21,10 +21,10 @@ impl Exporter {
         LuaFile::new(file_path, variable)
     }
 
-    pub fn export_tradable(&self, mounts: &BTreeMap<i64, Toy>) {
+    pub fn export_tradable(&self, toys: &BTreeMap<i64, Toy>) {
         let mut lua = self.open_file("tradable.db.lua", "db.Tradable");
 
-        for toy in mounts.values() {
+        for toy in toys.values() {
             if toy.item_is_tradable {
                 lua.add_line(&toy.item_id, &toy.name);
             }

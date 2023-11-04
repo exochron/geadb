@@ -10,6 +10,7 @@ use crate::tools::GameVersion;
 pub struct DockerRunner {
     is_ptr: bool,
     is_xptr: bool,
+    is_classic: bool,
     pub build_version: String,
 }
 
@@ -18,6 +19,7 @@ impl DockerRunner {
         Self {
             is_ptr: game_version == GameVersion::Ptr,
             is_xptr: game_version == GameVersion::XPtr,
+            is_classic: game_version == GameVersion::Classic,
             build_version: String::new(),
         }
     }
@@ -84,6 +86,8 @@ impl DockerRunner {
             args.push("--product=wowt");
         } else if self.is_xptr {
             args.push("--product=wowxptr");
+        } else if self.is_classic {
+            args.push("--product=wow_classic");
         }
 
         let output = Command::new("docker")
@@ -102,6 +106,8 @@ impl DockerRunner {
             args.push("/game/ptr.bin");
         } else if self.is_xptr {
             args.push("/game/xptr.bin");
+        } else if self.is_classic {
+            args.push("/game/classic.bin");
         } else {
             args.push("/game/DBCache.bin");
         }

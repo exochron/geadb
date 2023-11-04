@@ -41,6 +41,7 @@ pub enum GameVersion {
     Retail,
     Ptr,
     XPtr,
+    Classic,
 }
 
 pub(crate) fn determine_game_version_from_cli() -> GameVersion {
