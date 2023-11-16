@@ -15,21 +15,21 @@ fn collect_files(
     docker: DockerRunner,
     list_file: &HashMap<i64, String>,
 ) -> HashMap<i64, Vec<String>> {
-    let mut display_csv = DBReader::new(build_version, "MountXDisplay.csv");
-    let mut creature_csv = DBReader::new(build_version, "CreatureDisplayInfo.csv");
-    let mut creature_model_csv = DBReader::new(build_version, "CreatureModelData.csv");
+    let mut display_csv = DBReader::new(build_version, "MountXDisplay.csv").unwrap();
+    let mut creature_csv = DBReader::new(build_version, "CreatureDisplayInfo.csv").unwrap();
+    let mut creature_model_csv = DBReader::new(build_version, "CreatureModelData.csv").unwrap();
 
     let mut files_to_load: HashMap<i64, String> = HashMap::new();
     let mut mount_files: HashMap<i64, Vec<String>> = HashMap::new();
     let mut model_files: HashMap<i64, Vec<String>> = HashMap::new();
 
-    for record in display_csv.reader.records() {
-        let row = record.unwrap();
-        let display_id: i64 = row.get(1).unwrap().parse().unwrap();
-        let mount_id: i64 = row.get(3).unwrap().parse().unwrap();
+    for display_id in display_csv.ids() {
+        let display_info_id: i64 =
+            display_csv.fetch_int_field(&display_id, "CreatureDisplayInfoID");
+        let mount_id: i64 = display_csv.fetch_int_field(&display_id, "MountID");
 
-        let model_id = creature_csv.fetch_int_field(&display_id, 1);
-        let model_file_id = creature_model_csv.fetch_int_field(&model_id, 8);
+        let model_id = creature_csv.fetch_int_field(&display_info_id, "ModelID");
+        let model_file_id = creature_model_csv.fetch_int_field(&model_id, "FileDataID");
         if model_file_id > 0 {
             let file_path = list_file.get(&model_file_id).unwrap();
             if !Path::new(&("extract/".to_string() + build_version + "/" + file_path)).exists() {
@@ -42,7 +42,11 @@ fn collect_files(
         }
 
         for i in 0..4 {
-            let file_id: i64 = creature_csv.fetch_int_field(&display_id, 24 + i);
+            let mut file_data_index = String::from("TextureVariationFileDataID[");
+            file_data_index.push_str(i.to_string().as_str());
+            file_data_index.push_str("]");
+            let file_id: i64 =
+                creature_csv.fetch_int_field(&display_info_id, file_data_index.as_str());
             if file_id > 0 && list_file.contains_key(&file_id) {
                 let file_path = list_file.get(&file_id).unwrap().clone();
                 if !Path::new(&("extract/".to_string() + build_version + "/" + &file_path)).exists()

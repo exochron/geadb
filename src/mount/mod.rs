@@ -49,13 +49,6 @@ impl Mount {
     }
 }
 
-fn to_int(field: Option<&str>) -> i64 {
-    field
-        .unwrap()
-        .parse()
-        .expect("couldn't convert field into int.")
-}
-
 pub fn handle_mounts(game_version: GameVersion) {
     let config = load_config("mount.yml");
 
@@ -64,16 +57,28 @@ pub fn handle_mounts(game_version: GameVersion) {
         docker.fetch_mount_dbfiles();
         docker.convert_dbfiles_into_csv();
         docker.build_version.clone()
+        // "10.2.0.52148".to_string()
+    };
+    let classic_build_version = {
+        let mut docker = DockerRunner::new(GameVersion::Classic);
+        docker.fetch_mount_dbfiles();
+        docker.convert_dbfiles_into_csv();
+        docker.build_version.clone()
     };
 
     let list_file = load_listfile();
 
-    let mut mounts = collect_mounts(&build_version, &list_file);
+    let mut mounts: BTreeMap<i64, Mount> = BTreeMap::new();
+    mounts.append(&mut collect_mounts(&classic_build_version, &list_file));
+    mounts.append(&mut collect_mounts(&build_version, &list_file));
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
-        mounts
-            .remove(&value.as_i64().unwrap())
-            .expect("ignored id doesn't exist anymore in game");
+        mounts.remove(&value.as_i64().unwrap()).unwrap_or_else(|| {
+            panic!(
+                "ignored id doesn't exist anymore in game {}",
+                value.as_i64().unwrap()
+            )
+        });
     }
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
@@ -99,56 +104,67 @@ fn collect_mounts(
     let mut spell_to_mount: HashMap<i64, i64> = HashMap::new();
 
     {
-        let mut mount_csv = DBReader::new(build_version, "Mount.csv");
-        let mut playercondition_csv = DBReader::new(build_version, "PlayerCondition.csv");
-        for row in mount_csv.reader.records() {
-            let record = row.unwrap();
-            let id = to_int(record.get(3));
-            let type_id = to_int(record.get(4));
-            let spell_id = to_int(record.get(7));
+        let mut mount_csv = DBReader::new(build_version, "Mount.csv").unwrap();
+        let mut playercondition_csv = DBReader::new(build_version, "PlayerCondition.csv").unwrap();
+        for id in mount_csv.ids() {
+            let type_id = mount_csv.fetch_int_field(&id, "MountTypeID");
+            let spell_id = mount_csv.fetch_int_field(&id, "SourceSpellID");
 
-            let playercondition_id = to_int(record.get(8));
-            let player_conditions = match playercondition_csv.fetch_record(&playercondition_id) {
+            let playercondition_id = mount_csv.fetch_int_field(&id, "PlayerConditionID");
+            let player_conditions = match playercondition_csv
+                .fetch_field(&playercondition_id, "Failure_description_lang")
+            {
                 None => Vec::new(),
-                Some(record) => parse_conditions(
-                    to_int(record.get(1)),
-                    record.get(2).unwrap(),
-                    to_int(record.get(3)),
-                    to_int(record.get(58)),
-                    to_int(record.get(76)),
+                Some(failure_condition) => parse_conditions(
+                    playercondition_csv.fetch_int_field(&playercondition_id, "RaceMask"),
+                    failure_condition.as_str(),
+                    playercondition_csv.fetch_int_field(&playercondition_id, "ClassMask"),
+                    playercondition_csv.fetch_int_field(&playercondition_id, "SkillID[0]"),
+                    playercondition_csv.fetch_int_field(&playercondition_id, "PrevQuestID[0]"),
                 ),
             };
 
             collection.insert(
-                id,
+                id.clone(),
                 Mount::new(
-                    id,
+                    id.clone(),
                     spell_id,
                     type_id,
-                    record.get(0).unwrap().to_string(),
+                    mount_csv.fetch_field(&id, "Name_lang").unwrap(),
                     player_conditions,
                 ),
             );
-            spell_to_mount.insert(spell_id, id);
+            spell_to_mount.insert(spell_id, id.clone());
         }
     }
 
     {
-        let mut itemxeffect_csv = DBReader::new(build_version, "ItemXItemEffect.csv");
-        let mut itemeffect_csv = DBReader::new(build_version, "ItemEffect.csv");
-        let mut itemsparse_csv = DBReader::new(build_version, "ItemSparse.csv");
-        for row in itemxeffect_csv.reader.records() {
-            let record = row.unwrap();
-            let effect_id = to_int(record.get(1));
-            let item_id = to_int(record.get(2));
+        let mut itemxeffect_csv =
+            DBReader::new_with_id(build_version, "ItemXItemEffect.csv", "ItemEffectID");
+        let mut itemeffect_csv = DBReader::new(build_version, "ItemEffect.csv").unwrap();
+        let mut itemsparse_csv = DBReader::new(build_version, "ItemSparse.csv").unwrap();
+        for effect_id in itemeffect_csv.ids() {
+            let item_id: i64 = match (itemeffect_csv.fetch_field(&effect_id, "ParentItemID")) {
+                Some(item_id) => item_id.parse().unwrap(), // classic format
+                None => itemxeffect_csv
+                    .as_mut()
+                    .unwrap()
+                    .fetch_int_field(&effect_id, "ItemID"), // retail format
+            };
 
-            let spell_id = itemeffect_csv.fetch_int_field(&effect_id, 7);
+            let spell_id = itemeffect_csv.fetch_int_field(&effect_id, "SpellID");
 
             // is mount spell && is TriggerType = OnUse(6) && is Bonding = 0
             if item_id > 0
                 && spell_to_mount.contains_key(&spell_id)
-                && itemeffect_csv.fetch_field(&effect_id, 2).unwrap() == "6"
-                && itemsparse_csv.fetch_field(&item_id, 80).unwrap_or_default() == "0"
+                && itemeffect_csv
+                    .fetch_field(&effect_id, "TriggerType")
+                    .unwrap()
+                    == "6"
+                && itemsparse_csv
+                    .fetch_field(&item_id, "Bonding")
+                    .unwrap_or_default()
+                    == "0"
             {
                 let mount_id = spell_to_mount.get(&spell_id).unwrap();
                 collection.get_mut(mount_id).unwrap().item_is_tradeable = true
@@ -157,15 +173,15 @@ fn collect_mounts(
     }
 
     {
-        let mut spellmisc_csv = DBReader::new(build_version, "SpellMisc.csv");
+        let mut spellmisc_csv = DBReader::new(build_version, "SpellMisc.csv").unwrap();
         let regex = Regex::new("(?i)interface/icons/(.*)\\.blp").expect("invalid regexp");
-        for row in spellmisc_csv.reader.records() {
-            let record = row.unwrap();
-            let spell_id = to_int(record.get(30));
+        for row_id in spellmisc_csv.ids() {
+            let spell_id = spellmisc_csv.fetch_int_field(&row_id, "SpellID");
             match spell_to_mount.get(&spell_id) {
                 None => {}
                 Some(mount_id) => {
-                    let spell_icon_file_data_id = to_int(record.get(24));
+                    let spell_icon_file_data_id =
+                        spellmisc_csv.fetch_int_field(&row_id, "SpellIconFileDataID");
                     match list_file.get(&spell_icon_file_data_id) {
                         None => {}
                         Some(file_path) => {

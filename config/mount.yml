@@ -32,7 +32,13 @@ ignored: [
   1605, # Dragon Isles Drake Model Test
   1607, # Swift Spectral Drake
   1608, # Soar, Dracthyr racial
-  1690, # Whelp (dragonflying guest seat)
+  1690, # Whelpling (dragonflying guest seat)
+  1771, # Highland Drake (dragonriding races mountType=426)
+  1786, # Renewed Proto-Drake (dragonriding races mountType=426)
+  1787, # Windborne Velocidrake (dragonriding races mountType=426)
+  1788, # Cliffside Wylderdrake (dragonriding races mountType=426)
+  1789, # Winding Slitherdrake (dragonriding races mountType=426)
+  1796, # Whelpling (dragonflying guest seat)
 ]
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
@@ -63,7 +69,7 @@ familymap: [
       { name: Hawkstriders, wcm: [ Hawkstriders ] },
       { name: Mechanical Birds, wcm: [ Mechanical Birds ] },
       { name: Owl, wcm: [ Birds ], icons: [ dreamowl ] },
-      { name: Owlbear, wcm: [ Owlbears ] },
+      { name: Owlbear, wcm: [ Owlbears ], ids: [ 1699 ] }, # Gleaming Moonbeast
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ] },
       { name: Phoenixes, wcm: [ Phoenixes ] },
@@ -140,7 +146,7 @@ familymap: [
   { name: Drakes,
     subfamily: [
       { name: Cloud Serpents, wcm: [ Cloud Serpents ] },
-      { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ] },
+      { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ], ids: [ 1770, 1832 ] }, # Festering Emerald, Nightmarish Emerald
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ] },
       { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ], ids: [ 1739 ] }, # Obsidian Gladiator's Slitherdrake
@@ -158,12 +164,12 @@ familymap: [
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
       { name: Sporebat, wcm: [ Shalewings ] },
-      { name: Others, wcm: [ Elementals, Ancients ] },
+      { name: Others, wcm: [ Elementals, Ancients ], ids: [ 1807 ] }, # Avatar of Flame
     ]
   },
   { name: Feathermanes,
     subfamily: [
-      { name: Gryphons, wcm: [ Gryphons, Undead Gryphons ] },
+      { name: Gryphons, wcm: [ Gryphons, Undead Gryphons ], ids: [ 1823 ] }, # Swift Spectral Gryphon
       { name: Hippogryphs, wcm: [ Hippogryphs ] },
       { name: Larion, wcm: [ Larions ] },
       { name: Wolfhawks, wcm: [ Wolfhawks ] },
@@ -266,14 +272,14 @@ familymap: [
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ], ids: [ 1582 ] }, # Savage Green Battle Turtle
-      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639 ] }, # Lizi
+      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639, 1761 ] }, # Lizi, Reawakened Phase-Hunter
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
   { name: Rodent,
     subfamily: [
       { name: Rats, wcm: [ Rats, Mawrats ] },
-      { name: Rabbit, wcm: [ Rabbits ] },
+      { name: Rabbit, wcm: [ Rabbits ], ids: [ 1769 ] }, # Hao-Yue
     ] },
   { name: Ungulates,
     subfamily: [
@@ -303,7 +309,7 @@ familymap: [
       { name: Hands, wcm: [ Undead Hands ] },
       { name: Hovercraft, wcm: [ Hovercraft ] },
       { name: Jet Aerial Units, wcm: [ Jet Aerial Units ] },
-      { name: Kites, wcm: [ Kites, Gliders ] },
+      { name: Kites, wcm: [ Kites, Gliders ], ids: [ 1762 ] }, # Kalu'ak Whalebone Glider
       { name: Mecha-suits, wcm: [ Flying Mecha-suits ] },
       { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons ] },
       { name: Mechanostriders, wcm: [ Mechanostriders ] },

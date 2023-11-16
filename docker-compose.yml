@@ -5,7 +5,7 @@ services:
       dockerfile: simc_casc_extract.Dockerfile
     volumes:
       - ./extract:/out
-      - ./cache:/cache
+      - ./cache:/cache:delegated
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
   extract_toy_db:
     build:
@@ -13,7 +13,7 @@ services:
       dockerfile: simc_casc_extract.Dockerfile
     volumes:
       - ./extract:/out
-      - ./cache:/cache
+      - ./cache:/cache:delegated
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt
   extract_files:
     build:
@@ -21,7 +21,7 @@ services:
       dockerfile: simc_casc_extract.Dockerfile
     volumes:
       - ./extract:/out
-      - ./cache:/cache
+      - ./cache:/cache:delegated
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt
 
   convert_dbs:

@@ -58,11 +58,10 @@ fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
 
     let mut toy_csv = DBReader::new(build_version, "Toy.csv");
     let mut item_csv = DBReader::new(build_version, "ItemSparse.csv");
-    for row in toy_csv.reader.records() {
-        let record = row.unwrap();
-        let item_id = to_int(record.get(2));
+    for toy_id in toy_csv.ids() {
+        let item_id = toy_csv.fetch_int_field(&toy_id, "ItemID");
 
-        let name = item_csv.fetch_field(&item_id, 6);
+        let name = item_csv.fetch_field(&item_id, "Display_lang");
         match name {
             Some(_) => {
                 collection.insert(
@@ -70,7 +69,7 @@ fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
                     Toy {
                         item_id,
                         name: name.unwrap(),
-                        item_is_tradable: item_csv.fetch_int_field(&item_id, 80) == 3,
+                        item_is_tradable: item_csv.fetch_int_field(&item_id, "Bonding") == 3,
                     },
                 );
             }

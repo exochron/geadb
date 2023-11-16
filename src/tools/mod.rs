@@ -20,7 +20,7 @@ pub(crate) fn http_get(url: &str) -> String {
 
 pub(crate) fn load_listfile() -> HashMap<i64, String> {
     let plain_txt = http_get(
-        "https://github.com/wowdev/wow-listfile/blob/master/community-listfile.csv?raw=true",
+        "https://github.com/wowdev/wow-listfile/releases/latest/download/community-listfile.csv",
     );
 
     let mut result = HashMap::new();
