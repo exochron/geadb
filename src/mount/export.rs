@@ -56,21 +56,6 @@ impl Exporter {
         lua.close();
     }
 
-    pub fn export_rarities(&self, mounts: &BTreeMap<i64, Mount>, rarities: HashMap<i64, f64>) {
-        let mut lua = self.open_file("rarities.db.lua", "DB.Rarities");
-
-        for (mount_id, mount) in mounts.iter() {
-            match rarities.get(&mount.id) {
-                None => (),
-                Some(rarity) => {
-                    lua.add_line_with_value(mount_id, &mount.name, format!("{:?}", rarity));
-                }
-            };
-        }
-
-        lua.close();
-    }
-
     pub fn export_families(
         &self,
         mounts: &BTreeMap<i64, Mount>,

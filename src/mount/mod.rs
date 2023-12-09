@@ -7,7 +7,6 @@ use crate::mount::customization::collect_customization;
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
 use crate::mount::image::collect_dominant_colors;
-use crate::mount::rarity::load_rarities;
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
 use crate::tools::{load_config, load_listfile, GameVersion};
@@ -17,7 +16,6 @@ mod customization;
 mod export;
 mod family;
 mod image;
-mod rarity;
 
 pub struct Mount {
     id: i64,
@@ -84,7 +82,6 @@ pub fn handle_mounts(game_version: GameVersion) {
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
     exporter.export_tradable(&mounts);
     exporter.export_conditions(&mounts);
-    exporter.export_rarities(&mounts, load_rarities());
     exporter.export_families(
         &mounts,
         group_by_families(&mounts, config.get("familymap").unwrap()),
@@ -144,7 +141,7 @@ fn collect_mounts(
         let mut itemeffect_csv = DBReader::new(build_version, "ItemEffect.csv").unwrap();
         let mut itemsparse_csv = DBReader::new(build_version, "ItemSparse.csv").unwrap();
         for effect_id in itemeffect_csv.ids() {
-            let item_id: i64 = match (itemeffect_csv.fetch_field(&effect_id, "ParentItemID")) {
+            let item_id: i64 = match itemeffect_csv.fetch_field(&effect_id, "ParentItemID") {
                 Some(item_id) => item_id.parse().unwrap(), // classic format
                 None => itemxeffect_csv
                     .as_mut()
