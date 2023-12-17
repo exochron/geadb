@@ -1,2 +1,8 @@
+969941, DBFilesClient\ItemEffect.db2
 988200, DBFilesClient\Toy.db2
+1101657, DBFilesClient\SpellXSpellVisual.db2
+1140088, DBFilesClient\SpellEffect.db2
+1140480, DBFilesClient\SpellVisualKitEffect.db2
+1323224, DBFilesClient\SpellXSpellVisual_internal.db2
 1572924, DBFilesClient\ItemSparse.db2
+3177687, DBFilesClient\ItemXItemEffect.db2

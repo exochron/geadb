@@ -6,7 +6,7 @@ use serde_yaml::Value;
 pub(crate) mod blp_reader;
 pub mod db_reader;
 pub mod docker_runner;
-pub(crate) mod lua_export;
+pub mod lua_export;
 pub(crate) mod m2_reader;
 
 pub fn load_config(file_name: &str) -> Value {

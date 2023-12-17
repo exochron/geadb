@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::tools::lua_export::LuaFile;
+use crate::toy::effect::Effect;
 use crate::toy::Toy;
 
 pub struct Exporter {
@@ -37,6 +38,32 @@ impl Exporter {
 
         for toy in toys.values() {
             lua.add_line_with_value(&toy.item_id, &toy.name, "false".to_string())
+        }
+
+        lua.close();
+    }
+    pub fn export_effects(&self, toys: &BTreeMap<i64, Toy>) {
+        let mut lua = self.open_file("effects.db.lua", "db.effect");
+
+        for toy in toys.values() {
+            if !toy.effects.is_empty() {
+                let mut values = String::from("{");
+
+                for effect in toy.effects.iter() {
+                    values.push_str(&match effect {
+                        Effect::PlayerScale(scale) => format!("[\"scale\"] = {},", scale),
+                        Effect::FullVisual(visual_kit, _) => {
+                            format!("[\"full_appearance\"] = {},", visual_kit)
+                        }
+                        Effect::MinorVisual(visual_kit, _) => {
+                            format!("[\"minor_appearance\"] = {},", visual_kit)
+                        }
+                    });
+                }
+                values.push_str(" }");
+
+                lua.add_line_with_value(&toy.item_id, &toy.name, values);
+            }
         }
 
         lua.close();

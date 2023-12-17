@@ -53,6 +53,10 @@ impl DBReader {
         self.id_map.keys().cloned().collect()
     }
 
+    pub fn has(&self, id: &i64) -> bool {
+        self.id_map.contains_key(id)
+    }
+
     fn fetch_record(&mut self, id: &i64) -> Option<StringRecord> {
         if self.id_map.contains_key(id) {
             let line = self.id_map.get(id).unwrap();
