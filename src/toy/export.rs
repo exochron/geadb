@@ -1,7 +1,6 @@
 use std::collections::BTreeMap;
 
 use crate::tools::lua_export::LuaFile;
-use crate::toy::effect::Effect;
 use crate::toy::Toy;
 
 pub struct Exporter {
@@ -50,15 +49,7 @@ impl Exporter {
                 let mut values = String::from("{");
 
                 for effect in toy.effects.iter() {
-                    values.push_str(&match effect {
-                        Effect::PlayerScale(scale) => format!("[\"scale\"] = {},", scale),
-                        Effect::FullVisual(visual_kit, _) => {
-                            format!("[\"full_appearance\"] = {},", visual_kit)
-                        }
-                        Effect::MinorVisual(visual_kit, _) => {
-                            format!("[\"minor_appearance\"] = {},", visual_kit)
-                        }
-                    });
+                    values.push_str(&*format!("[\"{}\"] = {},", effect.as_str(), effect.value()));
                 }
                 values.push_str(" }");
 

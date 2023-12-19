@@ -1,4 +1,17 @@
+game_path: D:\Games\World of Warcraft
 export_path: D:\Games\World of Warcraft\_retail_\Interface\AddOns\ToyBoxEnhanced\Database
+
+db_files:
+  - ItemEffect
+  - ItemSparse
+  - ItemXItemEffect
+  - SpellCategories
+  - SpellEffect
+  - SpellVisualEvent
+  - SpellVisualKitEffect
+  - SpellVisualKitModelAttach
+  - SpellXSpellVisual
+  - Toy
 
 ignored: [
   88587, # Iron Belly Spirits

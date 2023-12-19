@@ -1,9 +1,9 @@
-use crate::tools::determine_game_version_from_cli;
+use crate::tools::ProductVersion;
 use crate::toy::handle_toys;
 
 mod tools;
 mod toy;
 
 pub fn main() {
-    handle_toys(determine_game_version_from_cli());
+    handle_toys(ProductVersion::determine_from_cli());
 }
