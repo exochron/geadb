@@ -2,14 +2,14 @@ use std::collections::{BTreeMap, HashMap};
 
 use regex::Regex;
 
-use crate::mount::condition::{parse_conditions, Condition};
+use crate::mount::condition::{Condition, parse_conditions};
 use crate::mount::customization::collect_customization;
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
 use crate::mount::image::collect_dominant_colors;
+use crate::tools::{load_config, load_listfile, ProductVersion};
 use crate::tools::db_reader::DBReader;
 use crate::tools::docker_runner::DockerRunner;
-use crate::tools::{load_config, load_listfile, GameVersion};
 
 mod condition;
 mod customization;
@@ -47,7 +47,7 @@ impl Mount {
     }
 }
 
-pub fn handle_mounts(game_version: GameVersion) {
+pub fn handle_mounts(game_version: ProductVersion) {
     let config = load_config("mount.yml");
 
     let mut docker = DockerRunner::new(game_version);
@@ -58,7 +58,7 @@ pub fn handle_mounts(game_version: GameVersion) {
         // "10.2.0.52148".to_string()
     };
     let classic_build_version = {
-        let mut docker = DockerRunner::new(GameVersion::Classic);
+        let mut docker = DockerRunner::new(ProductVersion::Classic);
         docker.fetch_mount_dbfiles();
         docker.convert_dbfiles_into_csv();
         docker.build_version.clone()

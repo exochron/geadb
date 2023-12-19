@@ -1,8 +1,13 @@
+841626, DBFilesClient\Item.db2
+897953, DBFilesClient\SpellVisualKitModelAttach.db2
 969941, DBFilesClient\ItemEffect.db2
 988200, DBFilesClient\Toy.db2
 1101657, DBFilesClient\SpellXSpellVisual.db2
+1139939, DBFilesClient\SpellCategories.db2
 1140088, DBFilesClient\SpellEffect.db2
 1140480, DBFilesClient\SpellVisualKitEffect.db2
-1323224, DBFilesClient\SpellXSpellVisual_internal.db2
 1572924, DBFilesClient\ItemSparse.db2
+1685317, DBFilesClient\SpellVisualEvent.db2
 3177687, DBFilesClient\ItemXItemEffect.db2
+1302850, DBFilesClient\TactKey.db2
+1302851, DBFilesClient\TactKeyLookup.db2

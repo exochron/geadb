@@ -5,15 +5,15 @@ use std::process::Command;
 
 use regex::Regex;
 
-use crate::tools::GameVersion;
+use crate::tools::ProductVersion;
 
 pub struct DockerRunner {
-    game_version: GameVersion,
+    game_version: ProductVersion,
     pub build_version: String,
 }
 
 impl DockerRunner {
-    pub fn new(game_version: GameVersion) -> Self {
+    pub fn new(game_version: ProductVersion) -> Self {
         Self {
             game_version,
             build_version: String::new(),
@@ -22,14 +22,14 @@ impl DockerRunner {
 
     fn add_extract_product<'a>(&'a self, mut args: Vec<&'a str>) -> Vec<&str> {
         match self.game_version {
-            GameVersion::Retail => {}
-            GameVersion::Ptr => {
+            ProductVersion::Retail => {}
+            ProductVersion::Ptr => {
                 args.push("--product=wowt");
             }
-            GameVersion::XPtr => {
+            ProductVersion::XPtr => {
                 args.push("--product=wowxptr");
             }
-            GameVersion::Classic => {
+            ProductVersion::Classic => {
                 args.push("--product=wow_classic");
             }
         }
@@ -102,10 +102,10 @@ impl DockerRunner {
     pub fn convert_dbfiles_into_csv(&self) {
         let mut args = vec!["compose", "run", "--rm", "convert_dbs"];
         args.push(match self.game_version {
-            GameVersion::Retail => "/game/DBCache.bin",
-            GameVersion::Ptr => "/game/ptr.bin",
-            GameVersion::XPtr => "/game/xptr.bin",
-            GameVersion::Classic => "/game/classic.bin",
+            ProductVersion::Retail => "/game/DBCache.bin",
+            ProductVersion::Ptr => "/game/ptr.bin",
+            ProductVersion::XPtr => "/game/xptr.bin",
+            ProductVersion::Classic => "/game/classic.bin",
         });
         let extracted_path = "/out/".to_string()
             + self.build_version.as_str()

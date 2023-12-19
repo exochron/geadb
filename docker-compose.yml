@@ -1,5 +1,6 @@
 services:
   extract_mount_db:
+    profiles: [ old_tool ]
     build:
       context: docker
       dockerfile: simc_casc_extract.Dockerfile
@@ -8,6 +9,7 @@ services:
       - ./cache:/cache:delegated
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
   extract_toy_db:
+    profiles: [ old_tool ]
     build:
       context: docker
       dockerfile: simc_casc_extract.Dockerfile
@@ -16,6 +18,7 @@ services:
       - ./cache:/cache:delegated
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt
   extract_files:
+    profiles: [ old_tool ]
     build:
       context: docker
       dockerfile: simc_casc_extract.Dockerfile
@@ -25,6 +28,7 @@ services:
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt
 
   convert_dbs:
+    profiles: [ old_tool ]
     build:
       context: docker
       dockerfile: dbc2csv.Dockerfile
@@ -35,3 +39,23 @@ services:
       - D:\Games\World of Warcraft\_xptr_\Cache\ADB\enUS\DBCache.bin:/game/xptr.bin:ro
       - D:\Games\World of Warcraft\_classic_\Cache\ADB\enUS\DBCache.bin:/game/classic.bin:ro
     command: [ "/game/DBCache.bin", "/out/10.1.0.49318/DBFilesClient" ]
+
+  wow_tools:
+    build:
+      context: docker
+      dockerfile: wowtools.Dockerfile
+    ports:
+      - 5000:8080
+    volumes:
+      - D:\Games\World of Warcraft\:/game
+    entrypoint: [ "./wow.tools.local", "-wowFolder", "/game" , "-region" , "eu" ]
+
+  wow_tools_classic:
+    build:
+      context: docker
+      dockerfile: wowtools.Dockerfile
+    ports:
+      - 5001:8080
+    volumes:
+      - D:\Games\World of Warcraft\:/game
+    entrypoint: [ "./wow.tools.local", "-wowFolder", "/game" , "-region" , "eu", "-product", "wow_classic" ]
