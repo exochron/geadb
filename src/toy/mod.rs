@@ -34,26 +34,6 @@ pub fn handle_toys(game_version: ProductVersion) {
     load_dbs(&config, &build_version);
     load_dbs(&config, &classic_version);
 
-    // // todo: multi thread
-    // let build_version = {
-    //     let mut docker = DockerRunner::new(game_version);
-    //
-    //     // docker.fetch_toy_dbfiles();
-    //     // docker.convert_dbfiles_into_csv();
-    //     // docker.build_version
-    //
-    //     "10.2.0.52485".to_string()
-    // };
-    // let classic_build_version = {
-    //     let mut docker = DockerRunner::new(ProductVersion::Classic);
-    //
-    //     docker.fetch_toy_dbfiles();
-    //     docker.convert_dbfiles_into_csv();
-    //     docker.build_version
-    //
-    //     // "3.4.3.52237".to_string()
-    // };
-
     let mut toys = collect_toys(&classic_version.version);
     let mut retail_toys = collect_toys(&build_version.version);
     toys.append(&mut retail_toys);
@@ -67,13 +47,6 @@ pub fn handle_toys(game_version: ProductVersion) {
     exporter.export_tradable(&toys);
     exporter.export_toys(&toys);
     exporter.export_effects(&toys);
-}
-
-fn to_int(field: Option<&str>) -> i64 {
-    field
-        .unwrap()
-        .parse()
-        .expect("couldn't convert field into int.")
 }
 
 fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {

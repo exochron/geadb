@@ -85,20 +85,6 @@ impl DockerRunner {
         );
     }
 
-    pub fn fetch_toy_dbfiles(&mut self) {
-        let mut args = vec!["compose", "run", "--rm", "extract_toy_db"];
-        args = self.add_extract_product(args);
-
-        let output = Command::new("docker")
-            .args(args)
-            .output()
-            .expect("could not start loading toy db files");
-
-        self.parse_build_version(
-            String::from_utf8(output.stdout).expect("couldn't convert output into string"),
-        );
-    }
-
     pub fn convert_dbfiles_into_csv(&self) {
         let mut args = vec!["compose", "run", "--rm", "convert_dbs"];
         args.push(match self.game_version {

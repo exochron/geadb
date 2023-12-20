@@ -8,15 +8,6 @@ services:
       - ./extract:/out
       - ./cache:/cache:delegated
     entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
-  extract_toy_db:
-    profiles: [ old_tool ]
-    build:
-      context: docker
-      dockerfile: simc_casc_extract.Dockerfile
-    volumes:
-      - ./extract:/out
-      - ./cache:/cache:delegated
-    entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/toyfiles.txt
   extract_files:
     profiles: [ old_tool ]
     build:

@@ -1,4 +1,3 @@
-841626, DBFilesClient\Item.db2
 897953, DBFilesClient\SpellVisualKitModelAttach.db2
 969941, DBFilesClient\ItemEffect.db2
 988200, DBFilesClient\Toy.db2
@@ -9,5 +8,3 @@
 1572924, DBFilesClient\ItemSparse.db2
 1685317, DBFilesClient\SpellVisualEvent.db2
 3177687, DBFilesClient\ItemXItemEffect.db2
-1302850, DBFilesClient\TactKey.db2
-1302851, DBFilesClient\TactKeyLookup.db2
