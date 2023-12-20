@@ -1,6 +1,5 @@
 use std::collections::{BTreeMap, HashMap};
 
-use crate::tools::casc_loader::load_dbs;
 use crate::tools::db_reader::DBReader;
 use crate::tools::{load_config, BuildInfo, ProductVersion};
 use crate::toy::effect::{collect_effects, Effect};
@@ -31,8 +30,8 @@ pub fn handle_toys(game_version: ProductVersion) {
     )
     .unwrap();
 
-    load_dbs(&config, &build_version);
-    load_dbs(&config, &classic_version);
+    // load_dbs(&config, &build_version);
+    // load_dbs(&config, &classic_version);
 
     let mut toys = collect_toys(&classic_version.version);
     let mut retail_toys = collect_toys(&build_version.version);

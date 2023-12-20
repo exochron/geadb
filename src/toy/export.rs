@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 
 use crate::tools::lua_export::LuaFile;
 use crate::toy::Toy;
@@ -48,9 +48,30 @@ impl Exporter {
             if !toy.effects.is_empty() {
                 let mut values = String::from("{");
 
+                let mut groups: HashMap<String, Vec<i64>> = HashMap::new();
+
                 for effect in toy.effects.iter() {
-                    values.push_str(&*format!("[\"{}\"] = {},", effect.as_str(), effect.value()));
+                    groups
+                        .entry(effect.as_str().to_string())
+                        .or_default()
+                        .push(effect.value());
                 }
+
+                values.push_str(
+                    &groups
+                        .iter()
+                        .map(|(group, list)| {
+                            format!(
+                                "[\"{}\"] = {{{}}},",
+                                group,
+                                list.iter()
+                                    .fold("".to_string(), |e, id| format!("{}{},", e, id))
+                            )
+                        })
+                        .reduce(|ff, e| e + &*ff)
+                        .unwrap(),
+                );
+
                 values.push_str(" }");
 
                 lua.add_line_with_value(&toy.item_id, &toy.name, values);
