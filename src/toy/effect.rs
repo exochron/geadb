@@ -156,9 +156,9 @@ pub fn collect_effects(
         }
     }
 
-    for (_, toy) in toys.iter_mut() {
-        cleanup_effect_list(&mut toy.effects, build_version);
-    }
+    // for (_, toy) in toys.iter_mut() {
+    //     cleanup_effect_list(&mut toy.effects, build_version);
+    // }
 
     toys
 }

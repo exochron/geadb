@@ -42,7 +42,7 @@ impl Exporter {
         lua.close();
     }
     pub fn export_effects(&self, toys: &BTreeMap<i64, Toy>) {
-        let mut lua = self.open_file("effects.db.lua", "db.effect");
+        let mut lua = self.open_file("preview.db.lua", "db.preview");
 
         for toy in toys.values() {
             if !toy.effects.is_empty() {
