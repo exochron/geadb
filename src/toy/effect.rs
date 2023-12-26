@@ -1,29 +1,34 @@
-use std::collections::{BTreeMap, HashMap};
+use std::collections::BTreeMap;
 
-use crate::tools::db_reader::DBReader;
+use crate::tools::db_reader::{DBReader, LookupDB, parse_csv};
+use crate::toy::dbs::{
+    SpellCategories, SpellEffect, SpellProceduralEffect, SpellVisualEvent, SpellVisualKitEffect,
+    SpellXSpellVisual,
+};
 use crate::toy::Toy;
 
-const SPELL_CATEGORY_HEARTHSTONE: i64 = 1176;
-const SPELL_CATEGORY_GARRISON_HEARTHSTONE: i64 = 1524;
-const SPELL_CATEGORY_MAIL: i64 = 2066;
+const SPELL_CATEGORY_HEARTHSTONE: u32 = 1176;
+const SPELL_CATEGORY_GARRISON_HEARTHSTONE: u32 = 1524;
+const SPELL_CATEGORY_MAIL: u32 = 2066;
 
 // these ItemIDs are blanks for the correlating slot
-const NO_ITEMS: [i64; 12] = [
+const NO_ITEMS: [u32; 12] = [
     81324, 81325, 60620, 60618, 60617, 62814, 81326, 64311, 64311, 60619, 62816, 64310,
 ];
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Effect {
-    Bigger(i64),
-    Smaller(i64),
-    FullBody(i64, i64),
     Hearthstone,
+    Bigger(f32),
+    Smaller(f32),
+    FullBody(u32, u32),
     Mail,
-    ArmorItem(i64),
-    ArmorSetItem(i64),
-    ArmorWeapon(i64),
-    ArmorHead(i64),
-    Cloak(i64),
+    ArmorItem(u32),
+    ArmorSetItem(u32),
+    ArmorWeapon(u32),
+    ArmorHead(u32),
+    Cloak(u32),
+    Color(u32),
 }
 
 impl Effect {
@@ -39,126 +44,144 @@ impl Effect {
             Effect::ArmorHead(_) => "head",
             Effect::Cloak(_) => "cloak",
             Effect::ArmorWeapon(_) => "weapon",
+            Effect::Color(_) => "color",
         }
     }
-    pub fn value(&self) -> i64 {
-        *match self {
-            Effect::Bigger(scale) => scale,
-            Effect::Smaller(scale) => scale,
-            Effect::ArmorItem(item_id) => item_id,
-            Effect::ArmorSetItem(item_id) => item_id,
-            Effect::ArmorHead(item_id) => item_id,
-            Effect::Cloak(item_id) => item_id,
-            Effect::ArmorWeapon(item_id) => item_id,
-            _ => &1,
+    pub fn value(&self) -> u32 {
+        match self {
+            Effect::Bigger(scale) => *scale as u32,
+            Effect::Smaller(scale) => *scale as u32,
+            Effect::ArmorItem(item_id) => *item_id,
+            Effect::ArmorSetItem(item_id) => *item_id,
+            Effect::ArmorHead(item_id) => *item_id,
+            Effect::Cloak(item_id) => *item_id,
+            Effect::ArmorWeapon(item_id) => *item_id,
+            Effect::Color(kit_id) => *kit_id,
+            _ => 1,
         }
     }
 }
 
-pub fn collect_effects(
-    build_version: &String,
-    mut toys: BTreeMap<i64, Toy>,
-    spell_to_item: HashMap<i64, i64>,
-) -> BTreeMap<i64, Toy> {
-    let mut spell_categories_csv =
-        DBReader::new_with_id(build_version, "SpellCategories.csv", "SpellID").unwrap();
-    for (_, toy) in toys.iter_mut() {
-        let spell_category = spell_categories_csv.fetch_int_field(&toy.spell_id, "Category");
-        match spell_category {
+fn find_spell_visuals(
+    spell_id: &u32,
+    spell_categories_db: &LookupDB<SpellCategories>,
+    spell_effect_db: &LookupDB<SpellEffect>,
+    spell_x_spell_visual_db: &LookupDB<SpellXSpellVisual>,
+    spell_visual_event_db: &LookupDB<SpellVisualEvent>,
+    spell_visual_kit_effect_db: &LookupDB<SpellVisualKitEffect>,
+    spell_procedural_effect_db: &LookupDB<SpellProceduralEffect>,
+) -> Vec<Effect> {
+    let mut result = Vec::new();
+
+    for spell_categories in spell_categories_db.lookup(spell_id) {
+        match spell_categories.category {
             SPELL_CATEGORY_HEARTHSTONE | SPELL_CATEGORY_GARRISON_HEARTHSTONE => {
-                toy.effects.push(Effect::Hearthstone);
+                result.push(Effect::Hearthstone);
             }
-            SPELL_CATEGORY_MAIL => toy.effects.push(Effect::Mail),
+            SPELL_CATEGORY_MAIL => result.push(Effect::Mail),
             _ => {}
         }
     }
 
-    let mut spell_effect_csv = DBReader::new(build_version, "SpellEffect.csv").unwrap();
-    for spell_effect_id in spell_effect_csv.ids() {
-        let spell_id = spell_effect_csv.fetch_int_field(&spell_effect_id, "SpellID");
-        match spell_to_item.get(&spell_id) {
-            None => {}
-            Some(item_id) => {
-                let toy = toys.get_mut(item_id).unwrap();
-
-                let effect_aura = spell_effect_csv.fetch_int_field(&spell_effect_id, "EffectAura");
-                let effect = spell_effect_csv.fetch_int_field(&spell_effect_id, "Effect");
-                let effect_target =
-                    spell_effect_csv.fetch_int_field(&spell_effect_id, "ImplicitTarget[0]");
-
-                // aura=scale and target=caster
-                if effect_aura == 61 && effect == 6 && effect_target == 1 {
-                    let scale =
-                        spell_effect_csv.fetch_int_field(&spell_effect_id, "EffectBasePointsF");
-                    toy.effects.push(if scale > 0 {
-                        Effect::Bigger(scale)
-                    } else {
-                        Effect::Smaller(scale)
-                    });
-                }
-            }
+    for spell_effect in spell_effect_db.lookup(spell_id) {
+        // aura=scale and target=caster
+        if spell_effect.effect_aura == 61
+            && spell_effect.effect == 6
+            && spell_effect.implicit_target == 1
+        {
+            result.push(if spell_effect.effect_points > 0.0 {
+                Effect::Bigger(spell_effect.effect_points)
+            } else {
+                Effect::Smaller(spell_effect.effect_points * -1.0)
+            });
         }
     }
 
-    let visual_kit_to_toy = {
-        let mut spell_x_visual_csv =
-            DBReader::new_with_id(build_version, "SpellXSpellVisual.csv", "SpellID").unwrap();
+    for xvisual in spell_x_spell_visual_db.lookup(spell_id) {
+        for visual_event in spell_visual_event_db.lookup(&xvisual.visual_id) {
+            let visual_kit_id = visual_event.visual_kit_id;
+            for visual_kit_effect in spell_visual_kit_effect_db.lookup(&visual_kit_id) {
+                if visual_kit_effect.effect_type == 1 {
+                    let procedural_effects =
+                        spell_procedural_effect_db.lookup(&visual_kit_effect.effect_id);
+                    let procedural_effect = procedural_effects.first().unwrap();
 
-        let mut visual_to_toy: HashMap<i64, i64> = HashMap::new();
-        for (_, toy) in toys.iter() {
-            if spell_x_visual_csv.has(&toy.spell_id) {
-                let visual_id = spell_x_visual_csv.fetch_int_field(&toy.spell_id, "SpellVisualID");
-                visual_to_toy.insert(visual_id, toy.item_id);
-            }
-        }
-
-        let mut spell_visual_event_csv =
-            DBReader::new(build_version, "SpellVisualEvent.csv").unwrap();
-        let mut visual_kit_to_toy: HashMap<i64, i64> = HashMap::new();
-        for visual_event_id in spell_visual_event_csv.ids() {
-            let visual_id =
-                spell_visual_event_csv.fetch_int_field(&visual_event_id, "SpellVisualID");
-            if visual_to_toy.contains_key(&visual_id) {
-                let visual_kit_id =
-                    spell_visual_event_csv.fetch_int_field(&visual_event_id, "SpellVisualKitID");
-                visual_kit_to_toy.insert(visual_kit_id, *visual_to_toy.get(&visual_id).unwrap());
-            }
-        }
-
-        visual_kit_to_toy
-    };
-
-    let mut spell_visual_effect_csv =
-        DBReader::new(build_version, "SpellVisualKitEffect.csv").unwrap();
-    let mut spell_procedural_effect =
-        DBReader::new(build_version, "SpellProceduralEffect.csv").unwrap();
-    for visual_effect_id in spell_visual_effect_csv.ids() {
-        let parent_kit_id =
-            spell_visual_effect_csv.fetch_int_field(&visual_effect_id, "ParentSpellVisualKitID");
-        if visual_kit_to_toy.contains_key(&parent_kit_id) {
-            let effect_type =
-                spell_visual_effect_csv.fetch_int_field(&visual_effect_id, "EffectType");
-            let effect_id = spell_visual_effect_csv.fetch_int_field(&visual_effect_id, "Effect");
-
-            let item_id = visual_kit_to_toy.get(&parent_kit_id).unwrap();
-            let toy = toys.get_mut(item_id).unwrap();
-
-            if effect_type == 1 {
-                // SpellProceduralEffectID
-                let procedure_type = spell_procedural_effect.fetch_int_field(&effect_id, "Type");
-                if procedure_type == 17 {
-                    let val_1 = spell_procedural_effect.fetch_int_field(&effect_id, "Value[1]");
-                    if val_1 > 0 && !NO_ITEMS.contains(&val_1) {
-                        toy.effects.push(Effect::ArmorItem(val_1))
+                    // SpellProceduralEffectID
+                    if procedural_effect.effect_type == 1 || procedural_effect.effect_type == 22 {
+                        // some color effect
+                        result.push(Effect::Color(visual_kit_id))
+                    } else if procedural_effect.effect_type == 17 {
+                        // some armor item
+                        let val_1 = procedural_effect.value_1 as u32;
+                        if val_1 > 0 && !NO_ITEMS.contains(&val_1) {
+                            result.push(Effect::ArmorItem(val_1))
+                        }
                     }
+                } else if visual_kit_effect.effect_type == 16 {
+                    // GradientEffect
+                    result.push(Effect::Color(visual_kit_id))
                 }
-            };
+            }
         }
     }
 
-    // for (_, toy) in toys.iter_mut() {
-    //     cleanup_effect_list(&mut toy.effects, build_version);
-    // }
+    result
+}
+
+pub fn collect_effects(build_version: &String, mut toys: BTreeMap<i64, Toy>) -> BTreeMap<i64, Toy> {
+    let spell_categories_db: LookupDB<SpellCategories> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellCategories.csv").unwrap(),
+        |s: &SpellCategories| s.spell_id,
+    );
+    let spell_effect_db: LookupDB<SpellEffect> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellEffect.csv").unwrap(),
+        |s: &SpellEffect| s.spell_id,
+    );
+    let spell_visual_kit_effect_db: LookupDB<SpellVisualKitEffect> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellVisualKitEffect.csv").unwrap(),
+        |s: &SpellVisualKitEffect| s.visual_kit_id,
+    );
+    let spell_procedural_effect_db: LookupDB<SpellProceduralEffect> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellProceduralEffect.csv").unwrap(),
+        |s: &SpellProceduralEffect| s.id,
+    );
+    let spell_x_spell_visual_db: LookupDB<SpellXSpellVisual> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellXSpellVisual.csv").unwrap(),
+        |s: &SpellXSpellVisual| s.spell_id,
+    );
+    let spell_visual_event_db: LookupDB<SpellVisualEvent> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellVisualEvent.csv").unwrap(),
+        |s: &SpellVisualEvent| s.visual_id,
+    );
+
+    for toy in toys.values_mut() {
+        toy.effects.append(&mut find_spell_visuals(
+            &toy.spell_id,
+            &spell_categories_db,
+            &spell_effect_db,
+            &spell_x_spell_visual_db,
+            &spell_visual_event_db,
+            &spell_visual_kit_effect_db,
+            &spell_procedural_effect_db,
+        ));
+
+        for effect in &spell_effect_db.lookup(&toy.spell_id) {
+            if effect.effect == 32 && effect.trigger_spell_id > 0 {
+                // TRIGGER_MISSILE
+                toy.effects.append(&mut find_spell_visuals(
+                    &(effect.trigger_spell_id as u32),
+                    &spell_categories_db,
+                    &spell_effect_db,
+                    &spell_x_spell_visual_db,
+                    &spell_visual_event_db,
+                    &spell_visual_kit_effect_db,
+                    &spell_procedural_effect_db,
+                ));
+            }
+        }
+
+        //     cleanup_effect_list(&mut toy.effects, build_version);
+    }
 
     toys
 }
@@ -200,7 +223,7 @@ fn cleanup_effect_list(effects: &mut Vec<Effect>, build_version: &String) {
         let mut item_db = DBReader::new(build_version, "Item.csv").unwrap();
         for effect in effects.iter_mut() {
             if let Effect::ArmorItem(item_id) = effect {
-                let inventory_slot = item_db.fetch_int_field(item_id, "InventoryType");
+                let inventory_slot = item_db.fetch_int_field(&(*item_id as i64), "InventoryType");
                 *effect = match inventory_slot {
                     1 => Effect::ArmorHead(*item_id),
                     13 => Effect::ArmorWeapon(*item_id),

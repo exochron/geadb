@@ -5,12 +5,13 @@ use crate::tools::{load_config, BuildInfo, ProductVersion};
 use crate::toy::effect::{collect_effects, Effect};
 use crate::toy::export::Exporter;
 
+mod dbs;
 mod effect;
 mod export;
 
 pub struct Toy {
-    item_id: i64,
-    spell_id: i64,
+    item_id: u32,
+    spell_id: u32,
     name: String,
     item_is_tradable: bool,
     effects: Vec<Effect>,
@@ -50,7 +51,6 @@ pub fn handle_toys(game_version: ProductVersion) {
 
 fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
     let mut toys: BTreeMap<i64, Toy> = BTreeMap::new();
-    let mut spell_to_item: HashMap<i64, i64> = HashMap::new();
 
     let mut toy_db = DBReader::new(build_version, "Toy.csv").unwrap();
     let mut item_sparse_db = DBReader::new(build_version, "ItemSparse.csv").unwrap();
@@ -93,12 +93,11 @@ fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
             let name = item_sparse_db
                 .fetch_field(&item_id, "Display_lang")
                 .unwrap_or_default();
-            spell_to_item.insert(spell_id, item_id);
             toys.insert(
                 item_id,
                 Toy {
-                    item_id,
-                    spell_id,
+                    item_id: item_id as u32,
+                    spell_id: spell_id as u32,
                     name,
                     item_is_tradable: item_sparse_db.fetch_int_field(&item_id, "Bonding") == 3,
                     effects: vec![],
@@ -107,7 +106,7 @@ fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
         }
     }
 
-    toys = collect_effects(build_version, toys, spell_to_item);
+    toys = collect_effects(build_version, toys);
 
     toys
 }

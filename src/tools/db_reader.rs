@@ -1,7 +1,47 @@
 use std::collections::HashMap;
 use std::fs::File;
 
-use csv::{Position, Reader, ReaderBuilder, StringRecord};
+use csv::{DeserializeRecordsIter, Position, Reader, ReaderBuilder, StringRecord};
+use serde::de::DeserializeOwned;
+
+pub struct LookupDB<T: Clone> {
+    map: HashMap<u32, Vec<T>>,
+}
+
+impl<T: Clone> LookupDB<T> {
+    pub fn new_from_data(data: Vec<T>, id_val: fn(&T) -> u32) -> Self {
+        let mut map: HashMap<u32, Vec<T>> = HashMap::new();
+        for datum in data {
+            let id = id_val(&datum);
+            map.entry(id).or_default().push(datum);
+        }
+
+        Self { map }
+    }
+
+    pub fn lookup(&self, id: &u32) -> Vec<T> {
+        match self.map.get(id) {
+            None => Vec::default(),
+            Some(v) => v.to_vec(),
+        }
+    }
+}
+
+pub fn parse_csv<T: DeserializeOwned>(build_version: &String, file_name: &str) -> Option<Vec<T>> {
+    let file_path = r"extract/".to_owned() + build_version + r"/DBFilesClient/" + file_name;
+    let mut reader;
+    match ReaderBuilder::new()
+        .delimiter(b',')
+        .quote(b'"')
+        .from_path(file_path)
+    {
+        Ok(r) => reader = r,
+        Err(_) => return None,
+    }
+
+    let iter: DeserializeRecordsIter<File, T> = reader.deserialize();
+    Some(iter.map(|r| r.unwrap()).collect())
+}
 
 pub struct DBReader {
     reader: Reader<File>,
@@ -51,10 +91,6 @@ impl DBReader {
 
     pub fn ids(&self) -> Vec<i64> {
         self.id_map.keys().cloned().collect()
-    }
-
-    pub fn has(&self, id: &i64) -> bool {
-        self.id_map.contains_key(id)
     }
 
     fn fetch_record(&mut self, id: &i64) -> Option<StringRecord> {
