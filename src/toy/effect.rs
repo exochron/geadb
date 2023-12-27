@@ -1,9 +1,9 @@
 use std::collections::BTreeMap;
 
-use crate::tools::db_reader::{DBReader, LookupDB, parse_csv};
+use crate::tools::db_reader::{parse_csv, LookupDB};
 use crate::toy::dbs::{
-    SpellCategories, SpellEffect, SpellProceduralEffect, SpellVisualEvent, SpellVisualKitEffect,
-    SpellXSpellVisual,
+    Item, SpellCategories, SpellEffect, SpellProceduralEffect, SpellVisualEvent,
+    SpellVisualKitEffect, SpellXSpellVisual,
 };
 use crate::toy::Toy;
 
@@ -107,7 +107,10 @@ fn find_spell_visuals(
                     let procedural_effect = procedural_effects.first().unwrap();
 
                     // SpellProceduralEffectID
-                    if procedural_effect.effect_type == 1 || procedural_effect.effect_type == 22 {
+                    if procedural_effect.effect_type == 1
+                        || procedural_effect.effect_type == 21
+                        || procedural_effect.effect_type == 22
+                    {
                         // some color effect
                         result.push(Effect::Color(visual_kit_id))
                     } else if procedural_effect.effect_type == 17 {
@@ -117,8 +120,9 @@ fn find_spell_visuals(
                             result.push(Effect::ArmorItem(val_1))
                         }
                     }
-                } else if visual_kit_effect.effect_type == 16 {
-                    // GradientEffect
+                } else if visual_kit_effect.effect_type == 7 || visual_kit_effect.effect_type == 16
+                {
+                    // ShadowyEffectID || GradientEffect
                     result.push(Effect::Color(visual_kit_id))
                 }
             }
@@ -128,7 +132,7 @@ fn find_spell_visuals(
     result
 }
 
-pub fn collect_effects(build_version: &String, mut toys: BTreeMap<i64, Toy>) -> BTreeMap<i64, Toy> {
+pub fn collect_effects(build_version: &String, mut toys: BTreeMap<u32, Toy>) -> BTreeMap<u32, Toy> {
     let spell_categories_db: LookupDB<SpellCategories> = LookupDB::new_from_data(
         parse_csv(build_version, "SpellCategories.csv").unwrap(),
         |s: &SpellCategories| s.spell_id,
@@ -220,10 +224,13 @@ fn cleanup_effect_list(effects: &mut Vec<Effect>, build_version: &String) {
     }
 
     if armor_count > 0 {
-        let mut item_db = DBReader::new(build_version, "Item.csv").unwrap();
+        let item_db: LookupDB<Item> =
+            LookupDB::new_from_data(parse_csv(build_version, "Item.csv").unwrap(), |s: &Item| {
+                s.item_id
+            });
         for effect in effects.iter_mut() {
             if let Effect::ArmorItem(item_id) = effect {
-                let inventory_slot = item_db.fetch_int_field(&(*item_id as i64), "InventoryType");
+                let inventory_slot = item_db.lookup(item_id).first().unwrap().inventory_type;
                 *effect = match inventory_slot {
                     1 => Effect::ArmorHead(*item_id),
                     13 => Effect::ArmorWeapon(*item_id),

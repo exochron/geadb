@@ -1,7 +1,8 @@
 use std::collections::{BTreeMap, HashMap};
 
-use crate::tools::db_reader::DBReader;
+use crate::tools::db_reader::{parse_csv, LookupDB};
 use crate::tools::{load_config, BuildInfo, ProductVersion};
+use crate::toy::dbs::{ItemEffect, ItemXItemEffect};
 use crate::toy::effect::{collect_effects, Effect};
 use crate::toy::export::Exporter;
 
@@ -39,7 +40,7 @@ pub fn handle_toys(game_version: ProductVersion) {
     toys.append(&mut retail_toys);
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
-        toys.remove(&value.as_i64().unwrap())
+        toys.remove(&(value.as_i64().unwrap() as u32))
             .expect("ignored id doesn't exist anymore in game");
     }
 
@@ -49,57 +50,71 @@ pub fn handle_toys(game_version: ProductVersion) {
     exporter.export_effects(&toys);
 }
 
-fn collect_toys(build_version: &String) -> BTreeMap<i64, Toy> {
-    let mut toys: BTreeMap<i64, Toy> = BTreeMap::new();
+fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
+    let mut toys: BTreeMap<u32, Toy> = BTreeMap::new();
 
-    let mut toy_db = DBReader::new(build_version, "Toy.csv").unwrap();
-    let mut item_sparse_db = DBReader::new(build_version, "ItemSparse.csv").unwrap();
-    let item_to_spell = {
-        let mut item_to_spell: HashMap<i64, i64> = HashMap::new();
-        let item_x_effect_db = DBReader::new(build_version, "ItemXItemEffect.csv");
+    let toy_db: Vec<dbs::Toy> = parse_csv(build_version, "Toy.csv").unwrap();
+    let item_sparse_db: LookupDB<dbs::ItemSparse> = LookupDB::new_from_data(
+        parse_csv(build_version, "ItemSparse.csv").unwrap(),
+        |s: &dbs::ItemSparse| s.item_id,
+    );
+
+    let item_effects_db = {
+        let item_x_effect_db: Option<Vec<ItemXItemEffect>> =
+            parse_csv(build_version, "ItemXItemEffect.csv");
         match item_x_effect_db {
-            None => {
-                let mut item_effect_db =
-                    DBReader::new_with_id(build_version, "ItemEffect.csv", "ParentItemID").unwrap();
-                for item_id in item_effect_db.ids() {
-                    let spell_id = item_effect_db.fetch_int_field(&item_id, "SpellID");
-                    item_to_spell.insert(item_id, spell_id);
+            None => LookupDB::new_from_data(
+                parse_csv(build_version, "ItemEffect.csv").unwrap(),
+                |s: &dbs::ItemEffect| s.item_id,
+            ),
+            Some(item_x_effect_db) => {
+                let mut result: HashMap<u32, Vec<ItemEffect>> = HashMap::new();
+
+                let item_effect_db: LookupDB<dbs::ItemEffect> = LookupDB::new_from_data(
+                    parse_csv(build_version, "ItemEffect.csv").unwrap(),
+                    |s: &dbs::ItemEffect| s.id,
+                );
+
+                for x_effect in item_x_effect_db {
+                    let effects = item_effect_db.lookup(&x_effect.item_effect_id);
+                    let mut effect = effects.first().unwrap().clone();
+                    effect.item_id = x_effect.item_id;
+                    result.entry(x_effect.item_id).or_default().push(effect);
                 }
+
+                LookupDB::new(result)
             }
-            Some(mut item_x_effect_db) => {
-                let mut item_effect_db = DBReader::new(build_version, "ItemEffect.csv").unwrap();
-                for row_id in item_x_effect_db.ids() {
-                    let effect_id = item_x_effect_db.fetch_int_field(&row_id, "ItemEffectID");
-                    if 0 == item_effect_db.fetch_int_field(&effect_id, "TriggerType") {
-                        // on Use
-                        item_to_spell.insert(
-                            item_x_effect_db.fetch_int_field(&row_id, "ItemID"),
-                            item_effect_db.fetch_int_field(&effect_id, "SpellID"),
-                        );
-                    }
-                }
-            }
-        };
-        item_to_spell
+        }
     };
 
-    for toy_id in toy_db.ids() {
-        let item_id = toy_db.fetch_int_field(&toy_id, "ItemID");
+    for toy_row in toy_db {
+        let item_id = toy_row.item_id;
 
-        let spell_id = item_to_spell.get(&item_id);
+        let spell_id = {
+            let mut result = None;
+            for item_effect in item_effects_db.lookup(&item_id) {
+                if item_effect.trigger_type == 0 {
+                    result = Some(item_effect.spell_id as u32);
+                    break;
+                }
+            }
+            result
+        };
 
         // items without use spell are just some dev armor pieces
-        if let Some(&spell_id) = spell_id {
-            let name = item_sparse_db
-                .fetch_field(&item_id, "Display_lang")
-                .unwrap_or_default();
+        if let Some(spell_id) = spell_id {
+            let item_sparses = item_sparse_db.lookup(&item_id);
+            let item_sparse = item_sparses.first();
             toys.insert(
                 item_id,
                 Toy {
-                    item_id: item_id as u32,
-                    spell_id: spell_id as u32,
-                    name,
-                    item_is_tradable: item_sparse_db.fetch_int_field(&item_id, "Bonding") == 3,
+                    item_id,
+                    spell_id,
+                    name: item_sparse
+                        .map(|sparse| sparse.display_text.clone())
+                        .unwrap_or_default(),
+                    item_is_tradable: item_sparse.map(|sparse| sparse.bonding).unwrap_or_default()
+                        == 3,
                     effects: vec![],
                 },
             );

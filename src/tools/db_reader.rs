@@ -18,6 +18,9 @@ impl<T: Clone> LookupDB<T> {
 
         Self { map }
     }
+    pub fn new(map: HashMap<u32, Vec<T>>) -> Self {
+        Self { map }
+    }
 
     pub fn lookup(&self, id: &u32) -> Vec<T> {
         match self.map.get(id) {

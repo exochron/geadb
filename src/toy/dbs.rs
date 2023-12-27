@@ -65,3 +65,51 @@ pub struct SpellVisualEvent {
     #[serde(rename(deserialize = "SpellVisualKitID"))]
     pub visual_kit_id: u32,
 }
+
+#[derive(Deserialize, Clone)]
+pub struct Item {
+    #[serde(rename(deserialize = "ID"))]
+    pub item_id: u32,
+    #[serde(rename(deserialize = "InventoryType"))]
+    pub inventory_type: u32,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct ItemSparse {
+    #[serde(rename(deserialize = "ID"))]
+    pub item_id: u32,
+    #[serde(rename(deserialize = "Display_lang"))]
+    pub display_text: String,
+    #[serde(rename(deserialize = "Bonding"))]
+    pub bonding: i32,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct ItemXItemEffect {
+    #[serde(rename(deserialize = "ItemID"))]
+    pub item_id: u32,
+    #[serde(rename(deserialize = "ItemEffectID"))]
+    pub item_effect_id: u32,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct ItemEffect {
+    #[serde(rename(deserialize = "ID"))]
+    pub id: u32,
+    #[serde(rename(deserialize = "TriggerType"))]
+    pub trigger_type: i32,
+    #[serde(rename(deserialize = "SpellID"))]
+    pub spell_id: i32,
+    // cann be -1
+    #[serde(rename(deserialize = "ParentItemID"))]
+    #[serde(default)]
+    pub item_id: u32,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct Toy {
+    #[serde(rename(deserialize = "ID"))]
+    pub toy_id: u32,
+    #[serde(rename(deserialize = "ItemID"))]
+    pub item_id: u32,
+}

@@ -21,7 +21,7 @@ impl Exporter {
         LuaFile::new(file_path, variable)
     }
 
-    pub fn export_tradable(&self, toys: &BTreeMap<i64, Toy>) {
+    pub fn export_tradable(&self, toys: &BTreeMap<u32, Toy>) {
         let mut lua = self.open_file("tradable.db.lua", "db.Tradable");
 
         for toy in toys.values() {
@@ -32,7 +32,7 @@ impl Exporter {
         lua.close();
     }
 
-    pub fn export_toys(&self, toys: &BTreeMap<i64, Toy>) {
+    pub fn export_toys(&self, toys: &BTreeMap<u32, Toy>) {
         let mut lua = self.open_file("toys.db.lua", "db.ingameList");
 
         for toy in toys.values() {
@@ -41,7 +41,7 @@ impl Exporter {
 
         lua.close();
     }
-    pub fn export_effects(&self, toys: &BTreeMap<i64, Toy>) {
+    pub fn export_effects(&self, toys: &BTreeMap<u32, Toy>) {
         let mut lua = self.open_file("preview.db.lua", "db.preview");
 
         for toy in toys.values() {
