@@ -25,7 +25,7 @@ impl Exporter {
         LuaFile::new(file_path, variable)
     }
 
-    pub fn export_tradable(&self, mounts: &BTreeMap<i64, Mount>) {
+    pub fn export_tradable(&self, mounts: &BTreeMap<u32, Mount>) {
         let mut lua = self.open_file("tradable.db.lua", "DB.Tradable");
 
         for (mount_id, mount) in mounts.iter() {
@@ -35,7 +35,7 @@ impl Exporter {
         }
         lua.close();
     }
-    pub fn export_conditions(&self, mounts: &BTreeMap<i64, Mount>) {
+    pub fn export_conditions(&self, mounts: &BTreeMap<u32, Mount>) {
         let mut lua = self.open_file("restrictions.db.lua", "DB.Restrictions");
 
         for (mount_id, mount) in mounts.iter() {
@@ -58,7 +58,7 @@ impl Exporter {
 
     pub fn export_families(
         &self,
-        mounts: &BTreeMap<i64, Mount>,
+        mounts: &BTreeMap<u32, Mount>,
         family_map: BTreeMap<String, FamilyNode>,
     ) {
         let mut lua = self.open_file("families.db.lua", "DB.Family");
@@ -91,8 +91,8 @@ impl Exporter {
 
     pub fn export_colors(
         &self,
-        mounts: &BTreeMap<i64, Mount>,
-        dominant_colors: HashMap<i64, Vec<Srgb<u8>>>,
+        mounts: &BTreeMap<u32, Mount>,
+        dominant_colors: HashMap<u32, Vec<Srgb<u8>>>,
     ) {
         let mut lua = self.open_file("colors.db.lua", "DB.Colors");
 
@@ -118,8 +118,8 @@ impl Exporter {
 
     pub(crate) fn export_customization(
         &self,
-        mounts: &BTreeMap<i64, Mount>,
-        collected_customization: HashMap<i64, HashMap<CustomizationSource, Vec<i64>>>,
+        mounts: &BTreeMap<u32, Mount>,
+        collected_customization: HashMap<u32, HashMap<CustomizationSource, Vec<u32>>>,
     ) {
         let mut lua = self.open_file("customization.db.lua", "DB.Customization");
 

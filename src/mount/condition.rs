@@ -82,8 +82,8 @@ pub fn parse_conditions(
     race_mask: i64,
     failure_description: &str,
     class_mask: i64,
-    skill_id: i64,
-    quest_id: i64,
+    skill_id: u32,
+    quest_id: u32,
 ) -> Vec<Vec<Condition>> {
     let mut result = Vec::new();
 

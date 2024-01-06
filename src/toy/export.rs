@@ -26,7 +26,7 @@ impl Exporter {
 
         for toy in toys.values() {
             if toy.item_is_tradable {
-                lua.add_line(&(toy.item_id as i64), &toy.name);
+                lua.add_line(&toy.item_id, &toy.name);
             }
         }
         lua.close();
@@ -36,7 +36,7 @@ impl Exporter {
         let mut lua = self.open_file("toys.db.lua", "db.ingameList");
 
         for toy in toys.values() {
-            lua.add_line_with_value(&(toy.item_id as i64), &toy.name, "false".to_string())
+            lua.add_line_with_value(&toy.item_id, &toy.name, "false".to_string())
         }
 
         lua.close();
@@ -74,7 +74,7 @@ impl Exporter {
 
                 values.push_str(" }");
 
-                lua.add_line_with_value(&(toy.item_id as i64), &toy.name, values);
+                lua.add_line_with_value(&toy.item_id, &toy.name, values);
             }
         }
 

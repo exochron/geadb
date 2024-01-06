@@ -1,7 +1,9 @@
 use std::collections::{BTreeMap, HashMap};
 
 use crate::mount::Mount;
-use crate::tools::db_reader::DBReader;
+use crate::tools::db_reader::{load_item_effects, parse_csv, LookupDB};
+use crate::tools::dbs;
+use crate::tools::dbs::SpellEffect;
 
 #[derive(Eq, PartialEq, Hash)]
 pub enum CustomizationSource {
@@ -19,42 +21,29 @@ impl CustomizationSource {
 }
 
 pub fn collect_customization(
-    mounts: &BTreeMap<i64, Mount>,
+    mounts: &BTreeMap<u32, Mount>,
     build_version: &String,
-) -> HashMap<i64, HashMap<CustomizationSource, Vec<i64>>> {
+) -> HashMap<u32, HashMap<CustomizationSource, Vec<u32>>> {
     let mut result = HashMap::new();
 
-    let mut itemxeffect_csv = DBReader::new_with_id(build_version, "ItemXItemEffect.csv", "ItemID");
-    let mut itemeffect_csv = DBReader::new(build_version, "ItemEffect.csv").unwrap();
-    let mut itemsparse_csv = DBReader::new(build_version, "ItemSparse.csv").unwrap();
-    let mut spelleffect_csv =
-        DBReader::new_with_id(build_version, "SpellEffect.csv", "SpellID").unwrap();
+    let item_effects_db = load_item_effects(build_version, false);
+    let item_sparse_db: Vec<dbs::ItemSparse> = parse_csv(build_version, "ItemSparse.csv").unwrap();
+    let spell_effect_db: LookupDB<SpellEffect> = LookupDB::new_from_data(
+        parse_csv(build_version, "SpellEffect.csv").unwrap(),
+        |s: &SpellEffect| s.spell_id,
+    );
 
     let drakewatcher_quests = {
         // collect Drakewatcher Manuscripts
-        let mut drakewatcher_quests: HashMap<String, Vec<i64>> = HashMap::new();
-        for item_id in itemsparse_csv.ids() {
-            let item_name_description_id =
-                itemsparse_csv.fetch_int_field(&item_id, "ItemNameDescriptionID");
-            if item_name_description_id == 13926 {
-                let item_effect_id = itemxeffect_csv
-                    .as_mut()
-                    .unwrap()
-                    .fetch_int_field(&item_id, "ItemEffectID");
-                let spell_id: i64 = itemeffect_csv.fetch_int_field(&item_effect_id, "SpellID");
-                match spelleffect_csv.fetch_field(&spell_id, "Effect") {
-                    None => {}
-                    Some(spell_effect) => {
-                        if spell_effect == "16" {
+        let mut drakewatcher_quests: HashMap<String, Vec<u32>> = HashMap::new();
+        for item_sparse in item_sparse_db {
+            if item_sparse.description_id == 13926 {
+                for item_effect in item_effects_db.lookup(&item_sparse.item_id) {
+                    for spell_effect in spell_effect_db.lookup(&(item_effect.spell_id as u32)) {
+                        if spell_effect.effect == 16 {
                             // is Effect = QUEST_COMPLETE ?
-                            let quest_id = spelleffect_csv
-                                .fetch_field(&spell_id, "EffectMiscValue[0]")
-                                .unwrap_or("0".to_string())
-                                .parse()
-                                .unwrap();
-                            let item_name = itemsparse_csv
-                                .fetch_field(&item_id, "Display_lang")
-                                .unwrap();
+                            let quest_id = spell_effect.effect_misc_value;
+                            let item_name = &item_sparse.display_text;
                             let mount_name = item_name
                                 .split(':')
                                 .collect::<Vec<&str>>()
@@ -63,8 +52,8 @@ pub fn collect_customization(
                                 .to_string();
                             drakewatcher_quests
                                 .entry(mount_name)
-                                .or_insert(Vec::new())
-                                .push(quest_id);
+                                .or_default()
+                                .push(quest_id as u32);
                         }
                     }
                 }

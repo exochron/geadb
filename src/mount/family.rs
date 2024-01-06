@@ -8,7 +8,7 @@ use crate::tools::http_get;
 
 pub struct FamilyNode {
     pub sub_nodes: BTreeMap<String, FamilyNode>,
-    pub mount_ids: Vec<i64>,
+    pub mount_ids: Vec<u32>,
 }
 
 impl FamilyNode {
@@ -53,11 +53,11 @@ fn seq_to_string_vec(json: &Value) -> Vec<String> {
         .collect()
 }
 
-fn seq_to_int_vec(json: &Value) -> Vec<i64> {
+fn seq_to_int_vec(json: &Value) -> Vec<u32> {
     json.as_sequence()
         .unwrap()
         .iter()
-        .map(|el| el.as_i64().unwrap())
+        .map(|el| el.as_i64().unwrap() as u32)
         .collect()
 }
 
@@ -118,7 +118,7 @@ fn match_by_family(
     result
 }
 
-fn match_by_id(mount_id: &i64, map_config: &Value) -> Vec<(String, Option<String>)> {
+fn match_by_id(mount_id: &u32, map_config: &Value) -> Vec<(String, Option<String>)> {
     let mut result = Vec::new();
 
     for category in map_config.as_sequence().unwrap().iter() {
@@ -153,7 +153,7 @@ fn match_by_id(mount_id: &i64, map_config: &Value) -> Vec<(String, Option<String
 }
 
 pub fn group_by_families(
-    mounts: &BTreeMap<i64, Mount>,
+    mounts: &BTreeMap<u32, Mount>,
     map_config: &Value,
 ) -> BTreeMap<String, FamilyNode> {
     let mut result = BTreeMap::new();

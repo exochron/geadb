@@ -1,12 +1,12 @@
-use std::collections::{BTreeMap, HashMap};
+use std::collections::BTreeMap;
 
-use crate::tools::db_reader::{parse_csv, LookupDB};
-use crate::tools::{load_config, BuildInfo, ProductVersion};
-use crate::toy::dbs::{ItemEffect, ItemXItemEffect};
+use crate::tools::{BuildInfo, load_config, ProductVersion};
+use crate::tools::casc_loader::load_dbs;
+use crate::tools::db_reader::{load_item_effects, LookupDB, parse_csv};
+use crate::tools::dbs;
 use crate::toy::effect::{collect_effects, Effect};
 use crate::toy::export::Exporter;
 
-mod dbs;
 mod effect;
 mod export;
 
@@ -32,8 +32,8 @@ pub fn handle_toys(game_version: ProductVersion) {
     )
     .unwrap();
 
-    // load_dbs(&config, &build_version);
-    // load_dbs(&config, &classic_version);
+    load_dbs(&config, &build_version);
+    load_dbs(&config, &classic_version);
 
     let mut toys = collect_toys(&classic_version.version);
     let mut retail_toys = collect_toys(&build_version.version);
@@ -59,33 +59,7 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
         |s: &dbs::ItemSparse| s.item_id,
     );
 
-    let item_effects_db = {
-        let item_x_effect_db: Option<Vec<ItemXItemEffect>> =
-            parse_csv(build_version, "ItemXItemEffect.csv");
-        match item_x_effect_db {
-            None => LookupDB::new_from_data(
-                parse_csv(build_version, "ItemEffect.csv").unwrap(),
-                |s: &dbs::ItemEffect| s.item_id,
-            ),
-            Some(item_x_effect_db) => {
-                let mut result: HashMap<u32, Vec<ItemEffect>> = HashMap::new();
-
-                let item_effect_db: LookupDB<dbs::ItemEffect> = LookupDB::new_from_data(
-                    parse_csv(build_version, "ItemEffect.csv").unwrap(),
-                    |s: &dbs::ItemEffect| s.id,
-                );
-
-                for x_effect in item_x_effect_db {
-                    let effects = item_effect_db.lookup(&x_effect.item_effect_id);
-                    let mut effect = effects.first().unwrap().clone();
-                    effect.item_id = x_effect.item_id;
-                    result.entry(x_effect.item_id).or_default().push(effect);
-                }
-
-                LookupDB::new(result)
-            }
-        }
-    };
+    let item_effects_db = load_item_effects(build_version, false);
 
     for toy_row in toy_db {
         let item_id = toy_row.item_id;
