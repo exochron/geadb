@@ -1,6 +1,19 @@
 game_path: D:\Games\World of Warcraft
 export_path: D:\Games\World of Warcraft\_retail_\Interface\AddOns\MountJournalEnhanced\Database
 
+db_files:
+  - Mount
+  - ItemEffect
+  - SpellMisc
+  - PlayerCondition
+  - CreatureDisplayInfo
+  - SpellEffect
+  - CreatureModelData
+  - ItemSparse
+  - MountXDisplay
+  - ItemXItemEffect
+  - Achievement
+
 ignored: [
   7,    # Gray Wolf
   15,   # Winter Wolf
@@ -73,10 +86,11 @@ familymap: [
       { name: Owlbear, wcm: [ Owlbears ], ids: [ 1699 ] }, # Gleaming Moonbeast
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ] },
+      { name: Peafowl, wcm: [ Birds ], icons: [ peacock ] },
       { name: Phoenixes, wcm: [ Phoenixes ] },
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
       { name: Roc, wcm: [ Deathrocs ] },
-      { name: Tallstriders, wcm: [ Tallstriders ] },
+      { name: Tallstriders, wcm: [ Tallstriders ], ids: [ 2038 ] }, #Clayscale Hornstrider
       { name: Talonbirds, wcm: [ Talonbirds ] },
       { name: Vultures, wcm: [ Birds ], icons: [ vulture ] },
     ]
@@ -273,7 +287,7 @@ familymap: [
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ], ids: [ 1582 ] }, # Savage Green Battle Turtle
-      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639, 1761 ] }, # Lizi, Reawakened Phase-Hunter
+      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639, 1761, 1638 ] }, # Lizi, Reawakened Phase-Hunter, Explorer's Stonehide Packbeast
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },

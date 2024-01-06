@@ -1,13 +1,16 @@
 use std::collections::HashMap;
+use std::fs;
+use std::path::Path;
 use std::str::FromStr;
 
 use csv::ReaderBuilder;
+use reqwest::blocking::ClientBuilder;
 use serde_yaml::Value;
 
 pub(crate) mod blp_reader;
 pub mod casc_loader;
 pub mod db_reader;
-pub mod docker_runner;
+pub mod dbs;
 pub mod lua_export;
 pub(crate) mod m2_reader;
 
@@ -36,6 +39,39 @@ pub(crate) fn load_listfile() -> HashMap<i64, String> {
     }
 
     result
+}
+
+pub(crate) fn fetch_files(build_info: &BuildInfo, file_list: HashMap<i64, String>) {
+    if file_list.is_empty() {
+        return;
+    }
+
+    let base_url = if build_info.product == ProductVersion::Classic {
+        "http://localhost:5001/"
+    } else {
+        "http://localhost:5000/"
+    };
+
+    let client = ClientBuilder::new().build().unwrap();
+
+    for (file_id, file_path) in file_list.iter() {
+        let path = format!("extract/{}/{}", build_info.version, file_path);
+        let path = Path::new(&path);
+
+        let data = client
+            .get(format!(
+                "{}casc/fdid?fileDataID={}&filename={}",
+                base_url,
+                file_id,
+                path.file_name().unwrap().to_str().unwrap()
+            ))
+            .send()
+            .unwrap()
+            .bytes()
+            .unwrap();
+        fs::create_dir_all(path.parent().unwrap()).expect("could not create folders");
+        fs::write(path, data).unwrap_or_else(|_| panic!("could not write file: {:?}", path));
+    }
 }
 
 #[derive(PartialEq, Eq)]

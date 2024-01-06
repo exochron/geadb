@@ -16,10 +16,10 @@ impl LuaFile {
         Self { file }
     }
 
-    pub fn add_line(&mut self, id: &i64, name: &String) {
+    pub fn add_line(&mut self, id: &u32, name: &String) {
         writeln!(self.file, "[{}] = true, -- {}", id, name).expect("couldn't write to file")
     }
-    pub fn add_line_with_value(&mut self, id: &i64, name: &String, value: String) {
+    pub fn add_line_with_value(&mut self, id: &u32, name: &String, value: String) {
         writeln!(self.file, "[{}] = {}, -- {}", id, value, name).expect("couldn't write to file")
     }
 
