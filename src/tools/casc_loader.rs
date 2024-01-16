@@ -27,17 +27,19 @@ pub fn load_dbs(config: &Value, build_info: &BuildInfo) {
         let response = client.get(url).send();
         match response {
             Ok(response) => {
-                let data = response.text().unwrap();
+                if response.status().is_success() {
+                    let data = response.text().unwrap();
 
-                let file_name = format!(
-                    "extract/{}/DBFilesClient/{}.csv",
-                    build_info.version, db_file
-                );
-                let file_path = Path::new(file_name.as_str());
-                create_dir_all(file_path.parent().unwrap()).expect("could not create directories");
-                let mut dest = File::create(file_path).expect("could not write file");
+                    let file_name = format!(
+                        "extract/{}/DBFilesClient/{}.csv",
+                        build_info.version, db_file
+                    );
+                    let file_path = Path::new(file_name.as_str());
+                    create_dir_all(file_path.parent().unwrap()).expect("could not create directories");
+                    let mut dest = File::create(file_path).expect("could not write file");
 
-                copy(&mut data.as_bytes(), &mut dest).expect("could download file");
+                    copy(&mut data.as_bytes(), &mut dest).expect("could download file");
+                }
             }
             Err(e) => println!("http-err: {}", e),
         }

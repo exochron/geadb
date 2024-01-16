@@ -25,10 +25,10 @@ services:
       dockerfile: dbc2csv.Dockerfile
     volumes:
       - ./extract:/out
-      - D:\Games\World of Warcraft\_retail_\Cache\ADB\deDE\DBCache.bin:/game/DBCache.bin:ro
-      - D:\Games\World of Warcraft\_ptr_\Cache\ADB\enUS\DBCache.bin:/game/ptr.bin:ro
-      - D:\Games\World of Warcraft\_xptr_\Cache\ADB\enUS\DBCache.bin:/game/xptr.bin:ro
-      - D:\Games\World of Warcraft\_classic_\Cache\ADB\enUS\DBCache.bin:/game/classic.bin:ro
+      - "${WOW_DIR}/_retail_/Cache/ADB/deDE/DBCache.bin:/game/DBCache.bin:ro"
+      - "${WOW_DIR}/_ptr_/Cache/ADB/enUS/DBCache.bin:/game/ptr.bin:ro"
+      - "${WOW_DIR}/_xptr_/Cache/ADB/enUS/DBCache.bin:/game/xptr.bin:ro"
+      - "${WOW_DIR}/_classic_/Cache/ADB/enUS/DBCache.bin:/game/classic.bin:ro"
     command: [ "/game/DBCache.bin", "/out/10.1.0.49318/DBFilesClient" ]
 
   wow_tools:
@@ -36,9 +36,9 @@ services:
       context: docker
       dockerfile: wowtools.Dockerfile
     ports:
-      - 5000:8080
+      - "5000:8080"
     volumes:
-      - D:\Games\World of Warcraft\:/game
+      - "${WOW_DIR}:/game"
     entrypoint: [ "./wow.tools.local", "-wowFolder", "/game" , "-region" , "eu" ]
 
   wow_tools_classic:
@@ -46,7 +46,7 @@ services:
       context: docker
       dockerfile: wowtools.Dockerfile
     ports:
-      - 5001:8080
+      - "5001:8080"
     volumes:
-      - D:\Games\World of Warcraft\:/game
+      - "${WOW_DIR}:/game"
     entrypoint: [ "./wow.tools.local", "-wowFolder", "/game" , "-region" , "eu", "-product", "wow_classic" ]
