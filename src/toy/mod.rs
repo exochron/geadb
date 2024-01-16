@@ -41,7 +41,7 @@ pub fn handle_toys(game_version: ProductVersion) {
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
         toys.remove(&(value.as_i64().unwrap() as u32))
-            .expect("ignored id doesn't exist anymore in game");
+            .expect(&*format!("ignored id doesn't exist anymore in game: {}", value.as_i64().unwrap()));
     }
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
@@ -79,19 +79,24 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
         if let Some(spell_id) = spell_id {
             let item_sparses = item_sparse_db.lookup(&item_id);
             let item_sparse = item_sparses.first();
-            toys.insert(
-                item_id,
-                Toy {
+            let name = item_sparse
+                .map(|sparse| sparse.display_text.clone())
+                .unwrap_or_default();
+            if name != "" { // items without a name are not yet in game available
+                toys.insert(
                     item_id,
-                    spell_id,
-                    name: item_sparse
-                        .map(|sparse| sparse.display_text.clone())
-                        .unwrap_or_default(),
-                    item_is_tradable: item_sparse.map(|sparse| sparse.bonding).unwrap_or_default()
-                        == 3,
-                    effects: vec![],
-                },
-            );
+                    Toy {
+                        item_id,
+                        spell_id,
+                        name: item_sparse
+                            .map(|sparse| sparse.display_text.clone())
+                            .unwrap_or_default(),
+                        item_is_tradable: item_sparse.map(|sparse| sparse.bonding).unwrap_or_default()
+                            == 3,
+                        effects: vec![],
+                    },
+                );
+            }
         }
     }
 

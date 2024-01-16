@@ -113,8 +113,7 @@ pub struct ItemEffect {
     #[serde(rename(deserialize = "SpellID"))]
     pub spell_id: i32,
     // can be -1
-    #[serde(rename(deserialize = "ParentItemID"))]
-    #[serde(default)]
+    #[serde(rename(deserialize = "ParentItemID"), default)]
     pub item_id: u32,
 }
 
