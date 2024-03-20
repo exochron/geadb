@@ -1,5 +1,5 @@
-game_path: D:\Games\World of Warcraft
-export_path: D:\Games\World of Warcraft\_retail_\Interface\AddOns\MountJournalEnhanced\Database
+game_path: "/data/games/WoW/"
+export_path: "/data/games/WoW/_retail_/Interface/AddOns/MountJournalEnhanced/Database"
 
 db_files:
   - Mount
@@ -85,7 +85,7 @@ familymap: [
       { name: Owl, wcm: [ Birds ], icons: [ dreamowl ] },
       { name: Owlbear, wcm: [ Owlbears ], ids: [ 1699 ] }, # Gleaming Moonbeast
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
-      { name: Parrots, wcm: [ Birds ], icons: [ parrot ] },
+      { name: Parrots, wcm: [ Birds ], icons: [ parrot ], ids: [ 2147 ] }, # Polly Roger (classic)
       { name: Peafowl, wcm: [ Birds ], icons: [ peacock ] },
       { name: Phoenixes, wcm: [ Phoenixes ] },
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
@@ -167,7 +167,7 @@ familymap: [
       { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ], ids: [ 1739 ] }, # Obsidian Gladiator's Slitherdrake
       { name: Proto-Drakes, wcm: [ Proto-Drakes ], },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
-      { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ] },
+      { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ], ids: [ 2114 ] }, # Zooval's Soul Eater
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
     ]
   },
@@ -278,6 +278,7 @@ familymap: [
   { name: Razorwing, wcm: [ Razorwings ] },
   { name: Reptiles,
     subfamily: [
+      { name: Armoredon, wcm: [ Armoredons ], ids: [ 2055] }, # Infinite Armoredon
       { name: Basilisks, wcm: [ Basilisks ] },
       { name: Crocolisks, wcm: [ Crocolisks ] },
       { name: Kodos, wcm: [ Kodos ], ids: [ 225 ] }, #Brewfest Riding Kodo
@@ -287,7 +288,7 @@ familymap: [
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ], ids: [ 1582 ] }, # Savage Green Battle Turtle
-      { name: Others, wcm: [ Warp Stalkers, Armoredons, Newts ], ids: [ 1639, 1761, 1638 ] }, # Lizi, Reawakened Phase-Hunter, Explorer's Stonehide Packbeast
+      { name: Others, wcm: [ Warp Stalkers, Newts ], ids: [ 1639, 1761, 1638 ] }, # Lizi, Reawakened Phase-Hunter, Explorer's Stonehide Packbeast
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
@@ -341,7 +342,7 @@ familymap: [
       { name: Lupine, wcm: [ Wolves ], icons: [ progenitorwolf, vicioushordewolf, viciousalliancewolf ] },
       { name: Undead Wolves, wcm: [ Undead Wolves ] },
       { name: War Wolves, wcm: [ Wolves ], icons: [ _hordepvpmount, _alliancewolf, armoredwolf, frostwolfhowler ], ids: [ 306421 ] }, # Frostwolf Snarler
-      { name: Wilderlings, wcm: [ Wilderlings ] },
+      { name: Wilderlings, wcm: [ Wilderlings ], ids: [2091] }, # Voyaging Wilderling
       { name: Wolves, wcm: [ Wolves ], icons: [ direwolf ], ids: [ 51 ] }, # Arctic Wolf
     ]
   },
