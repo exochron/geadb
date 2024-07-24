@@ -5,11 +5,11 @@ use kmeans_colors::{get_kmeans, Kmeans};
 use palette::{FromColor, Lab, Srgb};
 
 use crate::mount::Mount;
+use crate::tools::{BuildInfo, fetch_files};
 use crate::tools::blp_reader::BLPReader;
-use crate::tools::db_reader::{parse_csv, LookupDB};
+use crate::tools::db_reader::{LookupDB, parse_csv};
 use crate::tools::dbs;
 use crate::tools::m2_reader::M2Reader;
-use crate::tools::{fetch_files, BuildInfo};
 
 fn collect_files(
     build_version: &BuildInfo,
@@ -76,20 +76,24 @@ fn collect_files(
 
     for (mount_id, model_files) in model_files {
         for file_path in model_files {
-            let m2_reader = M2Reader::new(&build_version.version, &file_path);
-            for texture_file_id in m2_reader.read_texture_ids() {
-                let file_id = texture_file_id as i64;
-                if file_id > 0 && list_file.contains_key(&file_id) {
-                    let file_path = list_file.get(&file_id).unwrap().clone();
-                    if !Path::new(&format!("extract/{}/{}", build_version.version, file_path))
-                        .exists()
-                    {
-                        files_to_load.insert(file_id, file_path.clone());
+            if Path::new(&format!("extract/{}/{}", build_version.version, file_path))
+                .exists()
+            {
+                let m2_reader = M2Reader::new(&build_version.version, &file_path);
+                for texture_file_id in m2_reader.read_texture_ids() {
+                    let file_id = texture_file_id as i64;
+                    if file_id > 0 && list_file.contains_key(&file_id) {
+                        let file_path = list_file.get(&file_id).unwrap().clone();
+                        if !Path::new(&format!("extract/{}/{}", build_version.version, file_path))
+                            .exists()
+                        {
+                            files_to_load.insert(file_id, file_path.clone());
+                        }
+                        mount_files
+                            .entry(mount_id)
+                            .or_insert(Vec::new())
+                            .push(file_path.clone());
                     }
-                    mount_files
-                        .entry(mount_id)
-                        .or_insert(Vec::new())
-                        .push(file_path.clone());
                 }
             }
         }
@@ -132,9 +136,13 @@ pub fn collect_dominant_colors(
                 let mut pixels: Vec<Lab> = Vec::new();
 
                 for file_path in file_paths {
-                    let mut file_pixels =
-                        BLPReader::new(&build_version.version, file_path).convert_to_lab();
-                    pixels.append(&mut file_pixels);
+                    if Path::new(&format!("extract/{}/{}", build_version.version, file_path))
+                        .exists()
+                    {
+                        let mut file_pixels =
+                            BLPReader::new(&build_version.version, file_path).convert_to_lab();
+                        pixels.append(&mut file_pixels);
+                    }
                 }
 
                 if !pixels.is_empty() {

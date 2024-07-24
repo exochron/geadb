@@ -28,9 +28,6 @@ ignored: [
   333,  # Magic Rooster
   334,  # Magic Rooster
   335,  # Magic Rooster
-  462,  # White Riding Yak
-  484,  # Black Riding Yak
-  485,  # Brown Riding Yak
   776,  # Swift Spectral Rylak
   786,  # Charger
   934,  # Swift Spectral Hippogryph
@@ -53,6 +50,8 @@ ignored: [
   1788, # Cliffside Wylderdrake (dragonriding races mountType=426)
   1789, # Winding Slitherdrake (dragonriding races mountType=426)
   1796, # Whelpling (dragonflying guest seat)
+  1952, # Soar, Dracthyr racial
+  2115, # Soar, Dracthyr racial
 ]
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
@@ -61,17 +60,17 @@ familymap: [
   { name: Amphibian,
     subfamily: [
       { name: Crawgs, wcm: [ Crawgs ] },
-      { name: Toads, wcm: [ Toads ], ids: [ 1595 ] }, # Cerulean Marsh Hopper
+      { name: Toads, wcm: [ Toads ]},
     ]
   },
   { name: Arachnids,
     subfamily: [
-      { name: Blood Ticks, wcm: [ Bloodswarmers ] },
-      { name: Scorpions, wcm: [ Scorpions, Mechanical Scorpions ], ids: [ 1742 ] }, # Felcrystal Scorpion
+      { name: Mite, wcm: [ Animites, Bloodswarmers ] , ids: [2150, 2211, 2177, 2180] },#  Vicious Skyflayer [H|A]
+      { name: Scorpions, wcm: [ Scorpions, Mechanical Scorpions]},
       { name: Spiders, wcm: [ Spiders ] },
     ]
   },
-  { name: Bats, wcm: [ Bats, Felbats ] },
+  { name: Bats, wcm: [ Bats, Felbats ], ids: [2218] }, # Forged Gladiator's Fel Bat
   { name: Birds,
     subfamily: [
       { name: Albatross, wcm: [ Birds ], icons: [ alabatross, albatross ] },
@@ -79,18 +78,18 @@ familymap: [
       { name: Cranes, wcm: [ Cranes ] },
       { name: Crows, wcm: [ Birds ], icons: [ roguemount, arcaneraven, suncrown ] },
       { name: Dread Ravens, wcm: [ Birds ], icons: [ ravenlord, dreadraven ] },
-      { name: Eagle, wcm: [ Birds ], icons: [ eagle ] },
+      { name: Eagle, wcm: [ Birds ], icons: [ eagle ], ids: [1669] }, # Bestowed Ohuna Spotter
       { name: Hawkstriders, wcm: [ Hawkstriders ] },
       { name: Mechanical Birds, wcm: [ Mechanical Birds ] },
-      { name: Owl, wcm: [ Birds ], icons: [ dreamowl ] },
-      { name: Owlbear, wcm: [ Owlbears ], ids: [ 1699 ] }, # Gleaming Moonbeast
+      { name: Owl, wcm: [ Owls ] },
+      { name: Owlbear, wcm: [ Owlbears ] },
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ], ids: [ 2147 ] }, # Polly Roger (classic)
       { name: Peafowl, wcm: [ Birds ], icons: [ peacock ] },
-      { name: Phoenixes, wcm: [ Phoenixes ] },
+      { name: Phoenixes, wcm: [ Phoenixes ], ids: [1905] }, # Green Fire Hawk (classic)
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
       { name: Roc, wcm: [ Deathrocs ] },
-      { name: Tallstriders, wcm: [ Tallstriders ], ids: [ 2038 ] }, #Clayscale Hornstrider
+      { name: Tallstriders, wcm: [ Tallstriders ]},
       { name: Talonbirds, wcm: [ Talonbirds ] },
       { name: Vultures, wcm: [ Birds ], icons: [ vulture ] },
     ]
@@ -99,7 +98,7 @@ familymap: [
     subfamily: [
       { name: Clefthooves, wcm: [ Clefthooves ] },
       { name: Goats, wcm: [ Goats ] },
-      { name: Rams, wcm: [ Rams ] },
+      { name: Rams, wcm: [ Rams ], ids: [2213, 2214, 2233] }, # 11.0 Ramoliths
       { name: Ruinstriders, wcm: [ Talbuks ], icons: [ argustalbukmount, paladin_divinesteed, lightforgedtalbuk ] },
       { name: Talbuks, wcm: [ Talbuks ], icons: [ foot_centaur, talbukdraenor ] },
       { name: Tauralus, wcm: [ Tauraluses ] },
@@ -115,7 +114,7 @@ familymap: [
       { name: Hyenas, wcm: [ Hyenas ] },
       { name: Quilen, wcm: [ Quilen ] },
       { name: Vulpin, wcm: [ Vulpin ] },
-      { name: Ottuk, wcm: [ Ottuks ], ids: [ 1654, 1656 ] }, # Otterworldly Ottuk Carrier, Otto
+      { name: Ottuk, wcm: [ Ottuks ], ids: [1651] }, # Bestowed Ottuk Vanguard
     ]
   },
   { name: Cats,
@@ -125,8 +124,8 @@ familymap: [
       { name: Manasabers, wcm: [ Cats ], icons: [ suramarmount, nightborneracial ], ids: [ 741 ] }, # Mystic Runesaber
       { name: Dreamsaber, wcm: [ Cats ], icons: [ dreamsaber ] },
       { name: Mechanical Cats, wcm: [ Mechanical Cats ] },
-      { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar
-      { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth ] },
+      { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577, 2193 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar, Vermillion Imperial Lynx
+      { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth, nightsaberhorde ] , ids: [2199, 2200]}, # [PH] Nightsaber Horde Mount
       { name: Stone Cats, wcm: [ Flying Stone Cats ], ids: [ 421 ] }, # Winged Guardian
       { name: Tigers, wcm: [ Cats, Undead Cats ], icons: [ monkmount, spectraltiger, siberiantiger, warnightsaber, jungletiger ] },
     ]
@@ -153,7 +152,7 @@ familymap: [
       { name: Brutosaurs, wcm: [ Brutosaurs ] },
       { name: Direhorns, wcm: [ Direhorns ] },
       { name: Falcosaurs, wcm: [ Raptors ], icons: [ falcosauro ] },
-      { name: Pterrordaxes, wcm: [ Pterrordaxes ], ids: [ 1586 ] }, #Armored Golden Pterrordax
+      { name: Pterrordaxes, wcm: [ Pterrordaxes ] },
       { name: Raptors, wcm: [ Raptors, Undead Raptors ], icons: [ raptor ] },
     ]
   },
@@ -167,7 +166,7 @@ familymap: [
       { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ], ids: [ 1739 ] }, # Obsidian Gladiator's Slitherdrake
       { name: Proto-Drakes, wcm: [ Proto-Drakes ], },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
-      { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ], ids: [ 2114 ] }, # Zooval's Soul Eater
+      { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
     ]
   },
@@ -179,12 +178,12 @@ familymap: [
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
       { name: Sporebat, wcm: [ Shalewings ] },
-      { name: Others, wcm: [ Elementals, Ancients ], ids: [ 1807 ] }, # Avatar of Flame
+      { name: Others, wcm: [ Elementals, Ancients ], ids: [ 1807, 2191, 2192 ] }, # Avatar of Flame; Shackled Shadow; Beledar's Spawn
     ]
   },
   { name: Feathermanes,
     subfamily: [
-      { name: Gryphons, wcm: [ Gryphons, Undead Gryphons ], ids: [ 1823 ] }, # Swift Spectral Gryphon
+      { name: Gryphons, wcm: [ Gryphons, Undead Gryphons ], ids: [ 1823, 2176 ] }, # Swift Spectral Gryphon; Alurina
       { name: Hippogryphs, wcm: [ Hippogryphs ] },
       { name: Larion, wcm: [ Larions ] },
       { name: Wolfhawks, wcm: [ Wolfhawks ] },
@@ -193,8 +192,8 @@ familymap: [
   },
   { name: Fish,
     subfamily: [
-      { name: Fish, wcm: [ Fish ] },
-      { name: Seahorses, wcm: [ Seahorses, Hippocampuses ] },
+      { name: Fish, wcm: [ Fish ], ids: [ 2186, 2188] }, # [PH] Old God Fish Mount
+      { name: Seahorses, wcm: [ Seahorses, Hippocampuses ], ids: [1873] }, # Abysal Seahorse (classic)
       { name: Stingrays, wcm: [ Stingrays ] },
     ]
   },
@@ -244,24 +243,25 @@ familymap: [
   },
   { name: Insects,
     subfamily: [
-      { name: Animite, wcm: [ Animites ] },
-      { name: Aqir Flyers, wcm: [ Aqir Flyers ], ids: [ 1784 ] }, # royal swarmer
-      { name: Beetle, wcm: [ Beetles ] },
+      { name: Aqir Flyers, wcm: [ Aqir Flyers ] },
+      { name: Beetle, wcm: [ Beetles ], ids: [2230] }, # Ivory Goliathus
       { name: Gorm, wcm: [ Gorms ] },
-      { name: Flies, wcm: [ Flies, Skitterflies ] },
+      { name: Flies, wcm: [ Flies, Skitterflies ], ids: [1618] }, # Bestowed Sandskimmer
       { name: Krolusks, wcm: [ Krolusks ] },
       { name: Moth, wcm: [ Moths ] },
-      { name: Others, wcm: [ Bees, Ravagers ] },
+      { name: Others, wcm: [ Bees, Ravagers ], ids: [2148, 2162] }, # Smoldering Cinderbee, Cyan Glowmite
       { name: Silithids, wcm: [ Silithids ],
         ids: [
           936, # Red Qiraji War Tank
           935, # Blue Qiraji War Tank
         ] },
+      { name: Skyrazor, ids: [2219, 2222, 2223] }, # 11.0 Skyrazors
       { name: Water Striders, wcm: [ Water Striders ] },
       { name: Wasp, wcm: [ Wasps ] },
     ]
   },
-  { name: Jellyfish, wcm: [ Fathom Dwellers, Hiveminds, Aurelids ] },
+  { name: Jellyfish, wcm: [ Fathom Dwellers, Hiveminds, Aurelids ], ids: [ 1550 ] }, # Depthstalker
+  { name: Mole, ids: [ 2204, 2205, 2209 ] }, # 11.0 Mole mounts
   { name: Mollusc,
     subfamily: [
       { name: Snail, wcm: [ Snails ], ids: [ 1627, 1729, 1740, 1741 ] }, # Gooey Snailemental, Big Slick in the Ciity, Vicious War Snail(2x)
@@ -280,15 +280,16 @@ familymap: [
     subfamily: [
       { name: Armoredon, wcm: [ Armoredons ], ids: [ 2055] }, # Infinite Armoredon
       { name: Basilisks, wcm: [ Basilisks ] },
-      { name: Crocolisks, wcm: [ Crocolisks ] },
-      { name: Kodos, wcm: [ Kodos ], ids: [ 225 ] }, #Brewfest Riding Kodo
+      { name: Crocolisks, wcm: [ Crocolisks ], ids: [2238, 2239, 2240, 2241] }, # Plunderlord's X Crocolisks
+      { name: Kodos, wcm: [ Kodos ], ids: [ 225 , 1869, 1870] }, #Brewfest Riding Kodo, (Sunwalker Kodo classc)
       { name: Mushan, wcm: [ Mushan ] },
       { name: N'Zoth Serpents, wcm: [ N'Zoth Serpents ] },
       { name: Sea Serpents, wcm: [ Sea Serpents ] },
       { name: Snapdragons, wcm: [ Snapdragons ] },
       { name: Shardhides, wcm: [ Shardhides ] },
-      { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ], ids: [ 1582 ] }, # Savage Green Battle Turtle
-      { name: Others, wcm: [ Warp Stalkers, Newts ], ids: [ 1639, 1761, 1638 ] }, # Lizi, Reawakened Phase-Hunter, Explorer's Stonehide Packbeast
+      { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ], ids: [ 2232 ] }, # Savage Ebony Battle Turtle
+      { name: Thunder Lizard, wcm: [ Thunder Lizards ], ids: [ 1474 ] }, # Bestowed Thunderspine Packleader
+      { name: Others, wcm: [ Warp Stalkers, Newts ], ids: [ 1761, 1621 ] }, # Reawakened Phase-Hunter, Coralscale Salamanther
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
@@ -303,9 +304,9 @@ familymap: [
       { name: Boars, wcm: [ Boars, Divine Boars, Skullboars ] },
       { name: Camels, wcm: [ Camels ] },
       { name: Cervid, wcm: [ Cervids ] },
-      { name: Elekks, wcm: [ Elekks ] },
-      { name: Mammoths, wcm: [ Mammoths ], ids: [ 1603 ] }, # Subterranean Mammoth
-      { name: Moose, wcm: [ Elderhorns, Bruffalons ] },
+      { name: Elekks, wcm: [ Elekks ], ids: [1871, 1872] }, # Exarch's Elekk (classic)
+      { name: Mammoths, wcm: [ Mammoths ], ids: [ 1603, 1633 ] }, # Subterranean Mammoth, Bestowed Trawling Mammoth
+      { name: Moose, wcm: [ Elderhorns, Bruffalons ], ids: [1614] }, #Stormtouched Bruffalon
       { name: Ox, wcm: [ Oxen ] },
       { name: Rhinos, wcm: [ Rhinos ] },
       { name: Riverbeasts, wcm: [ Riverbeasts ] },
@@ -315,21 +316,22 @@ familymap: [
   { name: Vehicles,
     subfamily: [
       { name: Airplanes, wcm: [ Airplanes ] },
-      { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ] },
+      { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ], ids: [2144] }, # Delver's Dirigible
       { name: Assault Wagons, wcm: [ Assault Wagons ] },
       { name: Book, wcm: [ Books ] },
       { name: Broom, wcm: [ Magical Broomsticks ] },
       { name: Carpets, wcm: [ Flying Carpets ] },
       { name: Discs, wcm: [ Discs ] },
       { name: Gyrocopters, wcm: [ Gyrocopters ] },
-      { name: Hands, wcm: [ Undead Hands ] },
+      { name: Hands, wcm: [ Undead Hands ], ids: [2249] }, # Hand of Reshkigaal
       { name: Hovercraft, wcm: [ Hovercraft ] },
+      { name: "Hover Board", wcm: [ "Hover Boards" ], ids: [2145] }, # [PH] Goblin Surfboard
       { name: Jet Aerial Units, wcm: [ Jet Aerial Units ] },
       { name: Kites, wcm: [ Kites, Gliders ], ids: [ 1762 ] }, # Kalu'ak Whalebone Glider
-      { name: Mecha-suits, wcm: [ Flying Mecha-suits ] },
+      { name: Mecha-suits, wcm: [ Flying Mecha-suits ], ids: [2119, 2158, 2159, 2244] }, # Stonevault Mechsuit; Crows Pummeler; Machine Defense Unit 1-11; Diamond Mechsuit
       { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons ] },
       { name: Mechanostriders, wcm: [ Mechanostriders ] },
-      { name: Motorcycles, wcm: [ Motorcycles, Monocycles ] },
+      { name: Motorcycles, wcm: [ Motorcycles, Monocycles ], ids: [1715] }, # Armadillo Roller
       { name: Rockets, wcm: [ Rockets ] },
       { name: Seat, wcm: [ Flying Seats ] },
       { name: Spider Tanks, wcm: [ Spider Tanks, Flying Spider Tanks ] },
@@ -341,9 +343,10 @@ familymap: [
       { name: Dire Wolves, wcm: [ Wolves ], icons: [ wolfdraenor, orcclanworg ], ids: [ 657 ] }, # Garn Nighthowl
       { name: Lupine, wcm: [ Wolves ], icons: [ progenitorwolf, vicioushordewolf, viciousalliancewolf ] },
       { name: Undead Wolves, wcm: [ Undead Wolves ] },
-      { name: War Wolves, wcm: [ Wolves ], icons: [ _hordepvpmount, _alliancewolf, armoredwolf, frostwolfhowler ], ids: [ 306421 ] }, # Frostwolf Snarler
+      { name: War Wolves, wcm: [ Wolves ], icons: [ _hordepvpmount, _alliancewolf, armoredwolf, frostwolfhowler ], ids: [ 2202, 2203 ] }, # [PH] Alliance  Wolf
       { name: Wilderlings, wcm: [ Wilderlings ], ids: [2091] }, # Voyaging Wilderling
       { name: Wolves, wcm: [ Wolves ], icons: [ direwolf ], ids: [ 51 ] }, # Arctic Wolf
     ]
   },
+  { name: Worm, ids: [ 2184 ] }, # Ferocious Jawcrawler
 ]
