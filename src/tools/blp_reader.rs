@@ -1,3 +1,4 @@
+use std::fmt::format;
 use image::{DynamicImage, GenericImageView};
 use image_blp::convert::blp_to_image;
 use image_blp::parser::load_blp;
@@ -10,7 +11,7 @@ pub(crate) struct BLPReader {
 impl BLPReader {
     pub(crate) fn new(build_version: &String, file_path: &String) -> Self {
         let file_path = r"extract/".to_owned() + build_version + r"/" + file_path;
-        let blp_file = load_blp(file_path).expect("loaded blp");
+        let blp_file = load_blp(file_path.clone()).expect(format!("loaded blp: {}", file_path).as_str());
         let image = blp_to_image(&blp_file, 0).expect("converted");
 
         Self { image }
