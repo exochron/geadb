@@ -7,6 +7,7 @@ use crate::mount::customization::collect_customization;
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
 use crate::mount::image::collect_dominant_colors;
+use crate::mount::sources::{collect_black_market_mounts, collect_unavailable_mounts};
 use crate::tools::casc_loader::load_dbs;
 use crate::tools::db_reader::{load_item_effects, parse_csv, LookupDB};
 use crate::tools::dbs;
@@ -17,6 +18,8 @@ mod customization;
 mod export;
 mod family;
 mod image;
+mod wcm;
+mod sources;
 
 pub struct Mount {
     id: u32,
@@ -44,7 +47,6 @@ pub fn handle_mounts(game_version: ProductVersion) {
 
     load_dbs(&config, &build_version);
     load_dbs(&config, &classic_version);
-
     let list_file = load_listfile();
 
     let mut mounts = collect_mounts(&classic_version.version, &list_file);
@@ -62,6 +64,11 @@ pub fn handle_mounts(game_version: ProductVersion) {
     exporter.export_families(
         &mounts,
         group_by_families(&mounts, config.get("familymap").unwrap()),
+    );
+    exporter.export_sources(
+        &mounts,
+        collect_black_market_mounts(&mounts),
+        collect_unavailable_mounts(&mounts),
     );
     exporter.export_customization(
         &mounts,

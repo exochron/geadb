@@ -89,6 +89,38 @@ impl Exporter {
         lua.close();
     }
 
+    pub fn export_sources(
+        &self,
+        mounts: &BTreeMap<u32, Mount>,
+        black_market_mounts: Vec<u32>,
+        retired_mounts: Vec<u32>,
+    ) {
+        let mut lua = self.open_file("sources.db.lua", "DB.Source[\"Black Market\"]");
+        let mut ordered_list = BTreeMap::new();
+
+        for mount_id in black_market_mounts.iter() {
+            let mount = &mounts.get(mount_id).unwrap();
+            ordered_list.insert(&mount.spell_id, &mount.name);
+        }
+        for (spell_id, name) in ordered_list.iter() {
+            lua.add_line(spell_id, name);
+        }
+
+        lua.close();
+
+        ordered_list.clear();
+
+        lua.start("DB.Source[\"Unavailable\"]");
+        for mount_id in retired_mounts.iter() {
+            let mount = &mounts.get(mount_id).unwrap();
+            ordered_list.insert(&mount.spell_id, &mount.name);
+        }
+        for (spell_id, name) in ordered_list.iter() {
+            lua.add_line(spell_id, name);
+        }
+        lua.close();
+    }
+
     pub fn export_colors(
         &self,
         mounts: &BTreeMap<u32, Mount>,

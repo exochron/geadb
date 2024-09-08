@@ -10,10 +10,15 @@ impl LuaFile {
         let mut file = File::create(file_path).unwrap();
 
         writeln!(file, "local _, ADDON = ...").expect("couldn't write to file");
-        writeln!(file).expect("couldn't write to file");
-        writeln!(file, "ADDON.{} = {{", variable).expect("couldn't write to file");
 
-        Self { file }
+        let mut s = Self { file };
+        s.start(variable);
+        s
+    }
+
+    pub fn start(&mut self, variable: &str) {
+        writeln!(self.file).expect("couldn't write to file");
+        writeln!(self.file, "ADDON.{} = {{", variable).expect("couldn't write to file");
     }
 
     pub fn add_line(&mut self, id: &u32, name: &String) {
