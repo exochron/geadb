@@ -1,10 +1,9 @@
-use std::collections::{BTreeMap, HashMap};
+use std::collections::BTreeMap;
 
-use regex::Regex;
 use serde_yaml::Value;
 
+use crate::mount::wcm::load_wcm_families;
 use crate::mount::Mount;
-use crate::tools::http_get;
 
 pub struct FamilyNode {
     pub sub_nodes: BTreeMap<String, FamilyNode>,
@@ -18,31 +17,6 @@ impl FamilyNode {
             mount_ids: Vec::new(),
         }
     }
-}
-
-fn load_wcm_families() -> HashMap<String, String> {
-    let mut result = HashMap::new();
-
-    let html = http_get("https://www.warcraftmounts.com/gallery.php");
-
-    let category_reg = Regex::new("(?si)<h5><a id='(.*?)'>.*?</div>\\s+</span>").unwrap();
-    let item_reg = Regex::new("(?si)<img class='thumbimage' src='.*?' alt='(.*?)' />").unwrap();
-
-    for category_cap in category_reg.captures_iter(html.as_str()) {
-        let category = category_cap.get(1).unwrap().as_str().to_string();
-
-        for item_cap in item_reg.captures_iter(category_cap.get(0).unwrap().as_str()) {
-            let mut mount_name = item_cap.get(1).unwrap().as_str().to_string();
-            mount_name = html_escape::decode_html_entities(mount_name.as_str()).to_string();
-            mount_name = mount_name
-                .to_lowercase()
-                .replace(" [horde]", "")
-                .replace(" [alliance]", "");
-            result.insert(mount_name, category.clone());
-        }
-    }
-
-    result
 }
 
 fn seq_to_string_vec(json: &Value) -> Vec<String> {

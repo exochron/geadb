@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::str::FromStr;
-
+use std::time::Duration;
 use csv::ReaderBuilder;
 use reqwest::blocking::ClientBuilder;
 use serde_yaml::Value;
@@ -20,7 +20,9 @@ pub fn load_config(file_name: &str) -> Value {
 }
 
 pub(crate) fn http_get(url: &str) -> String {
-    reqwest::blocking::get(url).unwrap().text().unwrap()
+    let builder = reqwest::blocking::ClientBuilder::new();
+    let client = builder.timeout(Duration::from_secs(500)).build().unwrap();
+    client.get(url).send().unwrap().text().unwrap()
 }
 
 pub(crate) fn load_listfile() -> HashMap<i64, String> {
@@ -58,7 +60,7 @@ pub(crate) fn fetch_files(build_info: &BuildInfo, file_list: HashMap<i64, String
         let path = format!("extract/{}/{}", build_info.version, file_path);
         let path = Path::new(&path);
 
-        let data = client
+        let response = client
             .get(format!(
                 "{}casc/fdid?fileDataID={}&filename={}",
                 base_url,
@@ -66,11 +68,12 @@ pub(crate) fn fetch_files(build_info: &BuildInfo, file_list: HashMap<i64, String
                 path.file_name().unwrap().to_str().unwrap()
             ))
             .send()
-            .unwrap()
-            .bytes()
             .unwrap();
-        fs::create_dir_all(path.parent().unwrap()).expect("could not create folders");
-        fs::write(path, data).unwrap_or_else(|_| panic!("could not write file: {:?}", path));
+        if response.status().is_success() {
+            let data = response.bytes().unwrap();
+            fs::create_dir_all(path.parent().unwrap()).expect("could not create folders");
+            fs::write(path, data).unwrap_or_else(|_| panic!("could not write file: {:?}", path));
+        }
     }
 }
 
