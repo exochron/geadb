@@ -7,7 +7,7 @@ use crate::mount::customization::collect_customization;
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
 use crate::mount::image::collect_dominant_colors;
-use crate::mount::sources::{collect_black_market_mounts, collect_unavailable_mounts};
+use crate::mount::sources::{collect_black_market_mounts, collect_drop_mounts, collect_unavailable_mounts};
 use crate::tools::casc_loader::load_dbs;
 use crate::tools::db_reader::{load_item_effects, parse_csv, LookupDB};
 use crate::tools::dbs;
@@ -27,8 +27,10 @@ pub struct Mount {
     type_id: u32,
     name: String,
     icon: String,
+    item_id: Option<u32>,
     item_is_tradeable: bool,
     player_conditions: Vec<Vec<Condition>>,
+    source_type: i8,
 }
 
 pub fn handle_mounts(game_version: ProductVersion) {
@@ -69,6 +71,7 @@ pub fn handle_mounts(game_version: ProductVersion) {
         &mounts,
         collect_black_market_mounts(&mounts),
         collect_unavailable_mounts(&mounts),
+        collect_drop_mounts(&mounts),
     );
     exporter.export_customization(
         &mounts,
@@ -116,21 +119,23 @@ fn collect_mounts(
             ),
         };
 
-        let item_is_tradeable = {
-            let mut tradable = false;
+        let item_id = {
+            let mut item_id = None;
             for effect in item_effects_db.lookup(&mount.spell_id) {
                 if effect.trigger_type == 6 {
                     let items = item_sparse_db.lookup(&effect.item_id);
-                    if match items.first() {
-                        None => false,
-                        Some(item) => item.bonding == 0,
-                    } {
-                        tradable = true;
-                    }
+                    item_id = items.first().map(|i| i.item_id);
                 }
             }
-            tradable
+            item_id
         };
+
+        let item_is_tradeable = if item_id.is_some() {
+            item_sparse_db.lookup(&item_id.unwrap()).first().map(|i| i.bonding == 0).unwrap_or(false)
+        } else {
+            false
+        };
+
         let icon = {
             match spell_misc_db.lookup(&mount.spell_id).first() {
                 None => "".to_string(),
@@ -154,9 +159,11 @@ fn collect_mounts(
                 spell_id: mount.spell_id,
                 type_id: mount.type_id,
                 name: mount.name,
+                item_id,
                 icon,
                 item_is_tradeable,
                 player_conditions,
+                source_type: mount.source_type,
             },
         );
     }

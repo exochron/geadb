@@ -133,6 +133,8 @@ pub struct Mount {
     pub name: String,
     #[serde(rename(deserialize = "MountTypeID"))]
     pub type_id: u32,
+    #[serde(rename(deserialize = "SourceTypeEnum"))]
+    pub source_type: i8,
     #[serde(rename(deserialize = "SourceSpellID"))]
     pub spell_id: u32,
     #[serde(rename(deserialize = "PlayerConditionID"))]

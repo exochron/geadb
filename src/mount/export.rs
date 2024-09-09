@@ -5,6 +5,7 @@ use palette::Srgb;
 use crate::mount::customization::CustomizationSource;
 use crate::mount::family::FamilyNode;
 use crate::mount::Mount;
+use crate::mount::sources::DropData;
 use crate::tools::lua_export::LuaFile;
 
 pub struct Exporter {
@@ -94,6 +95,7 @@ impl Exporter {
         mounts: &BTreeMap<u32, Mount>,
         black_market_mounts: Vec<u32>,
         retired_mounts: Vec<u32>,
+        drop_mounts: BTreeMap<u32, DropData>
     ) {
         let mut lua = self.open_file("sources.db.lua", "DB.Source[\"Black Market\"]");
         let mut ordered_list = BTreeMap::new();
@@ -108,7 +110,7 @@ impl Exporter {
 
         lua.close();
 
-        ordered_list.clear();
+        let mut ordered_list = BTreeMap::new();
 
         lua.start("DB.Source[\"Unavailable\"]");
         for mount_id in retired_mounts.iter() {
@@ -119,6 +121,30 @@ impl Exporter {
             lua.add_line(spell_id, name);
         }
         lua.close();
+
+        let mut ordered_list = BTreeMap::new();
+
+        lua.write_line("");
+        lua.write_line("MergeTable(ADDON.DB.Source.Drop, {");
+        for (mount_id, drop_data) in drop_mounts.iter() {
+            let mount = &mounts.get(mount_id).unwrap();
+            ordered_list.insert(&mount.spell_id, (&mount.name, drop_data));
+        }
+        for (spell_id, (name, drop_data)) in ordered_list.iter() {
+            let drop_chance = drop_data.drop_chance.map(|d| format!("{:.2}", d) ).unwrap_or("nil".to_string());
+            let position = match &drop_data.map_position {
+                Some(position) => format!(
+                    "{{{}, {}, {}, {}}}",
+                    position.map_id,
+                    position.map_x,
+                    position.map_y,
+                    drop_chance,
+                ),
+                None => format!("{{nil, nil, nil, {}}}", drop_chance, ),
+            };
+            lua.add_line_with_value(spell_id, &name, position);
+        }
+        lua.write_line("})");
     }
 
     pub fn export_colors(
