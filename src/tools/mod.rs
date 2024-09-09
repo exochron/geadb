@@ -4,7 +4,7 @@ use std::path::Path;
 use std::str::FromStr;
 use std::time::Duration;
 use csv::ReaderBuilder;
-use reqwest::blocking::ClientBuilder;
+use reqwest::blocking::{Client, ClientBuilder};
 use serde_yaml::Value;
 
 pub(crate) mod blp_reader;
@@ -19,10 +19,18 @@ pub fn load_config(file_name: &str) -> Value {
     serde_yaml::from_reader(f).unwrap()
 }
 
-pub(crate) fn http_get(url: &str) -> String {
-    let builder = reqwest::blocking::ClientBuilder::new();
-    let client = builder.timeout(Duration::from_secs(500)).build().unwrap();
+pub(crate) fn build_http() -> Client {
+    let builder = ClientBuilder::new();
+    builder.timeout(Duration::from_secs(500)).build().unwrap()
+}
+
+pub(crate) fn http_get_with_client(client: &Client, url: &str) -> String {
     client.get(url).send().unwrap().text().unwrap()
+}
+
+pub(crate) fn http_get(url: &str) -> String {
+    let client = build_http();
+    http_get_with_client(&client, url)
 }
 
 pub(crate) fn load_listfile() -> HashMap<i64, String> {

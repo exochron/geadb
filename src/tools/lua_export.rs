@@ -9,16 +9,19 @@ impl LuaFile {
     pub fn new(file_path: String, variable: &str) -> Self {
         let mut file = File::create(file_path).unwrap();
 
-        writeln!(file, "local _, ADDON = ...").expect("couldn't write to file");
-
         let mut s = Self { file };
+        s.write_line("local _, ADDON = ...");
         s.start(variable);
         s
     }
 
+    pub fn write_line(&mut self, line: &str) {
+        writeln!(self.file, "{}", line).expect("couldn't write to file");
+    }
+
     pub fn start(&mut self, variable: &str) {
-        writeln!(self.file).expect("couldn't write to file");
-        writeln!(self.file, "ADDON.{} = {{", variable).expect("couldn't write to file");
+        self.write_line("");
+        self.write_line(&*("ADDON.".to_owned() + variable + " = {"));
     }
 
     pub fn add_line(&mut self, id: &u32, name: &String) {
@@ -32,11 +35,11 @@ impl LuaFile {
         writeln!(self.file, "[\"{}\"] = {{", name).expect("couldn't write to file")
     }
     pub fn close_category(&mut self) {
-        writeln!(self.file, "}},").expect("couldn't write to file")
+        self.write_line("},")
     }
 
     pub fn close(&mut self) {
-        write!(self.file, "}}").expect("couldn't write to file")
+        self.write_line("}")
     }
 
     pub fn format_sublist(&self, key: &str, items: Vec<&str>) -> String {
