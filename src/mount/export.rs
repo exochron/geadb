@@ -177,7 +177,7 @@ impl Exporter {
     pub(crate) fn export_customization(
         &self,
         mounts: &BTreeMap<u32, Mount>,
-        collected_customization: HashMap<u32, HashMap<CustomizationSource, Vec<u32>>>,
+        collected_customization: HashMap<u32, BTreeMap<CustomizationSource, Vec<u32>>>,
     ) {
         let mut lua = self.open_file("customization.db.lua", "DB.Customization");
 
