@@ -67,15 +67,15 @@ pub fn handle_mounts(game_version: ProductVersion) {
         &mounts,
         group_by_families(&mounts, config.get("familymap").unwrap()),
     );
+    exporter.export_customization(
+        &mounts,
+        collect_customization(&mounts, &build_version.version),
+    );
     exporter.export_sources(
         &mounts,
         collect_black_market_mounts(&mounts),
         collect_unavailable_mounts(&mounts),
         collect_drop_mounts(&mounts),
-    );
-    exporter.export_customization(
-        &mounts,
-        collect_customization(&mounts, &build_version.version),
     );
     exporter.export_colors(
         &mounts,
