@@ -74,16 +74,18 @@ pub fn load_item_effects(
 
             for x_effect in item_x_effect_db {
                 let effects = item_effect_db.lookup(&x_effect.item_effect_id);
-                let mut effect = effects.first().unwrap().clone();
-                effect.item_id = x_effect.item_id;
-                result
-                    .entry(if use_spell_id_as_index {
-                        effect.spell_id as u32
-                    } else {
-                        effect.item_id
-                    })
-                    .or_default()
-                    .push(effect);
+                if !effects.is_empty() {
+                    let mut effect = effects.first().unwrap().clone();
+                    effect.item_id = x_effect.item_id;
+                    result
+                        .entry(if use_spell_id_as_index {
+                            effect.spell_id as u32
+                        } else {
+                            effect.item_id
+                        })
+                        .or_default()
+                        .push(effect);
+                }
             }
 
             LookupDB::new(result)
