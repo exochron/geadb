@@ -238,7 +238,6 @@ familymap: [
       { name: Gorger, wcm: [ Anima Gorgers ] },
       { name: Murloc, wcm: [ Murlocs ] },
       { name: Yetis, wcm: [ Yeti ] },
-      { name: Others, ids: [ 1312 ] },
     ]
   },
   { name: Insects,
