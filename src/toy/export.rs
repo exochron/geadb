@@ -21,17 +21,6 @@ impl Exporter {
         LuaFile::new(file_path, variable)
     }
 
-    pub fn export_tradable(&self, toys: &BTreeMap<u32, Toy>) {
-        let mut lua = self.open_file("tradable.db.lua", "db.Tradable");
-
-        for toy in toys.values() {
-            if toy.item_is_tradable {
-                lua.add_line(&toy.item_id, &toy.name);
-            }
-        }
-        lua.close();
-    }
-
     pub fn export_toys(&self, toys: &BTreeMap<u32, Toy>) {
         let mut lua = self.open_file("toys.db.lua", "db.ingameList");
 
