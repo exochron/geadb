@@ -1,5 +1,5 @@
-game_path: D:\Games\World of Warcraft
-export_path: D:\Games\World of Warcraft\_retail_\Interface\AddOns\ToyBoxEnhanced\Database
+game_path: "/data/games/WoW/"
+export_path: "/data/games/WoW/_retail_/Interface/AddOns/ToyBoxEnhanced/Database"
 
 db_files:
   - Item

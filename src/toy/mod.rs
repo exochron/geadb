@@ -14,7 +14,6 @@ pub struct Toy {
     item_id: u32,
     spell_id: u32,
     name: String,
-    item_is_tradable: bool,
     effects: Vec<Effect>,
 }
 
@@ -45,7 +44,6 @@ pub fn handle_toys(game_version: ProductVersion) {
     }
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
-    exporter.export_tradable(&toys);
     exporter.export_toys(&toys);
     exporter.export_effects(&toys);
 }
@@ -91,8 +89,6 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
                         name: item_sparse
                             .map(|sparse| sparse.display_text.clone())
                             .unwrap_or_default(),
-                        item_is_tradable: item_sparse.map(|sparse| sparse.bonding).unwrap_or_default()
-                            == 3,
                         effects: vec![],
                     },
                 );
