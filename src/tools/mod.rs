@@ -56,10 +56,10 @@ pub(crate) fn fetch_files(build_info: &BuildInfo, file_list: HashMap<i64, String
         return;
     }
 
-    let base_url = if build_info.product == ProductVersion::Classic {
-        "http://localhost:5001/"
-    } else {
-        "http://localhost:5000/"
+    let base_url = match( build_info.product) {
+        ProductVersion::Classic =>  "http://localhost:5001/",
+        ProductVersion::ClassicPtr =>  "http://localhost:5001/",
+        _ => "http://localhost:5000/",
     };
 
     let client = ClientBuilder::new().build().unwrap();
@@ -91,6 +91,7 @@ pub enum ProductVersion {
     Ptr,
     XPtr,
     Classic,
+    ClassicPtr,
 }
 
 impl ProductVersion {
@@ -100,6 +101,7 @@ impl ProductVersion {
             ProductVersion::Ptr => "wowt",
             ProductVersion::XPtr => "wowxptr",
             ProductVersion::Classic => "wow_classic",
+            ProductVersion::ClassicPtr => "wow_classic_ptr",
         }
     }
 

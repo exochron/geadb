@@ -13,8 +13,9 @@ pub fn load_dbs(config: &Value, build_info: &BuildInfo) {
         let db_file = db_file.as_str().unwrap();
 
         let wow_tools_url = match build_info.product {
-            ProductVersion::Classic => "http://127.0.0.1:5001",
-            _ => "http://127.0.0.1:5000",
+            ProductVersion::Classic => "http://localhost:5001",
+            ProductVersion::ClassicPtr => "http://localhost:5001",
+            _ => "http://localhost:5000",
         }
         .to_string();
 
