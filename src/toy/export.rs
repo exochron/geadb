@@ -1,6 +1,7 @@
 use std::collections::{BTreeMap, HashMap};
 
 use crate::tools::lua_export::LuaFile;
+use crate::toy::factions::Faction;
 use crate::toy::Toy;
 
 pub struct Exporter {
@@ -27,6 +28,27 @@ impl Exporter {
         for toy in toys.values() {
             lua.add_line_with_value(&toy.item_id, &toy.name, "false".to_string())
         }
+
+        lua.close();
+    }
+
+    pub fn export_factions(&self, toys: &BTreeMap<u32, Toy>) {
+        let mut lua = self.open_file("faction.db.lua", "db.faction");
+        
+        lua.write_line("alliance = {");
+        for toy in toys.values() {
+            if Some(Faction::Alliance) == toy.faction {
+                lua.add_line(&toy.item_id, &toy.name)
+            }
+        }
+        lua.write_line("},");
+        lua.write_line("horde = {");
+        for toy in toys.values() {
+            if Some(Faction::Horde) == toy.faction {
+                lua.add_line(&toy.item_id, &toy.name)
+            }
+        }
+        lua.write_line("},");
 
         lua.close();
     }

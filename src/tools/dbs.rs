@@ -88,12 +88,24 @@ pub struct Item {
 pub struct ItemSparse {
     #[serde(rename(deserialize = "ID"))]
     pub item_id: u32,
+    #[serde(rename(deserialize = "AllowableRace"))]
+    pub race_mask: i64,
     #[serde(rename(deserialize = "Display_lang"))]
     pub display_text: String,
     #[serde(rename(deserialize = "Bonding"))]
     pub bonding: i32,
     #[serde(rename(deserialize = "ItemNameDescriptionID"))]
     pub description_id: u32,
+    #[serde(rename(deserialize = "Flags[0]"))]
+    pub flags_0: i64,
+    #[serde(rename(deserialize = "Flags[1]"))]
+    pub flags_1: i64,
+    #[serde(rename(deserialize = "Flags[2]"))]
+    pub flags_2: i64,
+    #[serde(rename(deserialize = "Flags[3]"))]
+    pub flags_3: i64,
+    #[serde(rename(deserialize = "Flags[4]"))]
+    pub flags_4: i64,
 }
 
 #[derive(Deserialize, Clone)]
@@ -187,4 +199,16 @@ pub struct CreatureModel {
     pub id: u32,
     #[serde(rename(deserialize = "FileDataID"))]
     pub file_id: i64,
+}
+
+#[derive(Deserialize, Clone)]
+pub struct ChrRace {
+    #[serde(rename(deserialize = "ID"))]
+    pub id: u32,
+    #[serde(rename(deserialize = "Name_lang"))]
+    pub name: String,
+    #[serde(rename(deserialize = "Alliance"))]
+    pub alliance: i32,
+    #[serde(rename(deserialize = "PlayableRaceBit"))]
+    pub race_bit: i32,
 }
