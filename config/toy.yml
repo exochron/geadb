@@ -2,6 +2,7 @@ game_path: "/data/games/WoW/"
 export_path: "/data/games/WoW/_retail_/Interface/AddOns/ToyBoxEnhanced/Database"
 
 db_files:
+  - ChrRaces
   - Item
   - ItemEffect
   - ItemSparse

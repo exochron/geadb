@@ -6,14 +6,17 @@ use crate::tools::db_reader::{load_item_effects, LookupDB, parse_csv};
 use crate::tools::dbs;
 use crate::toy::effect::{collect_effects, Effect};
 use crate::toy::export::Exporter;
+use crate::toy::factions::{determine_faction, Faction};
 
 mod effect;
 mod export;
+mod factions;
 
 pub struct Toy {
     item_id: u32,
     spell_id: u32,
     name: String,
+    faction: Option<Faction>,
     effects: Vec<Effect>,
 }
 
@@ -45,6 +48,7 @@ pub fn handle_toys(game_version: ProductVersion) {
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
     exporter.export_toys(&toys);
+    exporter.export_factions(&toys);
     exporter.export_effects(&toys);
 }
 
@@ -56,6 +60,7 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
         parse_csv(build_version, "ItemSparse.csv").unwrap(),
         |s: &dbs::ItemSparse| s.item_id,
     );
+    let race_db: Vec<dbs::ChrRace> = parse_csv(build_version, "ChrRaces.csv").unwrap();
 
     let item_effects_db = load_item_effects(build_version, false);
 
@@ -89,6 +94,13 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
                         name: item_sparse
                             .map(|sparse| sparse.display_text.clone())
                             .unwrap_or_default(),
+                        faction: determine_faction(item_sparse.unwrap().race_mask, [
+                            item_sparse.unwrap().flags_0,
+                            item_sparse.unwrap().flags_1,
+                            item_sparse.unwrap().flags_2,
+                            item_sparse.unwrap().flags_3,
+                            item_sparse.unwrap().flags_4,
+                        ], &race_db),
                         effects: vec![],
                     },
                 );
