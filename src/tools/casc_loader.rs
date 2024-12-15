@@ -36,7 +36,8 @@ pub fn load_dbs(config: &Value, build_info: &BuildInfo) {
                         build_info.version, db_file
                     );
                     let file_path = Path::new(file_name.as_str());
-                    create_dir_all(file_path.parent().unwrap()).expect("could not create directories");
+                    create_dir_all(file_path.parent().unwrap())
+                        .expect("could not create directories");
                     let mut dest = File::create(file_path).expect("could not write file");
 
                     copy(&mut data.as_bytes(), &mut dest).expect("could download file");

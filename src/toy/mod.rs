@@ -1,12 +1,12 @@
 use std::collections::BTreeMap;
 
-use crate::tools::{BuildInfo, load_config, ProductVersion};
 use crate::tools::casc_loader::load_dbs;
-use crate::tools::db_reader::{load_item_effects, LookupDB, parse_csv};
+use crate::tools::db_reader::{load_item_effects, parse_csv, LookupDB};
 use crate::tools::dbs;
+use crate::tools::{load_config, BuildInfo, ProductVersion};
 use crate::toy::effect::{collect_effects, Effect};
 use crate::toy::export::Exporter;
-use crate::toy::factions::{determine_faction, Faction};
+use crate::toy::factions::{Faction, FactionParser};
 
 mod effect;
 mod export;
@@ -43,7 +43,10 @@ pub fn handle_toys(game_version: ProductVersion) {
 
     for value in config.get("ignored").unwrap().as_sequence().unwrap().iter() {
         toys.remove(&(value.as_i64().unwrap() as u32))
-            .expect(&*format!("ignored id doesn't exist anymore in game: {}", value.as_i64().unwrap()));
+            .expect(&*format!(
+                "ignored id doesn't exist anymore in game: {}",
+                value.as_i64().unwrap()
+            ));
     }
 
     let exporter = Exporter::new(config.get("export_path").unwrap().as_str().unwrap());
@@ -60,9 +63,9 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
         parse_csv(build_version, "ItemSparse.csv").unwrap(),
         |s: &dbs::ItemSparse| s.item_id,
     );
-    let race_db: Vec<dbs::ChrRace> = parse_csv(build_version, "ChrRaces.csv").unwrap();
 
     let item_effects_db = load_item_effects(build_version, false);
+    let faction_parser = FactionParser::new(&build_version);
 
     for toy_row in toy_db {
         let item_id = toy_row.item_id;
@@ -85,7 +88,8 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
             let name = item_sparse
                 .map(|sparse| sparse.display_text.clone())
                 .unwrap_or_default();
-            if name != "" { // items without a name are not yet in game available
+            if name != "" {
+                // items without a name are not yet in game available
                 toys.insert(
                     item_id,
                     Toy {
@@ -94,13 +98,16 @@ fn collect_toys(build_version: &String) -> BTreeMap<u32, Toy> {
                         name: item_sparse
                             .map(|sparse| sparse.display_text.clone())
                             .unwrap_or_default(),
-                        faction: determine_faction(item_sparse.unwrap().race_mask, [
-                            item_sparse.unwrap().flags_0,
-                            item_sparse.unwrap().flags_1,
-                            item_sparse.unwrap().flags_2,
-                            item_sparse.unwrap().flags_3,
-                            item_sparse.unwrap().flags_4,
-                        ], &race_db),
+                        faction: faction_parser.determine_faction(
+                            item_sparse.unwrap().race_mask,
+                            [
+                                item_sparse.unwrap().flags_0,
+                                item_sparse.unwrap().flags_1,
+                                item_sparse.unwrap().flags_2,
+                                item_sparse.unwrap().flags_3,
+                                item_sparse.unwrap().flags_4,
+                            ],
+                        ),
                         effects: vec![],
                     },
                 );

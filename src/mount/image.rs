@@ -5,11 +5,11 @@ use kmeans_colors::{get_kmeans, Kmeans};
 use palette::{FromColor, Lab, Srgb};
 
 use crate::mount::Mount;
-use crate::tools::{BuildInfo, fetch_files};
 use crate::tools::blp_reader::BLPReader;
-use crate::tools::db_reader::{LookupDB, parse_csv};
+use crate::tools::db_reader::{parse_csv, LookupDB};
 use crate::tools::dbs;
 use crate::tools::m2_reader::M2Reader;
+use crate::tools::{fetch_files, BuildInfo};
 
 fn collect_files(
     build_version: &BuildInfo,
@@ -76,9 +76,7 @@ fn collect_files(
 
     for (mount_id, model_files) in model_files {
         for file_path in model_files {
-            if Path::new(&format!("extract/{}/{}", build_version.version, file_path))
-                .exists()
-            {
+            if Path::new(&format!("extract/{}/{}", build_version.version, file_path)).exists() {
                 let m2_reader = M2Reader::new(&build_version.version, &file_path);
                 for texture_file_id in m2_reader.read_texture_ids() {
                     let file_id = texture_file_id as i64;
