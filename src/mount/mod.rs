@@ -7,7 +7,9 @@ use crate::mount::customization::collect_customization;
 use crate::mount::export::Exporter;
 use crate::mount::family::group_by_families;
 use crate::mount::image::collect_dominant_colors;
-use crate::mount::sources::{collect_black_market_mounts, collect_drop_mounts, collect_unavailable_mounts};
+use crate::mount::sources::{
+    collect_black_market_mounts, collect_drop_mounts, collect_unavailable_mounts,
+};
 use crate::tools::casc_loader::load_dbs;
 use crate::tools::db_reader::{load_item_effects, parse_csv, LookupDB};
 use crate::tools::dbs;
@@ -18,8 +20,8 @@ mod customization;
 mod export;
 mod family;
 mod image;
-mod wcm;
 mod sources;
+mod wcm;
 
 pub struct Mount {
     id: u32,
@@ -131,7 +133,11 @@ fn collect_mounts(
         };
 
         let item_is_tradeable = if item_id.is_some() {
-            item_sparse_db.lookup(&item_id.unwrap()).first().map(|i| i.bonding == 0).unwrap_or(false)
+            item_sparse_db
+                .lookup(&item_id.unwrap())
+                .first()
+                .map(|i| i.bonding == 0)
+                .unwrap_or(false)
         } else {
             false
         };

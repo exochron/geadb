@@ -1,3 +1,4 @@
+use crate::tools::db_reader::parse_csv;
 use crate::tools::dbs;
 
 #[derive(PartialEq)]
@@ -6,28 +7,50 @@ pub enum Faction {
     Horde = 1,
 }
 
-pub fn determine_faction(race_mask: i64, flags: [i64; 5], races: &Vec<dbs::ChrRace>) -> Option<Faction> {
+pub struct FactionParser {
+    alliance_mask: i64,
+    horde_mask: i64,
+}
 
-    if flags[1] & 1 == 1 {
-        return Some(Faction::Horde);
-    }
-    if flags[1] & 2 == 2 {
-        return Some(Faction::Alliance);
-    }
-    if race_mask != -1 && race_mask != 0 {
-        for race in races {
-            if race.race_bit >=0 {
+impl FactionParser {
+    pub fn new(build_version: &String) -> Self {
+        let mut alliance_mask: i64 = 0;
+        let mut horde_mask: i64 = 0;
+
+        let race_db: Vec<dbs::ChrRace> = parse_csv(build_version, "ChrRaces.csv").unwrap();
+        for race in race_db {
+            if race.race_bit >= 0 {
                 let bit_mask = i64::pow(2, race.race_bit as u32);
-                if race_mask & bit_mask > 0 {
-                    match race.alliance {
-                        0 => return Some(Faction::Alliance),
-                        1 => return Some(Faction::Horde),
-                        _ => {}
-                    }
+                match race.alliance {
+                    0 => alliance_mask |= bit_mask,
+                    1 => horde_mask |= bit_mask,
+                    _ => {}
                 }
             }
         }
+
+        Self {
+            alliance_mask,
+            horde_mask,
+        }
     }
 
-    None
+    pub fn determine_faction(&self, race_mask: i64, flags: [i64; 5]) -> Option<Faction> {
+        if flags[1] & 1 == 1 {
+            return Some(Faction::Horde);
+        }
+        if flags[1] & 2 == 2 {
+            return Some(Faction::Alliance);
+        }
+        if race_mask != -1 && race_mask != 0 {
+            if race_mask & self.alliance_mask != 0 {
+                return Some(Faction::Alliance);
+            }
+            if race_mask & self.horde_mask != 0 {
+                return Some(Faction::Horde);
+            }
+        }
+
+        None
+    }
 }

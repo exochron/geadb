@@ -34,7 +34,7 @@ impl Exporter {
 
     pub fn export_factions(&self, toys: &BTreeMap<u32, Toy>) {
         let mut lua = self.open_file("faction.db.lua", "db.faction");
-        
+
         lua.write_line("alliance = {");
         for toy in toys.values() {
             if Some(Faction::Alliance) == toy.faction {

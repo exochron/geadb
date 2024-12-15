@@ -1,11 +1,11 @@
+use csv::ReaderBuilder;
+use reqwest::blocking::{Client, ClientBuilder};
+use serde_yaml::Value;
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use std::str::FromStr;
 use std::time::Duration;
-use csv::ReaderBuilder;
-use reqwest::blocking::{Client, ClientBuilder};
-use serde_yaml::Value;
 
 pub(crate) mod blp_reader;
 pub mod casc_loader;
@@ -56,9 +56,9 @@ pub(crate) fn fetch_files(build_info: &BuildInfo, file_list: HashMap<i64, String
         return;
     }
 
-    let base_url = match( build_info.product) {
-        ProductVersion::Classic =>  "http://localhost:5001/",
-        ProductVersion::ClassicPtr =>  "http://localhost:5001/",
+    let base_url = match (build_info.product) {
+        ProductVersion::Classic => "http://localhost:5001/",
+        ProductVersion::ClassicPtr => "http://localhost:5001/",
         _ => "http://localhost:5000/",
     };
 
