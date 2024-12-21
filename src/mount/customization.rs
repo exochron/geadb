@@ -89,6 +89,18 @@ pub fn collect_customization(
                 vec![55451, 55452, 55454, 55455, 55456, 55457, 55517],
             );
             result.insert(mount.id, data);
+        } else if mount.id == 2469 {
+            // Prismatic Snapdragon
+            // see: https://www.wowhead.com/ptr/spell=474108/inky-snapdragon-treat
+            let mut treat_quests = vec![];
+            for spell_effect in spell_effect_db.lookup(&474108) {
+                if spell_effect.effect == 16 || spell_effect.effect == 139 {
+                    treat_quests.push(spell_effect.effect_misc_value as u32);
+                }
+            }
+            let mut data = BTreeMap::new();
+            data.insert(CustomizationSource::Quest, treat_quests);
+            result.insert(mount.id, data);
         }
     }
 
