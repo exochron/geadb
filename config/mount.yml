@@ -86,8 +86,8 @@ familymap: [
       { name: Owlbear, wcm: [ Owlbears ] },
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ], ids: [ 2147 ] }, # Polly Roger (classic)
-      { name: Peafowl, wcm: [ Birds ], icons: [ peacock ] },
-      { name: Phoenixes, wcm: [ Phoenixes ], ids: [1905] }, # Green Fire Hawk (classic)
+      { name: Peafowl, wcm: [ Birds ], icons: [ peacock ], ids: [ 2036 ] }, # Brilliant Sunburst Peafowl
+      { name: Phoenixes, wcm: [ Phoenixes ], ids: [1905, 2255, 2478] }, # Green Fire Hawk (classic), Al'ars golden Ash, Blazing Royal Fire Hawk
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
       { name: Roc, wcm: [ Deathrocs ] },
       { name: Tallstriders, wcm: [ Tallstriders ]},
@@ -112,7 +112,7 @@ familymap: [
       { name: Foxes, wcm: [ Foxes ] },
       { name: Gargon, wcm: [ Gargons ] },
       { name: Hounds, wcm: [ Dogs, Core Hounds, Felstalkers, Darkhounds, Soulseekers ] },
-      { name: Hyenas, wcm: [ Hyenas ] },
+      { name: Hyenas, wcm: [ Hyenas ], ids: [2272, 2274, 2277] }, # Crimson Armored Growler, Blackwater Bonecrusher, Violet Armored Growler
       { name: Quilen, wcm: [ Quilen ] },
       { name: Vulpin, wcm: [ Vulpin ] },
       { name: Ottuk, wcm: [ Ottuks ] },
@@ -164,7 +164,7 @@ familymap: [
       { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ], ids: [ 1770, 1832, 2260 ] }, # Festering Emerald, Nightmarish Emerald, Lava Drake (all classic)
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ] },
-      { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ], ids: [ 1739 ] }, # Obsidian Gladiator's Slitherdrake
+      { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ] },
       { name: Proto-Drakes, wcm: [ Proto-Drakes ], },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ] },
@@ -194,7 +194,7 @@ familymap: [
   { name: Fish,
     subfamily: [
       { name: Fish, wcm: [ Fish ], ids: [ 2186 ] }, # [PH] Blue Old God Fish Mount
-      { name: Seahorses, wcm: [ Seahorses, Hippocampuses ], ids: [1873] }, # Abysal Seahorse (classic)
+      { name: Seahorses, wcm: [ Seahorses, Hippocampuses ], ids: [1873] }, # Abyssal Seahorse (classic)
       { name: Stingrays, wcm: [ Stingrays ] },
     ]
   },
@@ -208,6 +208,10 @@ familymap: [
           341, # Argent Warhorse
           344, # Crusader's White Warhorse
           345, # Crusader's Black Warhorse
+          2481, # Midnight Darkmoon Charger
+          2482, # Lively Darkmoon Charger
+          2483, # Violet Darkmoon Charger
+          2484, # Snowy Darkmoon Charger
         ]
       },
       { name: Demonic Steeds,
@@ -219,7 +223,7 @@ familymap: [
         ]
       },
       { name: Flying Steeds, wcm: [ Flying Steeds ] },
-      { name: Horned Steeds, wcm: [ Horned Steeds, Windsteeds ] },
+      { name: Horned Steeds, wcm: [ Horned Steeds, Windsteeds ], ids: [2488] }, # Shimmermist Free Runner
       { name: Mechanical Steeds, wcm: [ Mechanical Steeds ] },
       { name: Mountain Horses,
         wcm: [ Horses ],
@@ -248,7 +252,7 @@ familymap: [
       { name: Gorm, wcm: [ Gorms ] },
       { name: Flies, wcm: [ Flies, Skitterflies ] },
       { name: Krolusks, wcm: [ Krolusks ] },
-      { name: Moth, wcm: [ Moths ] },
+      { name: Moth, wcm: [ Moths ], ids: [2489, 2491, 2492, 2494] }, # Pearlescent Butterfly, Ruby Butterfly, Spring Butterfly, Midnight Butterfly
       { name: Others, wcm: [ Bees, Ravagers ] },
       { name: Silithids, wcm: [ Silithids ],
         ids: [
@@ -264,7 +268,7 @@ familymap: [
   { name: Mole, wcm: [ Moles ] },
   { name: Mollusc,
     subfamily: [
-      { name: Snail, wcm: [ Snails ] },
+      { name: Snail, wcm: [ Snails ], ids: [2495] }, # Emerald Snail
       { name: Slug, wcm: [ Slugs ] },
     ] },
   { name: Rays,
@@ -289,7 +293,7 @@ familymap: [
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ] },
       { name: Thunder Lizard, wcm: [ Thunder Lizards ] },
-      { name: Others, wcm: [ Warp Stalkers, Newts ], ids: [ 1761 ] }, # Reawakened Phase-Hunter (classic)
+      { name: Others, wcm: [ Warp Stalkers, Newts, Flying Snakes ], ids: [ 1761 ] }, # Reawakened Phase-Hunter (classic)
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
@@ -316,7 +320,7 @@ familymap: [
   { name: Vehicles,
     subfamily: [
       { name: Airplanes, wcm: [ Airplanes ] },
-      { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ] },
+      { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ], ids: [2296] }, # Delver's Gob-Trotter
       { name: Assault Wagons, wcm: [ Assault Wagons ] },
       { name: Book, wcm: [ Books ] },
       { name: Broom, wcm: [ Magical Broomsticks ] },
@@ -325,16 +329,16 @@ familymap: [
       { name: Gyrocopters, wcm: [ Gyrocopters ] },
       { name: Hands, wcm: [ Undead Hands ] },
       { name: Hovercraft, wcm: [ Hovercraft ] },
-      { name: "Hover Board", wcm: [ "Hover Boards" ], ids: [2145] }, # [PH] Goblin Surfboard
-      { name: Jet Aerial Units, wcm: [ Jet Aerial Units ] },
+      { name: "Hover Board", wcm: [ "Hover Boards" ], ids: [2145, 2334] }, # [PH] Goblin Surfboard, Bronze Goblin Waveshredder
+      { name: Jet Aerial Units, wcm: [ Jet Aerial Units ], ids: [2291, 2292, 2293,2294, 2295, 2487, 2507] }, # Salvaged Goblin Gazillionaire's Flying Machine, Margin Manipulator, Darkfuse Spy-Eye, Mean Green Flying Machine, Bilgewater Bombardier, The Big G, Prototype ASMR
       { name: Kites, wcm: [ Kites, Gliders ], ids: [ 1762 ] }, # Kalu'ak Whalebone Glider (classic)
-      { name: Mecha-suits, wcm: [ Flying Mecha-suits ]},
+      { name: Mecha-suits, wcm: [ Flying Mecha-suits ], ids: [2286, 2287, 2288, 2289, 2290]}, # Blackwater Shredder Deluxe MkII, Darkfuse Demolisher, Personalized Goblin SCRAPer, Venture Co-ordinator, Asset Advocator
       { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons ] },
       { name: Mechanostriders, wcm: [ Mechanostriders ] },
-      { name: Motorcycles, wcm: [ Motorcycles, Monocycles ], ids: [1715] }, # Armadillo Roller
-      { name: Rockets, wcm: [ Rockets ] },
+      { name: Motorcycles, wcm: [ Motorcycles, Monocycles ] },
+      { name: Rockets, wcm: [ Rockets ], ids: [2280, 2281, 2283, 2284]}, # The Topskimmer Special, Steamwheedle Supplier, Innovation Investigator, Ocher Delivery Rocket
       { name: Seat, wcm: [ Flying Seats ] },
-      { name: Spider Tanks, wcm: [ Spider Tanks, Flying Spider Tanks ] },
+      { name: Spider Tanks, wcm: [ Spider Tanks, Flying Spider Tanks ], ids: [2480, 2508] }, # Crimson & Enterprising Shreddertank
     ]
   },
   { name: Vombata, wcm: [ Wombats ], icons: [ progenitorwombat ] },
