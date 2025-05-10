@@ -7,7 +7,7 @@ pub struct LuaFile {
 
 impl LuaFile {
     pub fn new(file_path: String, variable: &str) -> Self {
-        let mut file = File::create(file_path).unwrap();
+        let file = File::create(file_path).unwrap();
 
         let mut s = Self { file };
         s.write_line("local _, ADDON = ...");
