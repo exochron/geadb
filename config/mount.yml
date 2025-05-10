@@ -53,10 +53,13 @@ ignored: [
   1823, # Swift Spectral Gryphon
   1952, # Soar, Dracthyr racial
   2115, # Soar, Dracthyr racial
+  2301, # Unstable Rocket
+  2302, # Unstable Rocket
 ]
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
 # try to keep naming in singular
+
 familymap: [
   { name: Amphibian,
     subfamily: [
@@ -78,7 +81,6 @@ familymap: [
       { name: Chickens, wcm: [ Chickens ] },
       { name: Cranes, wcm: [ Cranes ] },
       { name: Crows, wcm: [ Birds ], icons: [ roguemount, arcaneraven, suncrown, stormcrow ] },
-      { name: Dread Ravens, wcm: [ Birds ], icons: [ ravenlord, dreadraven ] },
       { name: Eagle, wcm: [ Birds ], icons: [ eagle ] },
       { name: Hawkstriders, wcm: [ Hawkstriders ] },
       { name: Mechanical Birds, wcm: [ Mechanical Birds ] },
@@ -89,6 +91,7 @@ familymap: [
       { name: Peafowl, wcm: [ Birds ], icons: [ peacock ], ids: [ 2036 ] }, # Brilliant Sunburst Peafowl
       { name: Phoenixes, wcm: [ Phoenixes ], ids: [1905, 2255, 2478] }, # Green Fire Hawk (classic), Al'ars golden Ash, Blazing Royal Fire Hawk
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
+      { name: Raven, wcm: [ Birds ], icons: [ ravenlord, dreadraven, ravenmount ] },
       { name: Roc, wcm: [ Deathrocs ] },
       { name: Tallstriders, wcm: [ Tallstriders ]},
       { name: Talonbirds, wcm: [ Talonbirds ] },
@@ -112,10 +115,11 @@ familymap: [
       { name: Foxes, wcm: [ Foxes ] },
       { name: Gargon, wcm: [ Gargons ] },
       { name: Hounds, wcm: [ Dogs, Core Hounds, Felstalkers, Darkhounds, Soulseekers ] },
-      { name: Hyenas, wcm: [ Hyenas ], ids: [2272, 2274, 2277] }, # Crimson Armored Growler, Blackwater Bonecrusher, Violet Armored Growler
+      { name: Hyenas, wcm: [ Hyenas ], ids: [2272, 2274, 2276, 2277] }, # Crimson Armored Growler, Blackwater Bonecrusher, Darkfuse Chompactor, Violet Armored Growler
       { name: Quilen, wcm: [ Quilen ] },
       { name: Vulpin, wcm: [ Vulpin ] },
       { name: Ottuk, wcm: [ Ottuks ] },
+      { name: Meeksi, wcm: [ Meeksi ], ids: [2342, 2343, 2344, 2345, 2346] },
     ]
   },
   { name: Cats,
@@ -124,11 +128,12 @@ familymap: [
       { name: Lions, wcm: [ Cats ], icons: [ lion, goldenking ], ids: [ 421 ] },                     # Winged Guardian
       { name: Manasabers, wcm: [ Cats ], icons: [ suramarmount, nightborneracial ], ids: [ 741 ] }, # Mystic Runesaber
       { name: Dreamsaber, wcm: [ Cats ], icons: [ dreamsaber ] },
+      { name: Lynx, wcm: [ Cats ], icons: [ arathilynxmount ]  },
       { name: Mechanical Cats, wcm: [ Mechanical Cats ] },
-      { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577, 2193, 2194, 2235 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar, Vermillion Imperial Lynx, Dauntless Imperial Lynx, Starlined Furline
+      { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577, 2235 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar, Starlined Furline
       { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth, nightsaberhorde ] , ids: [2199, 2200]}, # [PH] Nightsaber Horde Mount
       { name: Stone Cats, wcm: [ Flying Stone Cats ], ids: [ 421 ] }, # Winged Guardian
-      { name: Tigers, wcm: [ Cats, Undead Cats ], icons: [ monkmount, spectraltiger, siberiantiger, warnightsaber, jungletiger ] },
+      { name: Tigers, wcm: [ Cats, Undead Cats ], icons: [ monkmount, spectraltiger, siberiantiger, warnightsaber, jungletiger, shatiger ], ids: [2340] }, # Sha-Touched Riding Tiger (classic)
     ]
   },
   { name: Crabs, wcm: [ Crabs ] },
@@ -157,10 +162,10 @@ familymap: [
       { name: Raptors, wcm: [ Raptors, Undead Raptors ], icons: [ raptor ], ids: [ 2339 ] }, # Jani
     ]
   },
-  { name: Dragonhawks, wcm: [ Dragonhawks ] },
+  { name: Dragonhawks, wcm: [ Dragonhawks ], ids: [1471] }, # Vengeance
   { name: Drakes,
     subfamily: [
-      { name: Cloud Serpents, wcm: [ Cloud Serpents ] },
+      { name: Cloud Serpents, wcm: [ Cloud Serpents ], ids: [2341] }, # Sha-Touched Cloud Serpent (classic)
       { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ], ids: [ 1770, 1832, 2260 ] }, # Festering Emerald, Nightmarish Emerald, Lava Drake (all classic)
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ] },
@@ -199,19 +204,17 @@ familymap: [
     ]
   },
   { name: Gargoyle, wcm: [ Gargoyles ] },
+  { name: Hedgehog, wcm: [ Hedgehogs ] },
   { name: Horses,
     subfamily: [
       { name: Chargers,
         wcm: [ Horses ],
-        icons: [ _paladinmount_, _charger, nature_swiftness, alliancepvpmount, vicioushorse, paladin_divinesteed, horsekultiran, hordehorse ],
+        icons: [ _paladinmount_, _charger, nature_swiftness, alliancepvpmount, vicioushorse, paladin_divinesteed, horsekultiran, hordehorse, darkmoonhorse ],
         ids: [
           341, # Argent Warhorse
           344, # Crusader's White Warhorse
           345, # Crusader's Black Warhorse
-          2481, # Midnight Darkmoon Charger
-          2482, # Lively Darkmoon Charger
-          2483, # Violet Darkmoon Charger
-          2484, # Snowy Darkmoon Charger
+          2497, # Void-Forged Stallion
         ]
       },
       { name: Demonic Steeds,
@@ -333,10 +336,10 @@ familymap: [
       { name: Jet Aerial Units, wcm: [ Jet Aerial Units ], ids: [2291, 2292, 2293,2294, 2295, 2487, 2507] }, # Salvaged Goblin Gazillionaire's Flying Machine, Margin Manipulator, Darkfuse Spy-Eye, Mean Green Flying Machine, Bilgewater Bombardier, The Big G, Prototype ASMR
       { name: Kites, wcm: [ Kites, Gliders ], ids: [ 1762 ] }, # Kalu'ak Whalebone Glider (classic)
       { name: Mecha-suits, wcm: [ Flying Mecha-suits ], ids: [2286, 2287, 2288, 2289, 2290]}, # Blackwater Shredder Deluxe MkII, Darkfuse Demolisher, Personalized Goblin SCRAPer, Venture Co-ordinator, Asset Advocator
-      { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons ] },
+      { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons, Mechanical Devilsaurs ] },
       { name: Mechanostriders, wcm: [ Mechanostriders ] },
       { name: Motorcycles, wcm: [ Motorcycles, Monocycles ] },
-      { name: Rockets, wcm: [ Rockets ], ids: [2280, 2281, 2283, 2284]}, # The Topskimmer Special, Steamwheedle Supplier, Innovation Investigator, Ocher Delivery Rocket
+      { name: Rockets, wcm: [ Rockets ], ids: [2279, 2280, 2281, 2283, 2284]}, # Thunderdrum Misfire, The Topskimmer Special, Steamwheedle Supplier, Innovation Investigator, Ocher Delivery Rocket
       { name: Seat, wcm: [ Flying Seats ] },
       { name: Spider Tanks, wcm: [ Spider Tanks, Flying Spider Tanks ], ids: [2480, 2508] }, # Crimson & Enterprising Shreddertank
     ]
