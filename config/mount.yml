@@ -14,48 +14,47 @@ db_files:
   - ItemXItemEffect
   - Achievement
 
-ignored: [
-  7,    # Gray Wolf
-  15,   # Winter Wolf
-  28,   # Skeletal Horse
-  70,   # Riding Kodo
-  123,  # Nether Drake
-  238,  # Swift Spectral Gryphon
-  251,  # Black Polar Bear
-  273,  # Grand Caravan Mammoth
-  274,  # Grand Caravan Mammoth
-  308,  # Blue Skeletal Warhorse
-  333,  # Magic Rooster
-  334,  # Magic Rooster
-  335,  # Magic Rooster
-  776,  # Swift Spectral Rylak
-  786,  # Charger
-  934,  # Swift Spectral Hippogryph
-  987,  # Valorous Charger
-  989,  # Vengeful Charger
-  990,  # Vigilant Charger
-  991,  # Golden Charger
-  1269, # Swift Spectral Fathom Ray (inv_mount_hippogryph_arcane)
-  1270, # Swift Spectral Magnetocraft (inv_mount_hippogryph_arcane)
-  1271, # Swift Spectral Armored Gryphon (inv_mount_hippogryph_arcane)
-  1272, # Swift Spectral Pterrordax (inv_mount_hippogryph_arcane)
-  1578, # [DND] Test Mount JZB (ability_mount_travellersyakmount)
-  1605, # Dragon Isles Drake Model Test
-  1607, # Swift Spectral Drake
-  1608, # Soar, Dracthyr racial
-  1690, # Whelpling (dragonflying guest seat)
-  1771, # Highland Drake (dragonriding races mountType=426)
-  1786, # Renewed Proto-Drake (dragonriding races mountType=426)
-  1787, # Windborne Velocidrake (dragonriding races mountType=426)
-  1788, # Cliffside Wylderdrake (dragonriding races mountType=426)
-  1789, # Winding Slitherdrake (dragonriding races mountType=426)
-  1796, # Whelpling (dragonflying guest seat)
-  1823, # Swift Spectral Gryphon
-  1952, # Soar, Dracthyr racial
-  2115, # Soar, Dracthyr racial
-  2301, # Unstable Rocket
-  2302, # Unstable Rocket
-]
+ignored:
+  - 7    # Gray Wolf
+  - 15   # Winter Wolf
+  - 28   # Skeletal Horse
+  - 70   # Riding Kodo
+  - 123  # Nether Drake
+  - 238  # Swift Spectral Gryphon
+  - 251  # Black Polar Bear
+  - 273  # Grand Caravan Mammoth
+  - 274  # Grand Caravan Mammoth
+  - 308  # Blue Skeletal Warhorse
+  - 333  # Magic Rooster
+  - 334  # Magic Rooster
+  - 335  # Magic Rooster
+  - 776  # Swift Spectral Rylak
+  - 786  # Charger
+  - 934  # Swift Spectral Hippogryph
+  - 987  # Valorous Charger
+  - 989  # Vengeful Charger
+  - 990  # Vigilant Charger
+  - 991  # Golden Charger
+  - 1269 # Swift Spectral Fathom Ray (inv_mount_hippogryph_arcane)
+  - 1270 # Swift Spectral Magnetocraft (inv_mount_hippogryph_arcane)
+  - 1271 # Swift Spectral Armored Gryphon (inv_mount_hippogryph_arcane)
+  - 1272 # Swift Spectral Pterrordax (inv_mount_hippogryph_arcane)
+  - 1578 # [DND] Test Mount JZB (ability_mount_travellersyakmount)
+  - 1605 # Dragon Isles Drake Model Test
+  - 1607 # Swift Spectral Drake
+  - 1608 # Soar, Dracthyr racial
+  - 1690 # Whelpling (dragonflying guest seat)
+  - 1771 # Highland Drake (dragonriding races mountType=426)
+  - 1786 # Renewed Proto-Drake (dragonriding races mountType=426)
+  - 1787 # Windborne Velocidrake (dragonriding races mountType=426)
+  - 1788 # Cliffside Wylderdrake (dragonriding races mountType=426)
+  - 1789 # Winding Slitherdrake (dragonriding races mountType=426)
+  - 1796 # Whelpling (dragonflying guest seat)
+#  - 1823 # Swift Spectral Gryphon
+  - 1952 # Soar, Dracthyr racial
+  - 2115 # Soar, Dracthyr racial
+  - 2301 # Unstable Rocket
+  - 2302 # Unstable Rocket
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
 # try to keep naming in singular
@@ -79,7 +78,7 @@ familymap: [
     subfamily: [
       { name: Albatross, wcm: [ Birds ], icons: [ alabatross, albatross ] },
       { name: Chickens, wcm: [ Chickens ] },
-      { name: Cranes, wcm: [ Cranes ] },
+      { name: Cranes, wcm: [ Cranes ], ids: [ 2636 ] }, # Celestial Riding Crane
       { name: Crows, wcm: [ Birds ], icons: [ roguemount, arcaneraven, suncrown, stormcrow ] },
       { name: Eagle, wcm: [ Birds ], icons: [ eagle ] },
       { name: Hawkstriders, wcm: [ Hawkstriders ] },
@@ -92,7 +91,7 @@ familymap: [
       { name: Phoenixes, wcm: [ Phoenixes ], ids: [1905, 2255, 2478] }, # Green Fire Hawk (classic), Al'ars golden Ash, Blazing Royal Fire Hawk
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
       { name: Raven, wcm: [ Birds ], icons: [ ravenlord, dreadraven, ravenmount ] },
-      { name: Roc, wcm: [ Deathrocs ] },
+      { name: Roc, wcm: [ Deathrocs ], ids: [2505, 2549,2552] }, # K'arrocs
       { name: Tallstriders, wcm: [ Tallstriders ]},
       { name: Talonbirds, wcm: [ Talonbirds ] },
       { name: Vultures, wcm: [ Birds ], icons: [ vulture ] },
@@ -103,7 +102,8 @@ familymap: [
       { name: Clefthooves, wcm: [ Clefthooves ] },
       { name: Goats, wcm: [ Goats ] },
       { name: Rams, wcm: [ Rams ] },
-      { name: Ruinstriders, wcm: [ Talbuks ], icons: [ argustalbukmount, paladin_divinesteed, lightforgedtalbuk ] },
+      { name: Ruinstriders, wcm: [ Talbuks ], icons: [ argustalbukmount, paladin_divinesteed, lightforgedtalbuk ], ids: [2630] }, # Ornery Breezestrider
+      { name: Slateback, wcm: [ Slatebacks ], ids: [2560,2561,2655] },
       { name: Talbuks, wcm: [ Talbuks ], icons: [ foot_centaur, talbukdraenor ] },
       { name: Tauralus, wcm: [ Tauraluses ] },
       { name: Yaks, wcm: [ Yaks ] },
@@ -119,7 +119,7 @@ familymap: [
       { name: Quilen, wcm: [ Quilen ] },
       { name: Vulpin, wcm: [ Vulpin ] },
       { name: Ottuk, wcm: [ Ottuks ] },
-      { name: Meeksi, wcm: [ Meeksi ], ids: [2342, 2343, 2344, 2345, 2346] },
+      { name: Meeksi, wcm: [ Meeksi ], ids: [2513, 2514, 2515, 2516, 2517] },
     ]
   },
   { name: Cats,
@@ -133,7 +133,7 @@ familymap: [
       { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577, 2235 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar, Starlined Furline
       { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth, nightsaberhorde ] , ids: [2199, 2200]}, # [PH] Nightsaber Horde Mount
       { name: Stone Cats, wcm: [ Flying Stone Cats ], ids: [ 421 ] }, # Winged Guardian
-      { name: Tigers, wcm: [ Cats, Undead Cats ], icons: [ monkmount, spectraltiger, siberiantiger, warnightsaber, jungletiger, shatiger ], ids: [2340] }, # Sha-Touched Riding Tiger (classic)
+      { name: Tigers, wcm: [ Cats, Undead Cats ], icons: [ monkmount, spectraltiger, siberiantiger, warnightsaber, jungletiger, shatiger ], ids: [2340, 2638] }, # Sha-Touched Riding Tiger (classic), Celestial Riding Tiger
     ]
   },
   { name: Crabs, wcm: [ Crabs ] },
@@ -149,8 +149,8 @@ familymap: [
   { name: Devourer,
     subfamily: [
       { name: Animite, wcm: [ Animites ] },
-      { name: Gorger, wcm: [ Anima Gorgers ] },
-      { name: Mauler, wcm: [ Devourer Maulers ] },
+      { name: Gorger, wcm: [ Anima Gorgers ], ids: [ 2602 ] }, # Translocated Gorger
+      { name: Mauler, wcm: [ Devourer Maulers ], ids: [ 2603 ] }, # Sthaarbs's Last Lunch
     ]
   },
   { name: Dinosaurs,
@@ -165,8 +165,8 @@ familymap: [
   { name: Dragonhawks, wcm: [ Dragonhawks ], ids: [1471] }, # Vengeance
   { name: Drakes,
     subfamily: [
-      { name: Cloud Serpents, wcm: [ Cloud Serpents ], ids: [2341] }, # Sha-Touched Cloud Serpent (classic)
-      { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ], ids: [ 1770, 1832, 2260 ] }, # Festering Emerald, Nightmarish Emerald, Lava Drake (all classic)
+      { name: Cloud Serpents, wcm: [ Cloud Serpents ], ids: [2341, 2639] }, # Sha-Touched Cloud Serpent (classic), Celestial Riding Serpent
+      { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons ], ids: [ 1770, 1832, 2260, 2569, 2606 ] }, # Festering Emerald, Nightmarish Emerald, Lava Drake (all classic), Unbound Star-Eater, Royal Voidwing
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ] },
       { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ] },
@@ -189,7 +189,7 @@ familymap: [
   },
   { name: Feathermanes,
     subfamily: [
-      { name: Gryphons, wcm: [ Gryphons, Undead Gryphons ], ids: [ 2312 ] }, # Chaos-Born Gryphon (classic)
+      { name: Gryphons, wcm: [ Gryphons, Undead Gryphons ], ids: [ 2312,2626,2627,2628,2629 ] }, # Chaos-Born Gryphon (classic), Adorned Northeron Gryphon,, High Shaman's Aerie Gryphon, Cinder-Plumed Highland Gryphon, Emberwing Sky Guide
       { name: Hippogryphs, wcm: [ Hippogryphs ], ids: [ 2311 ] }, # Chaos-Born Hippogryph (classic)
       { name: Larion, wcm: [ Larions ] },
       { name: Wolfhawks, wcm: [ Wolfhawks ] },
@@ -225,7 +225,7 @@ familymap: [
           931, # Netherlord's Accursed Wrathsteed
         ]
       },
-      { name: Flying Steeds, wcm: [ Flying Steeds ] },
+      { name: Flying Steeds, wcm: [ Flying Steeds ], ids: [2622,2623,2624,2625] }, # The Headless Horseman's Chargers
       { name: Horned Steeds, wcm: [ Horned Steeds, Windsteeds ], ids: [2488] }, # Shimmermist Free Runner
       { name: Mechanical Steeds, wcm: [ Mechanical Steeds ] },
       { name: Mountain Horses,
@@ -254,8 +254,8 @@ familymap: [
       { name: Beetle, wcm: [ Beetles ] },
       { name: Gorm, wcm: [ Gorms ] },
       { name: Flies, wcm: [ Flies, Skitterflies ] },
-      { name: Krolusks, wcm: [ Krolusks ] },
-      { name: Moth, wcm: [ Moths ], ids: [2489, 2491, 2492, 2494] }, # Pearlescent Butterfly, Ruby Butterfly, Spring Butterfly, Midnight Butterfly
+      { name: Krolusks, wcm: [ Krolusks ], ids: [2601] }, # Pearlescent Krolusk
+      { name: Moth, wcm: [ Moths ] },
       { name: Others, wcm: [ Bees, Ravagers ] },
       { name: Silithids, wcm: [ Silithids ],
         ids: [
@@ -263,7 +263,9 @@ familymap: [
           935, # Blue Qiraji War Tank
         ] },
       { name: Skyrazor, wcm: [ Skyrazors ] },
-      { name: Water Striders, wcm: [ Water Striders ] },
+      { name: Void Creeper, ids: [2555, 2556,2557,2570,2571] }, # Bone Freezer, Ruby/Acidic/Vicious(2x) Void Creeper
+      { name: Void Flyer, ids: [2510, 2511,2631,2633] }, # Terror of the Wastes, Terror of the Night, Scarlet/azure Void Flyer
+      { name: Water Striders, wcm: [ Water Striders ], ids: [489,490, 491] }, # Orange, Jade and Golden Water Strider (mop classic)
       { name: Wasp, wcm: [ Wasps ] },
     ]
   },
@@ -287,7 +289,7 @@ familymap: [
     subfamily: [
       { name: Armoredon, wcm: [ Armoredons ], ids: [ 2055] }, # Infinite Armoredon
       { name: Basilisks, wcm: [ Basilisks ] },
-      { name: Crocolisks, wcm: [ Crocolisks ] },
+      { name: Crocolisks, wcm: [ Crocolisks, Flying Crocolisks ], ids: [2594] }, # Envoy of Sa'bak (classic)
       { name: Kodos, wcm: [ Kodos ], ids: [ 225, 1869, 1870] }, #Brewfest Riding Kodo, (Sunwalker Kodo classic)
       { name: Mushan, wcm: [ Mushan ] },
       { name: N'Zoth Serpents, wcm: [ N'Zoth Serpents ] },
@@ -311,10 +313,10 @@ familymap: [
       { name: Boars, wcm: [ Boars, Divine Boars, Skullboars ] },
       { name: Camels, wcm: [ Camels ] },
       { name: Cervid, wcm: [ Cervids ] },
-      { name: Elekks, wcm: [ Elekks ], ids: [1871, 1872] }, # Exarch's Elekk (classic)
+      { name: Elekks, wcm: [ Elekks ], ids: [1871, 1872, 2618, 2619, 2620, 2621] }, # Exarch's Elekk (classic), 11.2 Elekks
       { name: Mammoths, wcm: [ Mammoths ] },
       { name: Moose, wcm: [ Elderhorns, Bruffalons ] },
-      { name: Ox, wcm: [ Oxen ] },
+      { name: Ox, wcm: [ Oxen ], ids: [ 2637 ] }, # Celestial Riding Ox
       { name: Rhinos, wcm: [ Rhinos ] },
       { name: Riverbeasts, wcm: [ Riverbeasts ] },
       { name: Stag, wcm: [ Runestags, Dreamstags ] },
@@ -323,25 +325,25 @@ familymap: [
   { name: Vehicles,
     subfamily: [
       { name: Airplanes, wcm: [ Airplanes ] },
-      { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ], ids: [2296] }, # Delver's Gob-Trotter
+      { name: Airships, wcm: [ Skyships, Zeppelins, Flying Ships ], ids: [2512] }, # Delver's Mana-Skimmer
       { name: Assault Wagons, wcm: [ Assault Wagons ] },
       { name: Book, wcm: [ Books ] },
       { name: Broom, wcm: [ Magical Broomsticks ] },
       { name: Carpets, wcm: [ Flying Carpets ] },
-      { name: Discs, wcm: [ Discs ] },
-      { name: Gyrocopters, wcm: [ Gyrocopters ] },
+      { name: Discs, wcm: [ Discs ], ids: [1482, 1483] }, # Xy & Vandal's Gearglider
+      { name: Gyrocopters, wcm: [ Gyrocopters ], ids: [2640] }, # Brewfest Bomber
       { name: Hands, wcm: [ Undead Hands ] },
       { name: Hovercraft, wcm: [ Hovercraft ] },
-      { name: "Hover Board", wcm: [ "Hover Boards" ], ids: [2145, 2334] }, # [PH] Goblin Surfboard, Bronze Goblin Waveshredder
-      { name: Jet Aerial Units, wcm: [ Jet Aerial Units ], ids: [2291, 2292, 2293,2294, 2295, 2487, 2507] }, # Salvaged Goblin Gazillionaire's Flying Machine, Margin Manipulator, Darkfuse Spy-Eye, Mean Green Flying Machine, Bilgewater Bombardier, The Big G, Prototype ASMR
+      { name: "Hover Board", wcm: [ "Hover Boards", "Flying Chessboards" ] },
+      { name: Jet Aerial Units, wcm: [ Jet Aerial Units ] },
       { name: Kites, wcm: [ Kites, Gliders ], ids: [ 1762 ] }, # Kalu'ak Whalebone Glider (classic)
-      { name: Mecha-suits, wcm: [ Flying Mecha-suits ], ids: [2286, 2287, 2288, 2289, 2290]}, # Blackwater Shredder Deluxe MkII, Darkfuse Demolisher, Personalized Goblin SCRAPer, Venture Co-ordinator, Asset Advocator
+      { name: Mecha-suits, wcm: [ Flying Mecha-suits ] },
       { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons, Mechanical Devilsaurs ] },
       { name: Mechanostriders, wcm: [ Mechanostriders ] },
       { name: Motorcycles, wcm: [ Motorcycles, Monocycles ] },
-      { name: Rockets, wcm: [ Rockets ], ids: [2279, 2280, 2281, 2283, 2284]}, # Thunderdrum Misfire, The Topskimmer Special, Steamwheedle Supplier, Innovation Investigator, Ocher Delivery Rocket
+      { name: Rockets, wcm: [ Rockets ] },
       { name: Seat, wcm: [ Flying Seats ] },
-      { name: Spider Tanks, wcm: [ Spider Tanks, Flying Spider Tanks ], ids: [2480, 2508] }, # Crimson & Enterprising Shreddertank
+      { name: Spider Tanks, wcm: [ Spider Tanks, Flying Spider Tanks ] },
     ]
   },
   { name: Vombata, wcm: [ Wombats ], icons: [ progenitorwombat ] },
