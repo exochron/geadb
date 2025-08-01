@@ -1,6 +1,6 @@
 use crate::mount::wcm::{load_wcm_black_market_mounts, load_wcm_retired_mounts};
 use crate::mount::Mount;
-use crate::tools::{build_http, http_get_with_client};
+use crate::tools::{build_http, http_get_with_client, ProductVersion};
 use regex::Regex;
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -51,11 +51,17 @@ pub fn collect_unavailable_mounts(mounts: &BTreeMap<u32, Mount>) -> Vec<u32> {
     filter_mounts_by_names(mounts, load_wcm_retired_mounts())
 }
 
-pub fn collect_drop_mounts(mounts: &BTreeMap<u32, Mount>) -> BTreeMap<u32, DropData> {
+pub fn collect_drop_mounts(mounts: &BTreeMap<u32, Mount>, game_version: &ProductVersion) -> BTreeMap<u32, DropData> {
     let listview_reg = Regex::new("(?s)new Listview\\(\\{\\s*?template: 'npc',\\s*?id: 'dropped-by',.*?data: (\\[.*?\\]),\\s*?\\}\\)").unwrap();
     let mapper_reg = Regex::new("(?i)var g_mapperData = (\\{.*?\\});").unwrap();
 
     let http_client = build_http();
+    
+    let head_server = match (game_version) {
+        ProductVersion::Ptr => "ptr/",
+        ProductVersion::XPtr => "ptr-2/",
+        _ => "",
+    };
 
     let mut result = BTreeMap::new();
     for (_, mount) in mounts.iter() {
@@ -73,7 +79,7 @@ pub fn collect_drop_mounts(mounts: &BTreeMap<u32, Mount>) -> BTreeMap<u32, DropD
         {
             let item_html = http_get_with_client(
                 &http_client,
-                format!("https://www.wowhead.com/item={}", mount.item_id.unwrap()).as_str(),
+                format!("https://www.wowhead.com/{}item={}",head_server, mount.item_id.unwrap()).as_str(),
             );
             let listviews = listview_reg.captures_iter(item_html.as_str());
             let listviews2 = listview_reg.captures_iter(item_html.as_str());
@@ -110,7 +116,7 @@ pub fn collect_drop_mounts(mounts: &BTreeMap<u32, Mount>) -> BTreeMap<u32, DropD
                         let mut map_position = None;
                         let npc_html = http_get_with_client(
                             &http_client,
-                            format!("https://www.wowhead.com/npc={}", npc_id).as_str(),
+                            format!("https://www.wowhead.com/{}npc={}", head_server, npc_id).as_str(),
                         );
                         for position_data in mapper_reg.captures_iter(npc_html.as_str()) {
                             let position_data: Value =
