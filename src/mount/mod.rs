@@ -1,6 +1,5 @@
-use std::collections::{BTreeMap, HashMap};
-
 use regex::Regex;
+use std::collections::{BTreeMap, HashMap};
 
 use crate::mount::condition::{parse_conditions, Condition};
 use crate::mount::customization::collect_customization;
@@ -77,7 +76,7 @@ pub fn handle_mounts(game_version: ProductVersion) {
         &mounts,
         collect_black_market_mounts(&mounts),
         collect_unavailable_mounts(&mounts),
-        collect_drop_mounts(&mounts),
+        collect_drop_mounts(&mounts, &build_version.product),
     );
     exporter.export_colors(
         &mounts,

@@ -92,6 +92,7 @@ pub enum ProductVersion {
     XPtr,
     Classic,
     ClassicPtr,
+    ClassicBeta,
 }
 
 impl ProductVersion {
@@ -102,6 +103,7 @@ impl ProductVersion {
             ProductVersion::XPtr => "wowxptr",
             ProductVersion::Classic => "wow_classic",
             ProductVersion::ClassicPtr => "wow_classic_ptr",
+            ProductVersion::ClassicBeta => "wow_classic_beta",
         }
     }
 
