@@ -1,40 +1,10 @@
 services:
-  extract_mount_db:
-    profiles: [ old_tool ]
-    build:
-      context: docker
-      dockerfile: simc_casc_extract.Dockerfile
-    volumes:
-      - ./extract:/out
-      - ./cache:/cache:delegated
-    entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/mountfiles.txt
-  extract_files:
-    profiles: [ old_tool ]
-    build:
-      context: docker
-      dockerfile: simc_casc_extract.Dockerfile
-    volumes:
-      - ./extract:/out
-      - ./cache:/cache:delegated
-    entrypoint: python casc_extract.py --cache /cache --output /out --cdn --mode batch --dbfile /out/download.txt
-
-  convert_dbs:
-    profiles: [ old_tool ]
-    build:
-      context: docker
-      dockerfile: dbc2csv.Dockerfile
-    volumes:
-      - ./extract:/out
-      - "${WOW_DIR}/_retail_/Cache/ADB/deDE/DBCache.bin:/game/DBCache.bin:ro"
-      - "${WOW_DIR}/_ptr_/Cache/ADB/enUS/DBCache.bin:/game/ptr.bin:ro"
-      - "${WOW_DIR}/_xptr_/Cache/ADB/enUS/DBCache.bin:/game/xptr.bin:ro"
-      - "${WOW_DIR}/_classic_/Cache/ADB/enUS/DBCache.bin:/game/classic.bin:ro"
-    command: [ "/game/DBCache.bin", "/out/10.1.0.49318/DBFilesClient" ]
-
   wow_tools:
     build:
       context: docker
       dockerfile: wowtools.Dockerfile
+    environment:
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     ports:
       - "5000:8080"
     volumes:
@@ -45,6 +15,8 @@ services:
     build:
       context: docker
       dockerfile: wowtools.Dockerfile
+    environment:
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     ports:
       - "5001:8080"
     volumes:
