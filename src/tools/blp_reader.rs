@@ -1,7 +1,7 @@
 use image::{DynamicImage, GenericImageView};
-use image_blp::convert::blp_to_image;
-use image_blp::parser::load_blp;
 use palette::{IntoColor, Lab, Srgb};
+use wow_blp::convert::blp_to_image;
+use wow_blp::parser::load_blp;
 
 pub(crate) struct BLPReader {
     image: DynamicImage,
