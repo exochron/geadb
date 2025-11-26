@@ -137,9 +137,11 @@ pub fn collect_dominant_colors(
                     if Path::new(&format!("extract/{}/{}", build_version.version, file_path))
                         .exists()
                     {
-                        let mut file_pixels =
-                            BLPReader::new(&build_version.version, file_path).convert_to_lab();
-                        pixels.append(&mut file_pixels);
+                        let blp = BLPReader::new(&build_version.version, file_path);
+                        if blp.is_ok() {
+                            let mut file_pixels = blp.unwrap().convert_to_lab();
+                            pixels.append(&mut file_pixels);
+                        }
                     }
                 }
 
