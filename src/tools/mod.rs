@@ -21,7 +21,7 @@ pub fn load_config(file_name: &str) -> Value {
 
 pub(crate) fn build_http() -> Client {
     let builder = ClientBuilder::new();
-    builder.timeout(Duration::from_secs(500)).build().unwrap()
+    builder.user_agent("Mozilla/5.0 (X11; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0").timeout(Duration::from_secs(500)).build().unwrap()
 }
 
 pub(crate) fn http_get_with_client(client: &Client, url: &str) -> String {
