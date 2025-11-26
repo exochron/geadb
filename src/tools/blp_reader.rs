@@ -1,20 +1,17 @@
 use image::{DynamicImage, GenericImageView};
 use palette::{IntoColor, Lab, Srgb};
 use wow_blp::convert::blp_to_image;
-use wow_blp::parser::load_blp;
+use wow_blp::parser::{load_blp, LoadError};
 
 pub(crate) struct BLPReader {
     image: DynamicImage,
 }
 
 impl BLPReader {
-    pub(crate) fn new(build_version: &String, file_path: &String) -> Self {
+    pub(crate) fn new(build_version: &String, file_path: &String) -> Result<Self, LoadError> {
         let file_path = r"extract/".to_owned() + build_version + r"/" + file_path;
-        let blp_file =
-            load_blp(file_path.clone()).expect(format!("loaded blp: {}", file_path).as_str());
-        let image = blp_to_image(&blp_file, 0).expect("converted");
-
-        Self { image }
+        load_blp(file_path.clone()).map(|blp| blp_to_image(&blp, 0).expect("converted"))
+                .map(|blp| Self{image: blp})
     }
 
     pub(crate) fn convert_to_lab(&self) -> Vec<Lab> {

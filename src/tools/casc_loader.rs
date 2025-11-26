@@ -20,7 +20,7 @@ pub fn load_dbs(config: &Value, build_info: &BuildInfo) {
         .to_string();
 
         let url = format!(
-            "{}/dbc/export/?name={}&build={}&useHotfixes=true",
+            "{}/dbc/export/?name={}&build={}&locale=enUS&useHotfixes=true",
             wow_tools_url,
             db_file.to_lowercase(),
             build_info.version
