@@ -55,6 +55,8 @@ ignored:
   - 2115 # Soar, Dracthyr racial
   - 2301 # Unstable Rocket
   - 2302 # Unstable Rocket
+  - 2595 # Swift Spectral Dragonhawk
+  - 2805 # Spectral Hawkstrider
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
 # try to keep naming in singular
@@ -73,22 +75,29 @@ familymap: [
       { name: Spiders, wcm: [ Spiders ] },
     ]
   },
-  { name: Bats, wcm: [ Bats, Felbats ], ids: [2309] }, # Chaos-Born Dreadwing (classic)
+  { name: Bats,
+      subfamily: [
+        { name: Bats, wcm: [ Bats ], ids: [ 2309 ] }, # Chaos-Born Dreadwing (classic)
+        { name: Felbat, wcm: [ Felbats ], ids: [2764, 2827, 2831] }, # Duskbrute, & Sanguine & Tenebrous Harrower (12.0)
+      ]
+  },
   { name: Birds,
     subfamily: [
       { name: Albatross, wcm: [ Birds ], icons: [ alabatross, albatross ] },
+      { name: Carrion, wcm: [ Amani Carrion Birds ] },
       { name: Chickens, wcm: [ Chickens ] },
       { name: Cranes, wcm: [ Cranes ], ids: [ 2636 ] }, # Celestial Riding Crane
       { name: Crows, wcm: [ Birds ], icons: [ roguemount, arcaneraven, suncrown, stormcrow ] },
-      { name: Eagle, wcm: [ Birds ], icons: [ eagle ] },
-      { name: Hawkstriders, wcm: [ Hawkstriders ] },
+      { name: Eagle, wcm: [ Birds ], icons: [ eagle ], ids: [2693, 2694, 2760] }, # Amani Sunfeather (12.0), Amani Windcaller (12.0), Amani Sharptalon (12.0)
+      { name: Hawkstriders, wcm: [ Hawkstriders ], ids: [2761, 2762, 2817] }, # Crimson Silvermoon & Cerulean & Lucent Hawkstrider (12.0)
       { name: Mechanical Birds, wcm: [ Mechanical Birds ] },
       { name: Owl, wcm: [ Owls ] },
       { name: Owlbear, wcm: [ Owlbears ] },
       { name: Pandaren Phoenixes, wcm: [ Birds ], icons: [ pandarenphoenix, ji-kun, thunderislebirdboss ] },
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ], ids: [ 2147 ] }, # Polly Roger (classic)
+      { name: Petalwing, wcm: [ Petalwings ]},
       { name: Peafowl, wcm: [ Birds ], icons: [ peacock ] },
-      { name: Phoenixes, wcm: [ Phoenixes ], ids: [2250, 2255, 2478, 2485] }, # Golden Ashes of Al'ar, Al'ars golden Ash, Blazing Royal Fire Hawk, Flaming Royal Fire Hawk (classic)
+      { name: Phoenixes, wcm: [ Phoenixes ], ids: [2250, 2255, 2478, 2485] }, # Golden Ashes of Al'ar, Al'ars golden Ash, Blazing Royal Fire Hawk, Flaming Royal Fire Hawk (all classic)
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
       { name: Raven, wcm: [ Birds ], icons: [ ravenlord, dreadraven, ravenmount ], ids: [2547, 2548] }, #  Prophet's & Archmage's Great Crow (classic)
       { name: Roc, wcm: [ Deathrocs, Rocs ] },
@@ -112,7 +121,7 @@ familymap: [
   },
   { name: Carnivorans,
     subfamily: [
-      { name: Bears, wcm: [ Bears ], ids: [2251, 2262]}, # Harmonious Greetings Bear (classic), Harmonious Salutations Bear
+      { name: Bears, wcm: [ Bears ], ids: [2251, 2262, 2776, 2778]}, # Harmonious Greetings Bear (classic), Harmonious Salutations Bear, Amani Blessed Bear (12.0), Ancestral War Bear (12.0)
       { name: Foxes, wcm: [ Foxes ] },
       { name: Gargon, wcm: [ Gargons ] },
       { name: Hounds, wcm: [ Dogs, Core Hounds, Felstalkers, Darkhounds, Soulseekers ] },
@@ -129,7 +138,7 @@ familymap: [
       { name: Lions, wcm: [ Cats ], icons: [ lion, goldenking ], ids: [ 421 ] },                     # Winged Guardian
       { name: Manasabers, wcm: [ Cats ], icons: [ suramarmount, nightborneracial ], ids: [ 741, 2670 ] }, # Mystic Runesaber, Arcberry Manasaber
       { name: Dreamsaber, wcm: [ Cats ], icons: [ dreamsaber ] },
-      { name: Lynx, wcm: [ Cats ], icons: [ arathilynxmount ]  },
+      { name: Lynx, wcm: [ Cats ], icons: [ arathilynxmount ] },
       { name: Mechanical Cats, wcm: [ Mechanical Cats ], ids: [2717,2718] }, # Mechanical & Steel Prototype Panther MK-0 (chinese)
       { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577, 2235 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar, Starlined Furline
       { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth, nightsaberhorde ] , ids: [2199, 2200]}, # [PH] Nightsaber Horde Mount
@@ -166,12 +175,12 @@ familymap: [
   { name: Dragonhawks, wcm: [ Dragonhawks ] },
   { name: Drakes,
     subfamily: [
-      { name: Cloud Serpents, wcm: [ Cloud Serpents ], ids: [2341, 2639] }, # Sha-Touched Cloud Serpent (classic), Celestial Riding Serpent
+      { name: Cloud Serpents, wcm: [ Cloud Serpents ], ids: [2341, 2639, 2749] }, # Sha-Touched Cloud Serpent (classic), Celestial Riding Serpent, Echo of Aln'sharan (12.0)
       { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons, Dragons ], ids: [ 1770, 1832, 2260, 2646, 2647 ] }, # Festering Emerald, Nightmarish Emerald, Lava Drake, Sha-scarred Drake, Ashened Cataclysm (all classic)
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ], ids: [2830] }, #Starshard Netherdrake (classic)
-      { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Greatwyrms, Wyvern Drakes, Pterrordax Drakes ] },
-      { name: Proto-Drakes, wcm: [ Proto-Drakes ], },
+      { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Wyvern Drakes, Pterrordax Drakes ] },
+      { name: Proto-Drakes, wcm: [ Proto-Drakes ] },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Undead Drakes, wcm: [ Undead Drakes, Soul Eaters ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
@@ -184,7 +193,7 @@ familymap: [
       { name: Sabers, wcm: [ Flamesabers ] },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
-      { name: Sporebat, wcm: [ Shalewings ] },
+      { name: Shalewing, wcm: [ Shalewings ] },
       { name: Others, wcm: [ Elementals, Ancients ], ids: [ 1807 ] }, # Avatar of Flame (classic)
     ]
   },
@@ -210,7 +219,7 @@ familymap: [
     subfamily: [
       { name: Chargers,
         wcm: [ Horses ],
-        icons: [ _paladinmount_, _charger, nature_swiftness, alliancepvpmount, vicioushorse, paladin_divinesteed, horsekultiran, hordehorse, darkmoonhorse ],
+        icons: [ _paladinmount_, _charger, nature_swiftness, alliancepvpmount, vicioushorse, paladin_divinesteed, horsekultiran, hordehorse, darkmoonhorse, knightcharger ],
         ids: [
           341, # Argent Warhorse
           344, # Crusader's White Warhorse
@@ -272,18 +281,20 @@ familymap: [
     ]
   },
   { name: Jellyfish, wcm: [ Fathom Dwellers, Hiveminds, Aurelids ] },
-  { name: Mole, wcm: [ Moles ] },
   { name: Mollusc,
     subfamily: [
       { name: Snail, wcm: [ Snails ] },
       { name: Slug, wcm: [ Slugs ] },
     ] },
+  { name: Pangolin, ids: [2772, 2775] },#  Blessed Amani Burrower (12.0), Witherbark Pango (12.0)
+  { name: Plant, wcm: [Animated Plants, Ancients] },
   { name: Rays,
     subfamily: [
       { name: Fathom Rays, wcm: [ Fathom Rays ] },
       { name: Mana Rays, wcm: [ Mana Rays ] },
       { name: Nether Rays, wcm: [ Nether Rays ] },
       { name: Stingrays, wcm: [ Stingrays ] },
+      { name: Shalewing, wcm: [ Shalewings ] },
     ]
   },
   { name: Razorwing, wcm: [ Razorwings ] },
@@ -293,6 +304,7 @@ familymap: [
       { name: Basilisks, wcm: [ Basilisks ] },
       { name: Crocolisks, wcm: [ Crocolisks, Flying Crocolisks ], ids: [2594] }, # Envoy of Sa'bak (classic)
       { name: Kodos, wcm: [ Kodos ], ids: [ 225] }, #Brewfest Riding Kodo
+      { name: Mana Wyrm, wcm: [Greatwyrms], ids: [2769, 2770, 2771] }, # Preyseeker's Hubris & Wrath & Nightmare (12.0)
       { name: Mushan, wcm: [ Mushan ] },
       { name: N'Zoth Serpents, wcm: [ N'Zoth Serpents ] },
       { name: Sea Serpents, wcm: [ Sea Serpents ] },
@@ -300,15 +312,17 @@ familymap: [
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ] },
       { name: Thunder Lizard, wcm: [ Thunder Lizards ] },
-      { name: Others, wcm: [ Warp Stalkers, Newts, Flying Snakes ], ids: [ 1761, 2844 ] }, # Reawakened Phase-Hunter (classic), Cerulean Phase-Hunter (classic)
+      { name: Others, wcm: [ Warp Stalkers, Newts, Flying Snakes, Grove Crawlers, Amazards ], ids: [ 1761, 2844 ] }, # Reawakened Phase-Hunter (classic), Cerulean Phase-Hunter (classic)
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
   { name: Rodent,
     subfamily: [
+      { name: Mole, wcm: [ Moles ] },
       { name: Rats, wcm: [ Rats, Mawrats ] },
       { name: Rabbit, wcm: [ Rabbits ], ids: [ 1769 ] }, # Hao-Yue (classic)
     ] },
+  { name: Sporebat, wcm: [ Sporebats ] },
   { name: Ungulates,
     subfamily: [
       { name: Alpacas, wcm: [ Alpacas ] },
