@@ -1,9 +1,12 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0
+FROM debian:stable-slim
 
-RUN git clone --depth 1 --no-tags --single-branch https://github.com/Marlamin/wow.tools.local.git /app
+RUN apt-get update && apt-get install -y curl unzip
+
+RUN mkdir /app
 WORKDIR /app
-RUN git submodule update --init --recursive --depth 1
-RUN dotnet publish -c Release -o /app --framework net10.0 --property:WarningLevel=0
+RUN curl -sLO "https://github.com/Marlamin/wow.tools.local/releases/latest/download/Release-linux-x64.zip"
+RUN unzip -d . Release-linux-x64.zip
+RUN rm Release-linux-x64.zip
 
 HEALTHCHECK CMD curl -f http://127.0.0.1:8080/builds/ || exit 1
 
