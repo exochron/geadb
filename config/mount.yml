@@ -56,7 +56,8 @@ ignored:
   - 2301 # Unstable Rocket
   - 2302 # Unstable Rocket
   - 2595 # Swift Spectral Dragonhawk
-  - 2805 # Spectral Hawkstrider
+  - 2969 # Swift Spectral Gryphon
+  - 2716 # (PH) Legion Remix Mount
 
 # family based on http://www.warcraftmounts.com/gallery.php + https://warcraft.wiki.gg/wiki/Beast
 # try to keep naming in singular
@@ -88,8 +89,8 @@ familymap: [
       { name: Chickens, wcm: [ Chickens ] },
       { name: Cranes, wcm: [ Cranes ], ids: [ 2636 ] }, # Celestial Riding Crane
       { name: Crows, wcm: [ Birds ], icons: [ roguemount, arcaneraven, suncrown, stormcrow ], ids: [2914] }, # Fel Spirehawk (12.0)
-      { name: Eagle, wcm: [ Eagles ] },
-      { name: Hawkstriders, wcm: [ Hawkstriders ] },
+      { name: Eagle, wcm: [ Eagles ], ids: [2939, 2942] }, # [PH] Giant Eagle Sunwalker Mount (2x)
+      { name: Hawkstriders, wcm: [ Hawkstriders ], ids: [146, 152, 157, 158, 159, 160, 161] },
       { name: Mechanical Birds, wcm: [ Mechanical Birds ], ids: [2796] }, # Bronzeaquilon (12.0)
       { name: Owl, wcm: [ Owls ] },
       { name: Owlbear, wcm: [ Owlbears ] },
@@ -97,11 +98,11 @@ familymap: [
       { name: Parrots, wcm: [ Birds ], icons: [ parrot ], ids: [ 2147 ] }, # Polly Roger (classic)
       { name: Petalwing, wcm: [ Petalwings ]},
       { name: Peafowl, wcm: [ Birds ], icons: [ peacock ] },
-      { name: Phoenixes, wcm: [ Phoenixes ], ids: [2250, 2255, 2478, 2485] }, # Golden Ashes of Al'ar, Al'ars golden Ash, Blazing Royal Fire Hawk, Flaming Royal Fire Hawk (all classic)
+      { name: Phoenixes, wcm: [ Phoenixes ], ids: [2250, 2255, 2478, 2485, 2607] }, # Golden Ashes of Al'ar, Al'ars golden Ash, Blazing Royal Fire Hawk, Flaming Royal Fire Hawk (all classic), Ashes of Beloren
       { name: Raptora, wcm: [ Birds ], icons: [ progenitorhawk ] },
       { name: Raven, wcm: [ Birds ], icons: [ ravenlord, dreadraven, ravenmount ], ids: [2547, 2548] }, #  Prophet's & Archmage's Great Crow (classic)
       { name: Roc, wcm: [ Deathrocs, Rocs ] },
-      { name: Tallstriders, wcm: [ Tallstriders ]},
+      { name: Tallstriders, wcm: [ Tallstriders ], ids: [430]},
       { name: Talonbirds, wcm: [ Talonbirds ] },
       { name: Turkey, wcm: [ Turkeys ] },
       { name: Vultures, wcm: [ Birds ], icons: [ vulture ] },
@@ -126,7 +127,7 @@ familymap: [
       { name: Gargon, wcm: [ Gargons ] },
       { name: Hounds, wcm: [ Dogs, Core Hounds, Felstalkers, Darkhounds, Soulseekers, Shredclaws ] },
       { name: Hyenas, wcm: [ Hyenas ] },
-      { name: Quilen, wcm: [ Quilen ] },
+      { name: Quilen, wcm: [ Quilen ], ids: [2946] }, # Scorching Imperial Quilen (classic)
       { name: Vulpin, wcm: [ Vulpin ] },
       { name: Ottuk, wcm: [ Ottuks ] },
       { name: Meeksi, wcm: [ Meeksi ], ids: [2513, 2514, 2515, 2516, 2517] },
@@ -138,7 +139,7 @@ familymap: [
       { name: Lions, wcm: [ Cats ], icons: [ lion, goldenking ], ids: [ 421 ] },                     # Winged Guardian
       { name: Manasabers, wcm: [ Cats ], icons: [ suramarmount, nightborneracial ], ids: [ 741, 2670 ] }, # Mystic Runesaber, Arcberry Manasaber
       { name: Dreamsaber, wcm: [ Cats ], icons: [ dreamsaber ] },
-      { name: Lynx, wcm: [ Cats ], icons: [ arathilynxmount, harronircat ] },
+      { name: Lynx, wcm: [ Cats ], icons: [ arathilynxmount, harronircat ], ids: [2965] }, # Void-Corrupted Lynx
       { name: Mechanical Cats, wcm: [ Mechanical Cats ], ids: [2717,2718] }, # Mechanical & Steel Prototype Panther MK-0 (chinese)
       { name: Others, wcm: [ Flamesabers, Panthara, Felsabers, Undead Cats ], ids: [ 1330, 1531, 1576, 1577, 2235 ] }, # Sunwarmed Furline, Wen Lo, Jigglesworth Sr., Ash'adar, Starlined Furline
       { name: Sabers, wcm: [ Cats ], icons: [ blackpanther, whitetiger, pinktiger, nightsaber2, saber3mount, sabertooth, nightsaberhorde ] , ids: [2199, 2200]}, # [PH] Nightsaber Horde Mount
@@ -176,7 +177,18 @@ familymap: [
   { name: Drakes,
     subfamily: [
       { name: Cloud Serpents, wcm: [ Cloud Serpents ], ids: [2341, 2639] }, # Sha-Touched Cloud Serpent (classic), Celestial Riding Serpent
-      { name: Drakes, wcm: [ Drakes, Onyxian Drakes, Void Dragons, Dragons ], ids: [ 1770, 1832, 2260, 2646, 2647 ] }, # Festering Emerald, Nightmarish Emerald, Lava Drake, Sha-scarred Drake, Ashened Cataclysm (all classic)
+      { name: Drakes,
+        wcm: [ Drakes, Onyxian Drakes, Void Dragons, Dragons ],
+        ids: [
+          1770, # Festering Emerald (classic)
+          1832, # Nightmarish Emerald (classic)
+          2260, # Lava Drake (classic)
+          2646, # Sha-scarred Drake (classic)
+          2647, # Ashened Cataclysm (classic)
+          2936, # Golden Ashened Cataclysm (classic)
+          2948, # Golden Ashened Cataclysm (china)
+        ]
+      },
       { name: Grand Drakes, wcm: [ Grand Drakes ] },
       { name: Nether Drakes, wcm: [ Nether Drakes ], ids: [16, 2830] }, # Lost Nether Drake; Starshard Netherdrake (classic)
       { name: Others, wcm: [ Sinuous Drakes, Fey Drakes, Everwyrms, Mechanical Dragons, Wyvern Drakes, Pterrordax Drakes ] },
@@ -189,7 +201,7 @@ familymap: [
   { name: Elementals,
     subfamily: [
       { name: Core Hounds, wcm: [ Core Hounds ] },
-      { name: Phoenixes, wcm: [ Phoenixes ], ids: [2250, 2255, 2478, 2485] }, # Golden Ashes of Al'ar, Al'ars golden Ash, Blazing Royal Fire Hawk, Flaming Royal Fire Hawk (classic)
+      { name: Phoenixes, wcm: [ Phoenixes ], ids: [2250, 2255, 2478, 2485, 2607] }, # Golden Ashes of Al'ar, Al'ars golden Ash, Blazing Royal Fire Hawk, Flaming Royal Fire Hawk (classic); Ashes of Beloren
       { name: Sabers, wcm: [ Flamesabers ] },
       { name: Stone Drakes, wcm: [ Stone Drakes ] },
       { name: Wind Drakes, wcm: [ Wind Drakes ] },
@@ -219,8 +231,10 @@ familymap: [
     subfamily: [
       { name: Chargers,
         wcm: [ Horses ],
-        icons: [ _paladinmount_, _charger, nature_swiftness, alliancepvpmount, vicioushorse, paladin_divinesteed, horsekultiran, hordehorse, darkmoonhorse, knightcharger ],
+        icons: [ _paladinmount_, _charger, nature_swiftness, alliancepvpmount, vicioushorse, paladin_divinesteed, horsekultiran, hordehorse, darkmoonhorse, knightcharger, gilneashorse ],
         ids: [
+          84, # Charger
+          149, # Thalassian Charger
           341, # Argent Warhorse
           344, # Crusader's White Warhorse
           345, # Crusader's Black Warhorse
@@ -256,24 +270,26 @@ familymap: [
       { name: Gronnlings, wcm: [ Gronnlings ] },
       { name: Gorger, wcm: [ Anima Gorgers ] },
       { name: Murloc, wcm: [ Murlocs ] },
+      { name: Primate, wcm: [ Flying Primates ] },
       { name: Yetis, wcm: [ Yeti ] },
     ]
   },
   { name: Insects,
     subfamily: [
       { name: Aqir Flyers, wcm: [ Aqir Flyers ] },
+      { name: Bee, wcm: [ Bees ] },
       { name: Beetle, wcm: [ Beetles ] },
       { name: Gorm, wcm: [ Gorms ] },
       { name: Flies, wcm: [ Flies, Skitterflies ], ids: [2797] }, # Bronze Corpsefly (12.0)
       { name: Krolusks, wcm: [ Krolusks ] },
       { name: Moth, wcm: [ Moths ] },
-      { name: Others, wcm: [ Bees, Ravagers ] },
+      { name: Others, wcm: [ Ravagers ] },
       { name: Silithids, wcm: [ Silithids ],
         ids: [
           936, # Red Qiraji War Tank
           935, # Blue Qiraji War Tank
         ] },
-      { name: Skyrazor, wcm: [ Skyrazors ] },
+      { name: Skyrazor, wcm: [ Skyrazors ], ids: [2220] }, # Retrained Skyrazor
       { name: Void Creeper, wcm: [ Void Creepers ] },
       { name: Void Flyer, wcm: [ Void Swarmers ] },
       { name: Water Striders, wcm: [ Water Striders ], ids: [489,490, 491] }, # Orange, Jade and Golden Water Strider (mop classic)
@@ -313,7 +329,7 @@ familymap: [
       { name: Shardhides, wcm: [ Shardhides ] },
       { name: Turtles, wcm: [ Dragon Turtles, Sea Turtles, Turtles ] },
       { name: Thunder Lizard, wcm: [ Thunder Lizards ] },
-      { name: Others, wcm: [ Warp Stalkers, Newts, Flying Snakes, Grove Crawlers, Amazards, Grove Crawlers ], ids: [ 1761, 2747, 2844 ] }, # Reawakened Phase-Hunter (classic), Untainted Grove Crawler (12.0), Cerulean Phase-Hunter (classic)
+      { name: Others, wcm: [ Warp Stalkers, Newts, Flying Snakes, Grove Crawlers, Amazards, Grove Crawlers ], ids: [ 1761, 2747, 2844, 2793, 2794 ] }, # Reawakened Phase-Hunter (classic), Untainted Grove Crawler (12.0), Cerulean Phase-Hunter (classic); Vicious Snaplizard (2x)
     ]
   },
   { name: Rylaks, wcm: [ Rylaks, Chimaeras ] },
@@ -322,6 +338,7 @@ familymap: [
       { name: Mole, wcm: [ Moles ] },
       { name: Rats, wcm: [ Rats, Mawrats ] },
       { name: Rabbit, wcm: [ Rabbits ], ids: [ 1769 ] }, # Hao-Yue (classic)
+      { name: Squirrel, wcm: [ Squirrels ] },
     ] },
   { name: Sporebat, wcm: [ Sporebats ] },
   { name: Ungulates,
@@ -351,7 +368,7 @@ familymap: [
       { name: "Hover Board", wcm: [ "Hover Boards", "Flying Chessboards" ], ids: [2838] }, # Fantastical Goblin Waveshredder (12.0)
       { name: Jet Aerial Units, wcm: [ Jet Aerial Units ], ids: [2612] }, # Void-Forged Overseer
       { name: Kites, wcm: [ Kites, Gliders ], ids: [ 1762 ] }, # Kalu'ak Whalebone Glider (classic)
-      { name: Mecha-suits, wcm: [ Flying Mecha-suits ] },
+      { name: Mecha-suits, wcm: [ Flying Mecha-suits ], ids: [2608] }, # Light-Forged Mechsuit
       { name: Mechanical Animals, wcm: [ Mechanical Scorpions, Mechanical Steeds, Mechanical Birds, Mechanical Cats, Mechanical Dragons, Mechanical Devilsaurs ], ids: [2717,2718, 2796] }, # Mechanical & Steel Prototype Panther MK-0 (chinese), Bronzeaquilon (12.0)
       { name: Mechanostriders, wcm: [ Mechanostriders ] },
       { name: Motorcycles, wcm: [ Motorcycles, Monocycles ], ids: [2849] }, # Hypo-Speed X6000 (12.0)
