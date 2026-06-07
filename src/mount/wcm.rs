@@ -11,6 +11,8 @@ fn parse_name(mount_name: &str) -> String {
         .to_lowercase()
         .replace(" [horde]", "")
         .replace(" [alliance]", "")
+        .replace(" [ph]", "")
+        .replace("[ph] ", "")
 }
 
 pub fn load_wcm_families() -> HashMap<String, String> {

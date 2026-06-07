@@ -111,13 +111,7 @@ fn collect_mounts(
         let conditions = player_condition_db.lookup(&mount.player_condition_id);
         let player_conditions = match conditions.first() {
             None => Vec::new(),
-            Some(player_condition) => parse_conditions(
-                player_condition.race_mask,
-                player_condition.description.as_str(),
-                player_condition.class_mask,
-                player_condition.skill_id,
-                player_condition.quest_id,
-            ),
+            Some(player_condition) => parse_conditions(player_condition),
         };
 
         let item_id = {

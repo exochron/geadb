@@ -135,7 +135,9 @@ pub fn group_by_families(
     let wcm_map = load_wcm_families();
 
     for (_, mount) in mounts.iter() {
-        let lowered_name = mount.name.to_lowercase();
+        let mut lowered_name = mount.name.to_lowercase();
+        lowered_name = lowered_name.replace("[ph] ", "");
+        lowered_name = lowered_name.replace(" [ph]", "");
 
         let matches_by_id = match_by_id(&mount.id, map_config);
         let matches = if matches_by_id.is_empty() {

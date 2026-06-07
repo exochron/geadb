@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use crate::tools::dbs::PlayerCondition;
 
 #[derive(Debug, Copy, Clone)]
 pub enum ConditionGroup {
@@ -61,17 +62,25 @@ fn check_class(mask: i64) -> Vec<Condition> {
 }
 
 fn check_race(mask: i64) -> Vec<Condition> {
-    if mask == 6130900294268439629 || mask == -6184943489809468494 {
+    if mask == 6130900289973472333 || mask == -6184943489809468494 {
         // skip full faction masks
         return Vec::new();
     }
 
     let map = BTreeMap::from([
+        (0x1, "Human"),
+        (0x2, "Orc"),
         (0x4, "Dwarf"),
+        (0x8, "NightElf"),
+        (0x10, "Undead"),
         (0x20, "Tauren"),
+        (0x40, "Gnome"),
+        (0x80, "Troll"),
+        (0x100, "Goblin"),
         (0x200, "BloodElf"),
         (0x400, "Draenei"),
         (0x800, "DarkIronDwarf"),
+        (0x200000, "Worgen"),
         (0x20000000, "LightforgedDraenei"),
         (0x40000000, "ZandalariTroll"),
     ]);
@@ -79,36 +88,34 @@ fn check_race(mask: i64) -> Vec<Condition> {
 }
 
 pub fn parse_conditions(
-    race_mask: i64,
-    failure_description: &str,
-    class_mask: i64,
-    skill_id: u32,
-    quest_id: u32,
+    pc: &PlayerCondition,
 ) -> Vec<Vec<Condition>> {
     let mut result = Vec::new();
 
-    let class_conditions = check_class(class_mask);
+    let class_conditions = check_class(pc.class_mask);
     if !class_conditions.is_empty() {
         result.push(class_conditions);
     }
 
-    let race_conditions = check_race(race_mask);
+    let race_conditions = check_race((pc.race_mask2 << 32) + pc.race_mask1);
     if !race_conditions.is_empty() {
         result.push(race_conditions);
     }
 
-    if skill_id != 0 {
+    if pc.skill_id != 0 {
         result.push(Vec::from([Condition {
             group: ConditionGroup::Skill,
-            value: skill_id.to_string(),
+            value: pc.skill_id.to_string(),
         }]))
     }
-    if quest_id != 0 {
+    if pc.quest_id != 0 {
         result.push(Vec::from([Condition {
             group: ConditionGroup::Quest,
-            value: quest_id.to_string(),
+            value: pc.quest_id.to_string(),
         }]))
     }
+
+    let failure_description = pc.description.as_str();
 
     if failure_description.contains("Kyrian") {
         result.push(Vec::from([Condition {

@@ -88,7 +88,8 @@ pub struct Item {
 pub struct ItemSparse {
     #[serde(rename(deserialize = "ID"))]
     pub item_id: u32,
-    #[serde(rename(deserialize = "AllowableRace"))]
+    #[serde(rename(deserialize = "AllowableRaces[0]"))]
+    #[serde(rename(deserialize = "AllowableRace[0]"))]
     pub race_mask: i64,
     #[serde(rename(deserialize = "Display_lang"))]
     pub display_text: String,
@@ -159,8 +160,10 @@ pub struct PlayerCondition {
     pub id: u32,
     #[serde(rename(deserialize = "Failure_description_lang"))]
     pub description: String,
-    #[serde(rename(deserialize = "RaceMask"))]
-    pub race_mask: i64,
+    #[serde(rename(deserialize = "RaceMasks[0]"))]
+    pub race_mask1: i64,
+    #[serde(rename(deserialize = "RaceMasks[1]"))]
+    pub race_mask2: i64,
     #[serde(rename(deserialize = "ClassMask"))]
     pub class_mask: i64,
     #[serde(rename(deserialize = "SkillID[0]"))]
