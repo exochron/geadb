@@ -3,22 +3,18 @@ services:
     build:
       context: docker
       dockerfile: wowtools.Dockerfile
-    environment:
-      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     ports:
       - "5000:8080"
     volumes:
       - "${WOW_DIR}:/game"
-    entrypoint: [ "./wow.tools.local", "-wowFolder", "/game" , "-region" , "eu" ]
+    command: [ "/app/wow.tools.local", "-wowFolder", "/game" , "-region" , "eu", "-locale", "enUS" ]
 
   wow_tools_classic:
     build:
       context: docker
       dockerfile: wowtools.Dockerfile
-    environment:
-      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     ports:
       - "5001:8080"
     volumes:
       - "${WOW_DIR}:/game"
-    entrypoint: [ "./wow.tools.local", "-wowFolder", "/game" , "-region" , "eu", "-product", "wow_classic" ]
+    command: ["/app/wow.tools.local", "-wowFolder", "/game" , "-region" , "eu", "-wowProduct", "wow_classic", "-locale", "enUS" ]
